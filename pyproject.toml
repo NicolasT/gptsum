@@ -1,0 +1,58 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "gptsum"
+version = "0.0.0"
+description = "A tool to make disk images using GPT partitions self-verifiable"
+authors = [
+    "Nicolas Trangez <ikke@nicolast.be>",
+]
+license = "Apache-2.0"
+readme = "README.rst"
+homepage = "https://github.com/NicolasT/gptsum"
+repository = "https://github.com/NicolasT/gptsum.git"
+keywords = ["gpt", "diskimage", "checksum"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: System",
+    "Topic :: System :: Software Distribution",
+    "Typing :: Typed",
+]
+
+[tool.poetry.urls]
+Homepage = "https://github.com/NicolasT/gptsum"
+Issues = "https://github.com/NicolasT/gptsum/issues"
+"Pull Requests" = "https://github.com/NicolasT/gptsum/pulls"
+Releases = "https://github.com/NicolasT/gptsum/releases"
+
+[tool.poetry.dependencies]
+python = "^3.6.1"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.812"
+flake8 = "^3.9.0"
+flake8-bandit = "^2.1.2"
+flake8-bugbear = "^21.3.2"
+flake8-docstrings = "^1.6.0"
+flake8-rst-docstrings = "^0.0.14"
+pep8-naming = "^0.11.1"
+darglint = "^1.7.0"
+black = "^20.8b1"
+flake8-black = "^0.2.1"
+safety = "^1.10.3"
+Sphinx = "^3.5.3"
+furo = "^2021.3.20-beta.31"

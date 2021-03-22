@@ -294,6 +294,18 @@ class GPTImage(ContextManager["GPTImage"]):
         self._path = path
         self._open_mode = open_mode
 
+    def fileno(self) -> int:
+        """Get a file descriptor for the image file.
+
+        :returns: FD to the image file
+
+        :raises RuntimeError: No open FD to the image
+        """
+        if self._fd is None:
+            raise RuntimeError("No open file descriptor")  # pragma: no cover
+
+        return self._fd
+
     def __enter__(self) -> "GPTImage":
         """Open the disk image for use in a context.
 

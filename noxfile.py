@@ -10,6 +10,8 @@ import shutil
 
 from nox_poetry import Session, session
 
+PACKAGE = "gptsum"
+
 PYTHON_VERSIONS = [
     # Note: keep these sorted
     "3.6",
@@ -20,6 +22,7 @@ PYTHON_VERSIONS = [
 
 SOURCES = [
     "src/",
+    "tests/",
     "noxfile.py",
     "docs/conf.py",
 ]
@@ -54,10 +57,70 @@ def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or [src for src in SOURCES if src != "noxfile.py"]
     session.install(".")
-    session.install("mypy")
+    session.install(
+        "mypy",
+        "pytest",
+    )
     session.run("mypy", *args)
     if not session.posargs:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")
+
+
+@session(python=PYTHON_VERSIONS)
+def tests(session: Session) -> None:
+    """Run the test suite."""
+    session.install(".")
+    session.install(
+        "coverage[toml]",
+        "pygments",
+        "pytest",
+    )
+    try:
+        session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
+    finally:
+        if session.interactive:
+            session.notify("coverage")
+
+
+@session
+def coverage(session: Session) -> None:
+    """Produce the coverage report."""
+    # Do not use session.posargs unless this is the only session.
+    nsessions = len(session._runner.manifest)  # type: ignore[attr-defined]
+    has_args = session.posargs and nsessions == 1
+    args = session.posargs if has_args else ["report"]
+
+    session.install(
+        "coverage[toml]",
+    )
+
+    if not has_args and any(Path().glob(".coverage.*")):
+        session.run("coverage", "combine")
+
+    session.run("coverage", *args)
+
+
+@session(python=PYTHON_VERSIONS)
+def typeguard(session: Session) -> None:
+    """Runtime type checking using Typeguard."""
+    session.install(".")
+    session.install(
+        "pygments",
+        "pytest",
+        "typeguard",
+    )
+    session.run("pytest", f"--typeguard-packages={PACKAGE}", *session.posargs)
+
+
+@session(python=PYTHON_VERSIONS)
+def xdoctest(session: Session) -> None:
+    """Run examples with xdoctest."""
+    args = session.posargs or ["all"]
+    session.install(".")
+    session.install(
+        "xdoctest[colors]",
+    )
+    session.run("python", "-m", "xdoctest", PACKAGE, *args)
 
 
 @session(python=PYTHON_VERSIONS[-1])
@@ -68,6 +131,7 @@ def docs(session: Session) -> None:
     session.install(
         "Sphinx",
         "furo",
+        "sphinx-argparse",
     )
 
     build_dir = Path("docs", "_build")

@@ -3,7 +3,15 @@ max-line-length = 88
 extend-ignore =
     # See https://github.com/PyCQA/pycodestyle/issues/373
     E203,
+per-file-ignores =
+    tests/*:S101
 
 # Configure darglint
 strictness=short
 docstring_style=sphinx
+
+# Configure flake8-rst-docstrings
+rst-roles =
+    func,
+    mod,
+    option,

@@ -39,6 +39,9 @@ Issues = "https://github.com/NicolasT/gptsum/issues"
 "Pull Requests" = "https://github.com/NicolasT/gptsum/pulls"
 Releases = "https://github.com/NicolasT/gptsum/releases"
 
+[tool.poetry.scripts]
+gptsum = "gptsum.cli:main"
+
 [tool.poetry.dependencies]
 python = "^3.6.1"
 importlib-metadata = {version = "^3.7.3", python = "< 3.8"}
@@ -57,3 +60,20 @@ flake8-black = "^0.2.1"
 safety = "^1.10.3"
 Sphinx = "^3.5.3"
 furo = "^2021.3.20-beta.31"
+sphinx-argparse = "^0.2.5"
+coverage = {version = "^5.5", extras = ["toml"]}
+pygments = "^2.8.1"
+pytest = "^6.2.2"
+typeguard = "^2.11.1"
+xdoctest = {version = "^0.15.4", extras = ["colors"]}
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+[tool.coverage.run]
+branch = true
+source = ["gptsum", "tests"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 100

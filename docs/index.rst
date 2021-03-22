@@ -1,5 +1,8 @@
 .. include:: ../README.rst
 
-.. toctree::
-   :hidden:
-   :maxdepth: 1
+Command Line Interface
+**********************
+.. argparse::
+   :module: gptsum.cli
+   :func: build_parser
+   :prog: gptsum

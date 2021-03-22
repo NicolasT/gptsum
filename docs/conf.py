@@ -12,3 +12,7 @@ version = gptsum.__version__
 release = version
 
 html_theme = "furo"
+
+extensions = [
+    "sphinxarg.ext",
+]

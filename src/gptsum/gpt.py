@@ -5,9 +5,12 @@
 
 import binascii
 import dataclasses
+import os
 import struct
 import uuid
-from typing import Optional
+from pathlib import Path
+from types import TracebackType
+from typing import ContextManager, Optional, Type
 
 LBA_SIZE = 512
 MBR_SIZE = LBA_SIZE
@@ -52,6 +55,10 @@ class UnsupportedRevisionError(ValueError, GPTError):
 
 class HeaderChecksumMismatchError(ValueError, GPTError):
     """GPT header checksum mismatch."""
+
+
+class InvalidImageError(ValueError, GPTError):
+    """A file which is supposedly a GPT image is not."""
 
 
 @dataclasses.dataclass(frozen=True)
@@ -223,3 +230,182 @@ class GPTHeader(object):
                 self.entries_crc32 == other.entries_crc32,
             ]
         )
+
+    def with_new_guid(self, new_guid: uuid.UUID) -> "GPTHeader":
+        """Construct a copy of the GPT header with a new GUID."""
+        return GPTHeader(
+            self.current_lba,
+            self.backup_lba,
+            self.first_usable_lba,
+            self.last_usable_lba,
+            new_guid,
+            self.entries_starting_lba,
+            self.num_entries,
+            self.entry_size,
+            self.entries_crc32,
+        )
+
+
+def pread_all(fd: int, size: int, offset: int) -> bytes:
+    """Use :func:`os.pread` to read data, handling partial reads."""
+    pieces = []
+    while size > 0:
+        read = os.pread(fd, size, offset)
+        pieces.append(read)
+        len_read = len(read)
+        size -= len_read
+        offset += len_read
+    return b"".join(pieces)
+
+
+def pwrite_all(fd: int, data: bytes, offset: int) -> None:
+    """Use :func:`os.pwrite` to write data, handling partial writes."""
+    while len(data) != 0:
+        written = os.pwrite(fd, data, offset)
+        data = data[written:]
+        offset += written
+
+
+class GPTImage(ContextManager["GPTImage"]):
+    """Wrapper around a GPT-partitioned disk image file."""
+
+    def __init__(
+        self,
+        *,
+        fd: Optional[int] = None,
+        path: Optional[Path] = None,
+        open_mode: int = os.O_RDWR,
+    ):
+        """Construct a new :class:`GPTImage`.
+
+        :param fd: File descriptor to open image file
+        :param path: Path to image file to use
+        :param open_mode: Mode to use when opening the disk image file
+
+        :raises ValueError: Both or none of `fd` and `path` are provided
+        """
+        if fd is None and path is None:
+            raise ValueError("Either fd or path must be given")
+
+        if fd is not None and path is not None:
+            raise ValueError("Both fd and path can't be given")
+
+        self._fd = fd
+        self._path = path
+        self._open_mode = open_mode
+
+    def __enter__(self) -> "GPTImage":
+        """Open the disk image for use in a context.
+
+        If `fd` was passed during construction, nothing happens, and the FD won't be
+        closed by `__exit__`.
+
+        :returns: `self`
+
+        :raises InvalidImageError: File is not a valid GPT image
+        """
+        if self._fd is None:
+            assert self._path is not None  # noqa: S101
+            self._fd = os.open(
+                self._path, os.O_CLOEXEC | os.O_LARGEFILE | self._open_mode
+            )
+
+        if os.fstat(self._fd).st_size < MBR_SIZE + GPT_HEADER_SIZE + GPT_HEADER_SIZE:
+            if self._path is not None:
+                os.close(self._fd)
+                self._fd = None
+            raise InvalidImageError("Image file too small to be a valid GPT image")
+
+        return self
+
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_value: Optional[BaseException],
+        traceback: Optional[TracebackType],
+    ) -> Optional[bool]:
+        """Close the disk image when exiting a context."""
+        if self._path is not None and self._fd is not None:
+            os.close(self._fd)
+            self._fd = None
+
+        return None
+
+    def _read_gpt_header(self, offset: int) -> GPTHeader:
+        if self._fd is None:
+            raise RuntimeError("No open file descriptor")  # pragma: no cover
+        raw_header = pread_all(self._fd, GPT_HEADER_SIZE, offset)
+        return GPTHeader.unpack(raw_header)
+
+    def read_primary_gpt_header(self) -> GPTHeader:
+        """Read the primary GPT header from the image."""
+        return self._read_gpt_header(MBR_SIZE)
+
+    def read_backup_gpt_header(self) -> GPTHeader:
+        """Read the backup GPT header from the image."""
+        if self._fd is None:
+            raise RuntimeError("No open file descriptor")  # pragma: no cover
+        size = os.fstat(self._fd).st_size
+        return self._read_gpt_header(size - GPT_HEADER_SIZE)
+
+    def validate(self) -> None:
+        """Validate the GPT headers found in the image.
+
+        :raises InvalidImageError: GPT headers are not compatible
+        """
+        gpt1 = self.read_primary_gpt_header()
+        gpt2 = self.read_backup_gpt_header()
+
+        if not gpt2.is_backup_of(gpt1) or not gpt1.is_backup_of(gpt2):
+            raise InvalidImageError("GPT headers don't match")
+
+    def write_gpt_headers(self, primary: GPTHeader, backup: GPTHeader) -> None:
+        """Write primary and backup GPT headers to the image.
+
+        :param primary: Primary GPT header to write
+        :param backup: Backup GPT header to write
+
+        :raises RuntimeError: No open file descriptor
+        :raises ValueError: Given headers are not backups of each other
+        :raises ValueError: Primary header has invalid 'current_lba'
+        :raises ValueError: Backup header has invalid 'current_lba'
+        """
+        if self._fd is None:
+            raise RuntimeError("No open file descriptor")  # pragma: no cover
+
+        if not backup.is_backup_of(primary) or not primary.is_backup_of(backup):
+            raise ValueError("Given headers are not backups of each other")
+
+        if primary.current_lba != 1:
+            raise ValueError("Primary header has invalid 'current_lba', expected 1")
+
+        size = os.fstat(self._fd).st_size
+        expected_backup_lba = size // 512 - 1
+        if backup.current_lba != expected_backup_lba:
+            raise ValueError(
+                "Backup header has invalid 'current_lba', expected {}".format(
+                    expected_backup_lba
+                )
+            )
+
+        gpt1 = primary.pack()
+        gpt2 = backup.pack()
+
+        pwrite_all(self._fd, gpt1, primary.current_lba * LBA_SIZE)
+        pwrite_all(self._fd, gpt2, backup.current_lba * LBA_SIZE)
+        os.fsync(self._fd)
+
+    def update_guid(self, guid: uuid.UUID) -> None:
+        """Update the label GUID of the image to some new UUID.
+
+        The new GPT headers are written to the image.
+
+        :param guid: New label GUID to write to the disk image
+        """
+        primary = self.read_primary_gpt_header()
+        backup = self.read_backup_gpt_header()
+
+        new_primary = primary.with_new_guid(guid)
+        new_backup = backup.with_new_guid(guid)
+
+        self.write_gpt_headers(new_primary, new_backup)

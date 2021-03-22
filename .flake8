@@ -12,6 +12,8 @@ docstring_style=sphinx
 
 # Configure flake8-rst-docstrings
 rst-roles =
+    class,
     func,
+    meth,
     mod,
     option,

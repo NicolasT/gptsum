@@ -1,0 +1,228 @@
+"""Tests for the :mod:`gptsum.gpt` module."""
+
+import struct
+import uuid
+from typing import Type
+
+import pytest
+
+from gptsum import gpt
+
+
+@pytest.mark.parametrize(
+    "header",
+    [
+        b"",
+        b"\0",
+        b"\0" * (gpt.LBA_SIZE - 1),
+        b"\0" * (gpt.LBA_SIZE + 1),
+    ],
+)
+def test_gptheader_unpack_invalid_header_size(header: bytes) -> None:
+    """Test unpacking GPT headers of invalid size."""
+    with pytest.raises(gpt.InvalidHeaderSizeError):
+        gpt.GPTHeader.unpack(header)
+
+
+# Generated using:
+# $ truncate -s1G disk
+# $ sfdisk disk << EOF
+# label: gpt
+# label-id: 97fe4bef-3385-45d8-becf-e0e178e0d1d9
+# first-lba: 2048
+# EOF
+# Then, peel out bytes [512, 1024[ and [1024 * 1024 * 1024 - 512, 1024 * 1024 * 1024[
+TEST_DISK_SIZE = 1024 * 1024 * 1024
+TEST_DISK_UUID = uuid.UUID("97fe4bef-3385-45d8-becf-e0e178e0d1d9")
+TEST_DISK_NUM_ENTRIES = 128
+TEST_DISK_ENTRY_SIZE = 128
+TEST_DISK_GPT_HEADER = (
+    b"EFI PART\x00\x00\x01\x00\\\x00\x00\x00\xf9\xc2\x1d\x95\x00\x00\x00\x00\x01\x00"
+    b"\x00\x00\x00\x00\x00\x00\xff\xff\x1f\x00\x00\x00\x00\x00\x00\x08\x00\x00\x00"
+    b"\x00\x00\x00\xde\xff\x1f\x00\x00\x00\x00\x00\xefK\xfe\x97\x853\xd8E\xbe\xcf\xe0"
+    b"\xe1x\xe0\xd1\xd9\x02\x00\x00\x00\x00\x00\x00\x00\x80\x00\x00\x00\x80\x00\x00"
+    b"\x00\x86\xd2T\xab\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00"
+)
+TEST_DISK_BACKUP_GPT_HEADER = (
+    b"EFI PART\x00\x00\x01\x00\\\x00\x00\x00%\xb3\xe7\r\x00\x00\x00\x00\xff\xff\x1f"
+    b"\x00\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x08\x00\x00\x00\x00"
+    b"\x00\x00\xde\xff\x1f\x00\x00\x00\x00\x00\xefK\xfe\x97\x853\xd8E\xbe\xcf\xe0\xe1x"
+    b"\xe0\xd1\xd9\xdf\xff\x1f\x00\x00\x00\x00\x00\x80\x00\x00\x00\x80\x00\x00\x00\x86"
+    b"\xd2T\xab\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"
+    b"\x00\x00\x00"
+)
+
+
+@pytest.mark.parametrize(
+    "raw_header, current_lba, backup_lba, entries_starting_lba",
+    [
+        (TEST_DISK_GPT_HEADER, 1, TEST_DISK_SIZE // 512 - 1, 2),
+        (
+            TEST_DISK_BACKUP_GPT_HEADER,
+            TEST_DISK_SIZE // 512 - 1,
+            1,
+            TEST_DISK_SIZE // 512
+            - 1
+            - (TEST_DISK_NUM_ENTRIES * TEST_DISK_ENTRY_SIZE // 512),
+        ),
+    ],
+)
+def test_gptheader_unpack(
+    raw_header: bytes, current_lba: int, backup_lba: int, entries_starting_lba: int
+) -> None:
+    """Test unpacking of a valid GPT header."""
+    header = gpt.GPTHeader.unpack(raw_header)
+
+    assert header.current_lba == current_lba
+    assert header.backup_lba == backup_lba
+    assert header.first_usable_lba == 2048
+    assert header.last_usable_lba == 2097118
+    assert header.disk_guid == TEST_DISK_UUID
+    assert header.entries_starting_lba == entries_starting_lba
+    assert header.num_entries == TEST_DISK_NUM_ENTRIES
+    assert header.entry_size == TEST_DISK_ENTRY_SIZE
+
+    # Alternative, calculated way to find the right values
+    assert (
+        header.last_usable_lba
+        == TEST_DISK_SIZE // 512
+        - 1
+        - (header.num_entries * header.entry_size // 512)
+        - 1
+    )
+
+
+def _replace_signature(raw_header: bytes, signature: bytes) -> bytes:
+    """Replace the 'signature' field in a raw header."""
+    return signature + raw_header[8:]
+
+
+def _replace_revision(raw_header: bytes, revision: bytes) -> bytes:
+    """Replace the 'revision' field in a raw header."""
+    return raw_header[:8] + revision + raw_header[8 + 4 :]
+
+
+def _replace_header_size(raw_header: bytes, header_size: int) -> bytes:
+    """Replace the 'header_size' field in a raw header."""
+    header_size_bytes = struct.pack("<I", header_size)
+    return raw_header[: 8 + 4] + header_size_bytes + raw_header[8 + 4 + 4 :]
+
+
+def _replace_reserved(raw_header: bytes, reserved: bytes) -> bytes:
+    """Replace the 'reserved' field in a raw header."""
+    return raw_header[: 8 + 4 + 4 + 4] + reserved + raw_header[8 + 4 + 4 + 4 + 4 :]
+
+
+def _replace_padding(raw_header: bytes, padding: bytes) -> bytes:
+    """Replace the 'padding' field in a raw header."""
+    return raw_header[:92] + padding
+
+
+def _replace_header_crc32(raw_header: bytes, header_crc32: int) -> bytes:
+    """Replace the 'header_crc32' field in a raw header."""
+    header_crc32_bytes = struct.pack("<I", header_crc32)
+    return raw_header[: 8 + 4 + 4] + header_crc32_bytes + raw_header[8 + 4 + 4 + 4 :]
+
+
+@pytest.mark.parametrize(
+    "expected_error, raw_header",
+    [
+        (
+            gpt.InvalidSignatureError,
+            _replace_signature(TEST_DISK_GPT_HEADER, b"FFI PART"),
+        ),
+        (
+            gpt.UnsupportedRevisionError,
+            _replace_revision(TEST_DISK_GPT_HEADER, b"\0\0\1\1"),
+        ),
+        (gpt.InvalidHeaderSizeError, _replace_header_size(TEST_DISK_GPT_HEADER, 90)),
+        (gpt.InvalidFieldError, _replace_reserved(TEST_DISK_GPT_HEADER, b"\0\0\0\1")),
+        (
+            gpt.InvalidFieldError,
+            _replace_padding(TEST_DISK_GPT_HEADER, b"\1" * (512 - 92)),
+        ),
+        (
+            gpt.HeaderChecksumMismatchError,
+            _replace_header_crc32(TEST_DISK_GPT_HEADER, 2 ** 32 - 1),
+        ),
+    ],
+)
+def test_gptheader_unpack_error(
+    expected_error: Type[Exception], raw_header: bytes
+) -> None:
+    """Test :meth:`gpt.GPTHeader.unpack` failure cases."""
+    with pytest.raises(expected_error):
+        gpt.GPTHeader.unpack(raw_header)
+
+
+def test_gptheader_is_backup_of() -> None:
+    """Test :meth:`gpt.GPTHeader.is_backup_of`."""
+    gpt1 = gpt.GPTHeader.unpack(TEST_DISK_GPT_HEADER)
+    gpt2 = gpt.GPTHeader.unpack(TEST_DISK_BACKUP_GPT_HEADER)
+
+    assert gpt1.is_backup_of(gpt2)
+    assert gpt2.is_backup_of(gpt1)
+
+    assert not gpt1.is_backup_of(gpt1)
+    assert not gpt2.is_backup_of(gpt2)
+
+
+@pytest.mark.parametrize(
+    "raw_header",
+    [
+        TEST_DISK_GPT_HEADER,
+        TEST_DISK_BACKUP_GPT_HEADER,
+    ],
+)
+def test_gptheader_pack(raw_header: bytes) -> None:
+    """Test :meth:`gpt.GPTHeader.pack`."""
+    assert gpt.GPTHeader.unpack(raw_header).pack() == raw_header
+
+
+def test_gptheader_pack_override_crc32() -> None:
+    """Test :meth:`gpt.GPTHeader.pack` overriding the CRC32."""
+    header = gpt.GPTHeader.unpack(TEST_DISK_GPT_HEADER)
+    packed = header.pack(override_crc32=0)
+    with pytest.raises(gpt.HeaderChecksumMismatchError):
+        gpt.GPTHeader.unpack(packed)

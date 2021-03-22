@@ -1,8 +1,12 @@
 """Tests for the :mod:`gptsum.gpt` module."""
 
+import os
+import shutil
 import struct
+import tempfile
 import uuid
-from typing import Type
+from pathlib import Path
+from typing import Iterator, Type
 
 import pytest
 
@@ -226,3 +230,197 @@ def test_gptheader_pack_override_crc32() -> None:
     packed = header.pack(override_crc32=0)
     with pytest.raises(gpt.HeaderChecksumMismatchError):
         gpt.GPTHeader.unpack(packed)
+
+
+TESTDATA_DISK = Path(__file__).parent / "testdata" / "disk"
+TESTDATA_DISK_GUID = uuid.UUID("66E0318D-A103-9549-8583-80E8ABCD4CD8")
+
+
+@pytest.fixture
+def small_file(tmp_path: Path) -> Iterator[Path]:
+    """Yield the path of an empty, 1kB temporary file."""
+    with tempfile.NamedTemporaryFile(dir=tmp_path) as tmp:
+        tmp.truncate(1024)
+        yield Path(tmp.name)
+
+
+@pytest.fixture
+def disk_image(tmp_path: Path) -> Iterator[Path]:
+    """Yield the path to a copy of `TESTDATA_DISK`."""
+    with tempfile.NamedTemporaryFile(dir=tmp_path) as tmp:
+        with open(TESTDATA_DISK, "rb") as disk:
+            shutil.copyfileobj(disk, tmp)
+
+        yield Path(tmp.name)
+
+
+def test_gptimage_constructor(small_file: Path) -> None:
+    """Test the :class:`gpt.GPTImage` constructor."""
+    with pytest.raises(ValueError):
+        gpt.GPTImage()
+
+    with pytest.raises(ValueError):
+        gpt.GPTImage(fd=0, path=small_file)
+
+
+def test_gptimage_too_small(small_file: Path) -> None:
+    """Test :class:`gpt.GPTImage` with a (too) small file."""
+    with pytest.raises(gpt.InvalidImageError):
+        with open(small_file, "rb") as fd:
+            with gpt.GPTImage(fd=fd.fileno()):
+                pass
+
+    with pytest.raises(gpt.InvalidImageError):
+        with gpt.GPTImage(path=small_file):
+            pass
+
+
+def test_gptimage_validate() -> None:
+    """Test :meth:`gpt.GPTImage.validate`."""
+    with gpt.GPTImage(path=TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
+        image.validate()
+
+    with open(TESTDATA_DISK, "rb") as fd:
+        with gpt.GPTImage(fd=fd.fileno()) as image:
+            image.validate()
+
+
+def test_gptimage_validate_invalid_image(disk_image: Path) -> None:
+    """Test :meth:`gpt.GPTImage.validate` with an invalid image."""
+    with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
+        primary = image.read_primary_gpt_header()
+
+    new_guid = uuid.UUID("21da705c-fec8-4857-8379-449d823a7155")
+    new_primary = gpt.GPTHeader(
+        primary.current_lba,
+        primary.backup_lba,
+        primary.first_usable_lba,
+        primary.last_usable_lba,
+        new_guid,
+        primary.entries_starting_lba,
+        primary.num_entries,
+        primary.entry_size,
+        primary.entries_crc32,
+    )
+
+    with open(disk_image, "rb+") as fd:
+        gpt.pwrite_all(fd.fileno(), new_primary.pack(), gpt.MBR_SIZE)
+
+    with pytest.raises(gpt.InvalidImageError):
+        with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
+            image.validate()
+
+
+def test_gptimage_read_primary_gpt_header() -> None:
+    """Test :meth:`gpt.GPTImage.read_primary_gpt_header`."""
+    with gpt.GPTImage(path=TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
+        header = image.read_primary_gpt_header()
+        assert header.disk_guid == TESTDATA_DISK_GUID
+        assert header.first_usable_lba == 2048
+        assert header.last_usable_lba == 4062
+        assert header.current_lba == 1
+        assert header.backup_lba == 4095
+
+
+def test_gptimage_read_backup_gpt_header() -> None:
+    """Test :meth:`gpt.GPTImage.read_backup_gpt_header`."""
+    with gpt.GPTImage(path=TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
+        header = image.read_backup_gpt_header()
+        assert header.disk_guid == TESTDATA_DISK_GUID
+        assert header.first_usable_lba == 2048
+        assert header.last_usable_lba == 4062
+        assert header.current_lba == 4095
+        assert header.backup_lba == 1
+
+
+def test_gptimage_write_gpt_headers(disk_image: Path) -> None:
+    """Test :meth:`gpt.GPTImage.write_gpt_headers`."""
+    with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
+        primary = image.read_primary_gpt_header()
+        backup = image.read_backup_gpt_header()
+
+    new_guid = uuid.UUID("086991f8-75bd-4560-8943-e11c0c59422b")
+
+    new_primary = gpt.GPTHeader(
+        primary.current_lba,
+        primary.backup_lba,
+        primary.first_usable_lba,
+        primary.last_usable_lba,
+        new_guid,
+        primary.entries_starting_lba,
+        primary.num_entries,
+        primary.entry_size,
+        primary.entries_crc32,
+    )
+    new_backup = gpt.GPTHeader(
+        backup.current_lba,
+        backup.backup_lba,
+        backup.first_usable_lba,
+        backup.last_usable_lba,
+        new_guid,
+        backup.entries_starting_lba,
+        backup.num_entries,
+        backup.entry_size,
+        backup.entries_crc32,
+    )
+
+    with gpt.GPTImage(path=disk_image, open_mode=os.O_WRONLY) as image:
+        image.write_gpt_headers(new_primary, new_backup)
+
+    with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
+        image.validate()
+        assert image.read_primary_gpt_header().disk_guid == new_guid
+
+
+def test_gptimage_write_gpt_headers_incompatible_headers(disk_image: Path) -> None:
+    """Test :meth:`gpt.GPTImage.write_gpt_headers` with incompatible headers."""
+    with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
+        primary = image.read_primary_gpt_header()
+        backup = image.read_backup_gpt_header()
+
+        new_guid = uuid.UUID("913ef501-b10c-4fa4-8919-0d47f7d4d4bd")
+
+        new_primary = gpt.GPTHeader(
+            primary.current_lba,
+            primary.backup_lba,
+            primary.first_usable_lba,
+            primary.last_usable_lba,
+            new_guid,
+            primary.entries_starting_lba,
+            primary.num_entries,
+            primary.entry_size,
+            primary.entries_crc32,
+        )
+
+        with pytest.raises(ValueError):
+            image.write_gpt_headers(new_primary, backup)
+
+
+def test_gptimage_write_gpt_headers_incorrect_current_lba(disk_image: Path) -> None:
+    """Test :meth:`gpt.GPTImage.write_gpt_headers` with incorrect headers."""
+    with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
+        primary = image.read_primary_gpt_header()
+        backup = image.read_backup_gpt_header()
+
+        with pytest.raises(ValueError):
+            image.write_gpt_headers(backup, primary)
+
+        with open(disk_image, "rb+") as fd:
+            size = os.fstat(fd.fileno()).st_size
+            fd.truncate(size + gpt.LBA_SIZE)
+
+        with pytest.raises(ValueError):
+            image.write_gpt_headers(primary, backup)
+
+
+def test_gptimage_update_guid(disk_image: Path) -> None:
+    """Test :meth:`gpt.GPTImage.update_guid`."""
+    new_guid = uuid.UUID("910fbf4b-f2ac-4d2c-8995-9dff42b9efde")
+
+    with gpt.GPTImage(path=disk_image, open_mode=os.O_RDWR) as image:
+        image.update_guid(new_guid)
+
+    with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
+        image.validate()
+        assert image.read_primary_gpt_header().disk_guid == new_guid
+        assert image.read_backup_gpt_header().disk_guid == new_guid

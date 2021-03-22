@@ -1,7 +1,6 @@
 """Tests for the :mod:`gptsum.gpt` module."""
 
 import os
-import shutil
 import struct
 import tempfile
 import uuid
@@ -11,6 +10,8 @@ from typing import Iterator, Type
 import pytest
 
 from gptsum import gpt
+
+from tests import conftest
 
 
 @pytest.mark.parametrize(
@@ -232,25 +233,11 @@ def test_gptheader_pack_override_crc32() -> None:
         gpt.GPTHeader.unpack(packed)
 
 
-TESTDATA_DISK = Path(__file__).parent / "testdata" / "disk"
-TESTDATA_DISK_GUID = uuid.UUID("66E0318D-A103-9549-8583-80E8ABCD4CD8")
-
-
 @pytest.fixture
 def small_file(tmp_path: Path) -> Iterator[Path]:
     """Yield the path of an empty, 1kB temporary file."""
     with tempfile.NamedTemporaryFile(dir=tmp_path) as tmp:
         tmp.truncate(1024)
-        yield Path(tmp.name)
-
-
-@pytest.fixture
-def disk_image(tmp_path: Path) -> Iterator[Path]:
-    """Yield the path to a copy of `TESTDATA_DISK`."""
-    with tempfile.NamedTemporaryFile(dir=tmp_path) as tmp:
-        with open(TESTDATA_DISK, "rb") as disk:
-            shutil.copyfileobj(disk, tmp)
-
         yield Path(tmp.name)
 
 
@@ -268,19 +255,20 @@ def test_gptimage_too_small(small_file: Path) -> None:
     with pytest.raises(gpt.InvalidImageError):
         with open(small_file, "rb") as fd:
             with gpt.GPTImage(fd=fd.fileno()):
-                pass
+                raise AssertionError(
+                    "This code should not be reached")  # pragma: no cover
 
     with pytest.raises(gpt.InvalidImageError):
         with gpt.GPTImage(path=small_file):
-            pass
+            raise AssertionError("This code should not be reached")  # pragma: no cover
 
 
 def test_gptimage_validate() -> None:
     """Test :meth:`gpt.GPTImage.validate`."""
-    with gpt.GPTImage(path=TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
+    with gpt.GPTImage(path=conftest.TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
         image.validate()
 
-    with open(TESTDATA_DISK, "rb") as fd:
+    with open(conftest.TESTDATA_DISK, "rb") as fd:
         with gpt.GPTImage(fd=fd.fileno()) as image:
             image.validate()
 
@@ -313,9 +301,9 @@ def test_gptimage_validate_invalid_image(disk_image: Path) -> None:
 
 def test_gptimage_read_primary_gpt_header() -> None:
     """Test :meth:`gpt.GPTImage.read_primary_gpt_header`."""
-    with gpt.GPTImage(path=TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
+    with gpt.GPTImage(path=conftest.TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
         header = image.read_primary_gpt_header()
-        assert header.disk_guid == TESTDATA_DISK_GUID
+        assert header.disk_guid == conftest.TESTDATA_DISK_GUID
         assert header.first_usable_lba == 2048
         assert header.last_usable_lba == 4062
         assert header.current_lba == 1
@@ -324,9 +312,9 @@ def test_gptimage_read_primary_gpt_header() -> None:
 
 def test_gptimage_read_backup_gpt_header() -> None:
     """Test :meth:`gpt.GPTImage.read_backup_gpt_header`."""
-    with gpt.GPTImage(path=TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
+    with gpt.GPTImage(path=conftest.TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
         header = image.read_backup_gpt_header()
-        assert header.disk_guid == TESTDATA_DISK_GUID
+        assert header.disk_guid == conftest.TESTDATA_DISK_GUID
         assert header.first_usable_lba == 2048
         assert header.last_usable_lba == 4062
         assert header.current_lba == 4095

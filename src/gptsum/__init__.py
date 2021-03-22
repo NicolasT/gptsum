@@ -8,7 +8,7 @@ from typing import cast
 
 try:
     import importlib.metadata as importlib_metadata
-except ImportError:
+except ImportError:  # pragma: no cover
     import importlib_metadata  # type: ignore
 
 

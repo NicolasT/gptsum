@@ -1,0 +1,365 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
+
+    <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta31"/>
+        <title>Home - gptsum 0.0.2 documentation</title>
+      <link rel="stylesheet" href="_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
+    <link rel="stylesheet" href="_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" href="_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="#"><div class="brand">gptsum 0.0.2 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+  
+  
+  <span class="sidebar-brand-text">gptsum 0.0.2 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <div class="section" id="gptsum">
+<h1>gptsum<a class="headerlink" href="#gptsum" title="Permalink to this headline">¶</a></h1>
+<p>A tool to make disk images using <a class="reference external" href="https://en.wikipedia.org/wiki/GUID_Partition_Table">GPT</a> partitions self-verifiable, like
+<a class="reference external" href="https://github.com/rhinstaller/isomd5sum">isomd5sum</a>.</p>
+<p>Note this <em>only</em> works for read-only, immutable images!</p>
+<div class="section" id="how-it-works">
+<h2>How It Works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h2>
+<p>Generally, when checksums are used to validate the integrity of a file, this
+checksum needs to be provided out-of-band, e.g., in a separate file. This
+complicates the process a bit, since now multiple files need to be kept around
+(and potentially in sync).</p>
+<p>Being able to verify a file’s integrity without any external information would
+be great. However, if we embed the checksum of a file in the file itself, we
+change its checksum and verification would fail. So we need to apply some
+tricks.</p>
+<p>The <a class="reference external" href="https://github.com/rhinstaller/isomd5sum">isomd5sum</a> tool is often used to verify the integrity of ISO files, e.g.,
+Linux distribution releases. It uses an unused location in the ISO9660 file
+format to embed an MD5 checksum of the actual data segments of said file. As
+such, this MD5 checksum does not represent the complete file contents but only
+the pieces of data we’re interested in.</p>
+<p>We can translate this to GPT-partitioned disk images as well. In the GPT
+format, there’s no room to embed any arbitrary blobs (unless we’d use the
+reserved or padding sections of the headers, which should be zeroed out so we
+shouldn’t). However, GPT disks are identified by a GUID which is stored in the
+two metadata sections stored on the disk, at LBA 1 and as the last LBA on the
+disk (the so-called primary and secondary GPT headers). This leaves room for 16
+bytes of semi-arbitrary data.</p>
+<p>Furthermore, the GPT headers themselves, including the GUID, are protected
+using a CRC32 checksum.</p>
+<p>As such, we can apply the following procedure:</p>
+<ul class="simple">
+<li><p>Zero out the CRC32 and GUID fields in both GPT headers</p></li>
+<li><p>Calculate a 16 byte checksum of the resulting image (covering all data,
+except for the CRC32 and GUID fields)</p></li>
+<li><p>Embed the checksum as the GUID field in both GPT headers (now becoming the
+disk GUID)</p></li>
+<li><p>Update the CRC32 fields in both GPT headers</p></li>
+</ul>
+<p>At this point we have a fully valid GPT disk image with a GUID representing
+the actual data contained in the image. One could argue this is no longer a
+valid GUID (indeed it’s not), but since it’s generated using a secure hashing
+algorithm over a (potentially large) file, we can assume the entropy is
+sufficient to avoid collisions. Essentially, if two disk images were to get the
+same GUID, they’re very likely the exact same disk image, content-wise.</p>
+<p>Verifying an image file is roughly the same procedure:</p>
+<ul class="simple">
+<li><p>Zero out the CRC32 and GUID fields in both GPT headers (in-memory)</p></li>
+<li><p>Calculate a 16 byte checksum of the resulting image</p></li>
+<li><p>Verify this calculated checksum equals the actual GUID embedded in the image</p></li>
+</ul>
+</div>
+<div class="section" id="implementation-details">
+<h2>Implementation Details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h2>
+<p><cite>gptsum</cite> is implemented in Python, and compatible with Python 3.6 and later.
+It uses the <a class="reference external" href="https://en.wikipedia.org/wiki/BLAKE_(hash_function)#BLAKE2">Blake2b</a> checksum algorithm to construct a 16 byte digest
+of the disk image.</p>
+<p>Various subcommands are exposed by the CLI, refer to the documentation for more
+details.</p>
+</div>
+<div class="section" id="command-line-interface">
+<h2>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline">¶</a></h2>
+<p><p>A tool to make disk images using gpt partitions self-verifiable.</p>
+</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">gptsum</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">version</span><span class="p">]</span>
+              <span class="p">{</span><span class="n">embed</span><span class="p">,</span><span class="n">verify</span><span class="p">,</span><span class="n">get</span><span class="o">-</span><span class="n">guid</span><span class="p">,</span><span class="nb">set</span><span class="o">-</span><span class="n">guid</span><span class="p">,</span><span class="n">calculate</span><span class="o">-</span><span class="n">expected</span><span class="o">-</span><span class="n">guid</span><span class="p">}</span> <span class="o">...</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<dl class="option-list">
+<dt><kbd>--version</kbd></dt>
+<dd><p>show program’s version number and exit</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="Sub-commands:">
+<h3>Sub-commands:<a class="headerlink" href="#Sub-commands:" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="embed">
+<h4>embed<a class="headerlink" href="#embed" title="Permalink to this headline">¶</a></h4>
+<p>Calculate and embed the checksum of a disk image as its GUID.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gptsum</span> <span class="n">embed</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="n">FILE</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments">
+<h5>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h5>
+<dl class="option-list">
+<dt><kbd>FILE</kbd></dt>
+<dd><p>disk image file</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="verify">
+<h4>verify<a class="headerlink" href="#verify" title="Permalink to this headline">¶</a></h4>
+<p>Calculate the expected checksum of a disk image, then verify the embedded disk GUID against it. If there’s a mismatch, the tool will exit with exit code 1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gptsum</span> <span class="n">verify</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="n">FILE</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments_repeat1">
+<h5>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat1" title="Permalink to this headline">¶</a></h5>
+<dl class="option-list">
+<dt><kbd>FILE</kbd></dt>
+<dd><p>disk image file</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="get-guid">
+<h4>get-guid<a class="headerlink" href="#get-guid" title="Permalink to this headline">¶</a></h4>
+<p>Read and print the GPT label GUID from a disk image.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gptsum</span> <span class="n">get</span><span class="o">-</span><span class="n">guid</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="n">FILE</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments_repeat2">
+<h5>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat2" title="Permalink to this headline">¶</a></h5>
+<dl class="option-list">
+<dt><kbd>FILE</kbd></dt>
+<dd><p>disk image file</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="set-guid">
+<h4>set-guid<a class="headerlink" href="#set-guid" title="Permalink to this headline">¶</a></h4>
+<p>Write a new label GUID to a disk image.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gptsum</span> <span class="nb">set</span><span class="o">-</span><span class="n">guid</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="n">FILE</span> <span class="n">GUID</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments_repeat3">
+<h5>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat3" title="Permalink to this headline">¶</a></h5>
+<dl class="option-list">
+<dt><kbd>FILE</kbd></dt>
+<dd><p>disk image file</p>
+</dd>
+<dt><kbd>GUID</kbd></dt>
+<dd><p>new label GUID</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="calculate-expected-guid">
+<h4>calculate-expected-guid<a class="headerlink" href="#calculate-expected-guid" title="Permalink to this headline">¶</a></h4>
+<p>Calculate and print the expected checksum (GUID) of a disk image, without writing it to the file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gptsum</span> <span class="n">calculate</span><span class="o">-</span><span class="n">expected</span><span class="o">-</span><span class="n">guid</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="n">FILE</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments_repeat4">
+<h5>Positional Arguments<a class="headerlink" href="#Positional Arguments_repeat4" title="Permalink to this headline">¶</a></h5>
+<dl class="option-list">
+<dt><kbd>FILE</kbd></dt>
+<dd><p>disk image file</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2021, Nicolas Trangez
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="_sources/index.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">gptsum</a><ul>
+<li><a class="reference internal" href="#how-it-works">How It Works</a></li>
+<li><a class="reference internal" href="#implementation-details">Implementation Details</a></li>
+<li><a class="reference internal" href="#command-line-interface">Command Line Interface</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#Sub-commands:">Sub-commands:</a><ul>
+<li><a class="reference internal" href="#embed">embed</a><ul>
+<li><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#verify">verify</a><ul>
+<li><a class="reference internal" href="#Positional Arguments_repeat1">Positional Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#get-guid">get-guid</a><ul>
+<li><a class="reference internal" href="#Positional Arguments_repeat2">Positional Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#set-guid">set-guid</a><ul>
+<li><a class="reference internal" href="#Positional Arguments_repeat3">Positional Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#calculate-expected-guid">calculate-expected-guid</a><ul>
+<li><a class="reference internal" href="#Positional Arguments_repeat4">Positional Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
+</html>

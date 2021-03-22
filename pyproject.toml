@@ -41,6 +41,7 @@ Releases = "https://github.com/NicolasT/gptsum/releases"
 
 [tool.poetry.dependencies]
 python = "^3.6.1"
+importlib-metadata = {version = "^3.7.3", python = "< 3.8"}
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.812"

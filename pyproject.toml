@@ -35,9 +35,10 @@ classifiers = [
 
 [tool.poetry.urls]
 Homepage = "https://github.com/NicolasT/gptsum"
+Documentation = "https://nicolast.github.io/gptsum/"
+Changelog = "https://github.com/NicolasT/gptsum/releases"
 Issues = "https://github.com/NicolasT/gptsum/issues"
 "Pull Requests" = "https://github.com/NicolasT/gptsum/pulls"
-Releases = "https://github.com/NicolasT/gptsum/releases"
 
 [tool.poetry.scripts]
 gptsum = "gptsum.cli:main"

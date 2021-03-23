@@ -3,7 +3,6 @@ from datetime import datetime
 
 import gptsum
 
-
 project = "gptsum"
 author = "Nicolas Trangez"
 copyright = f"{datetime.now().year}, {author}"  # noqa: A001

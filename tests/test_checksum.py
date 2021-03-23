@@ -6,7 +6,6 @@ from pathlib import Path
 from typing import BinaryIO
 
 from gptsum import checksum, gpt
-
 from tests import conftest
 
 

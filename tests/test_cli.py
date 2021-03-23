@@ -2,15 +2,13 @@
 
 import hashlib
 import os
-
 import uuid
 from pathlib import Path
 
-import gptsum
-from gptsum import checksum, cli
-
 import pytest
 
+import gptsum
+from gptsum import checksum, cli
 from tests import conftest
 
 

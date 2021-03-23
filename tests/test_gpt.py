@@ -10,7 +10,6 @@ from typing import Iterator, Type
 import pytest
 
 from gptsum import gpt
-
 from tests import conftest
 
 

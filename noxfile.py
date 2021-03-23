@@ -4,9 +4,9 @@ Nox sessions for the `gptsum`_ project.
 .. _gptsum: https://github.com/NicolasT/gptsum
 """
 
+import shutil
 import sys
 from pathlib import Path
-import shutil
 
 from nox_poetry import Session, session
 
@@ -40,6 +40,7 @@ def flake8(session: Session) -> None:
         "flake8-bugbear",
         "flake8-builtins",
         "flake8-docstrings",
+        "flake8-isort",
         "flake8-pytest",
         "flake8-pytest-style",
         "flake8-rst-docstrings",

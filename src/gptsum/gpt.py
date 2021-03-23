@@ -142,13 +142,12 @@ class GPTHeader(object):
         if padding != _EXPECTED_PADDING:
             raise InvalidFieldError("GPT header padding has unexpected contents")
 
-        calculated_header_crc32 = (
-            binascii.crc32(
-                header[8 + 4 + 4 + 4 :],
-                binascii.crc32(b"\0" * 4, binascii.crc32(header[: 8 + 4 + 4])),
-            )
-            & 0xFFFFFFFF
+        prefix_crc32 = binascii.crc32(header[: 8 + 4 + 4])
+        with_zeroed_crc32_crc32 = binascii.crc32(b"\0" * 4, prefix_crc32)
+        calculated_header_crc32 = binascii.crc32(
+            header[8 + 4 + 4 + 4 :], with_zeroed_crc32_crc32
         )
+        calculated_header_crc32 &= 0xFFFFFFFF
 
         if header_crc32 != calculated_header_crc32:
             raise HeaderChecksumMismatchError(

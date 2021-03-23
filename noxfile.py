@@ -38,6 +38,7 @@ def flake8(session: Session) -> None:
         "flake8-bandit",
         "flake8-black",
         "flake8-bugbear",
+        "flake8-builtins",
         "flake8-docstrings",
         "flake8-pytest",
         "flake8-pytest-style",

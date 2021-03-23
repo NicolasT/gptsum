@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta31"/>
-        <title>Home - gptsum 0.0.3 documentation</title>
+        <title>Home - gptsum 0.0.4 documentation</title>
       <link rel="stylesheet" href="_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
     <link rel="stylesheet" href="_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="_static/pygments_dark.css">
@@ -86,7 +86,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="#"><div class="brand">gptsum 0.0.3 documentation</div></a>
+      <a href="#"><div class="brand">gptsum 0.0.4 documentation</div></a>
     </div>
     <div class="header-right">
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
@@ -100,7 +100,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
   
   
-  <span class="sidebar-brand-text">gptsum 0.0.3 documentation</span>
+  <span class="sidebar-brand-text">gptsum 0.0.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html">
   <input class="sidebar-search" placeholder=Search name="q">
@@ -125,6 +125,68 @@
 <p>A tool to make disk images using <a class="reference external" href="https://en.wikipedia.org/wiki/GUID_Partition_Table">GPT</a> partitions self-verifiable, like
 <a class="reference external" href="https://github.com/rhinstaller/isomd5sum">isomd5sum</a>.</p>
 <p>Note this <em>only</em> works for read-only, immutable images!</p>
+<div class="section" id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
+<p>First, create an empty disk image:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ truncate -s64M image.raw
+</pre></div>
+</div>
+<p>Then, create a GPT partition table in it. Note, below we set an explicit
+<cite>label-id</cite>. In general, this should not be done and a random GUID will be
+generated. Simply remove the line.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sfdisk image.raw &lt;&lt; EOF
+label: gpt
+label-id: 132e3631-1ec9-4411-ab25-9b95b54b0903
+first-lba: 2048
+EOF
+
+Checking that no-one is using this disk right now ... OK
+
+Disk image.raw: 64 MiB, 67108864 bytes, 131072 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+&gt;&gt;&gt; Script header accepted.
+&gt;&gt;&gt; Script header accepted.
+&gt;&gt;&gt; Script header accepted.
+&gt;&gt;&gt; Done.
+Created a new GPT disklabel (GUID: 132E3631-1EC9-4411-AB25-9B95B54B0903).
+
+New situation:
+Disklabel type: gpt
+Disk identifier: 132E3631-1EC9-4411-AB25-9B95B54B0903
+
+The partition table has been altered.
+Syncing disks.
+</pre></div>
+</div>
+<p>We can retrieve the current disk GUID using <code class="docutils literal notranslate"><span class="pre">gptsum</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gptsum get-guid image.raw
+132e3631-1ec9-4411-ab25-9b95b54b0903
+</pre></div>
+</div>
+<p>Verification should fail:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gptsum verify image.raw || echo "Verification failed!"
+Disk GUID doesn't match expected checksum, got 132e3631-1ec9-4411-ab25-9b95b54b0903, expected 6190f5bb-1967-14ec-9fbd-a7d213a45461
+Verification failed!
+</pre></div>
+</div>
+<p>Embed the disk checksum as the label GUID:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gptsum embed image.raw
+</pre></div>
+</div>
+<p>Verification should now succeed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gptsum verify image.raw &amp;&amp; echo "Verification succeeded!"
+Verification succeeded!
+</pre></div>
+</div>
+<p>Indeed, the GUID was changed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gptsum get-guid image.raw
+6190f5bb-1967-14ec-9fbd-a7d213a45461
+</pre></div>
+</div>
+</div>
 <div class="section" id="how-it-works">
 <h2>How It Works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h2>
 <p>Generally, when checksums are used to validate the integrity of a file, this
@@ -316,6 +378,7 @@ for more details.</p>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">gptsum</a><ul>
+<li><a class="reference internal" href="#quickstart">Quickstart</a></li>
 <li><a class="reference internal" href="#how-it-works">How It Works</a></li>
 <li><a class="reference internal" href="#implementation-details">Implementation Details</a></li>
 <li><a class="reference internal" href="#command-line-interface">Command Line Interface</a><ul>

@@ -8,6 +8,73 @@ Note this *only* works for read-only, immutable images!
 .. _GPT: https://en.wikipedia.org/wiki/GUID_Partition_Table
 .. _isomd5sum: https://github.com/rhinstaller/isomd5sum
 
+Quickstart
+**********
+.. When making changes to the quickstart code below,
+   make sure 'tests/test_readme.py' is updated accordingly.
+
+First, create an empty disk image::
+
+    $ truncate -s64M image.raw
+
+Then, create a GPT partition table in it. Note, below we set an explicit
+`label-id`. In general, this should not be done and a random GUID will be
+generated. Simply remove the line.
+
+::
+
+    $ sfdisk image.raw << EOF
+    label: gpt
+    label-id: 132e3631-1ec9-4411-ab25-9b95b54b0903
+    first-lba: 2048
+    EOF
+
+    Checking that no-one is using this disk right now ... OK
+
+    Disk image.raw: 64 MiB, 67108864 bytes, 131072 sectors
+    Units: sectors of 1 * 512 = 512 bytes
+    Sector size (logical/physical): 512 bytes / 512 bytes
+    I/O size (minimum/optimal): 512 bytes / 512 bytes
+
+    >>> Script header accepted.
+    >>> Script header accepted.
+    >>> Script header accepted.
+    >>> Done.
+    Created a new GPT disklabel (GUID: 132E3631-1EC9-4411-AB25-9B95B54B0903).
+
+    New situation:
+    Disklabel type: gpt
+    Disk identifier: 132E3631-1EC9-4411-AB25-9B95B54B0903
+
+    The partition table has been altered.
+    Syncing disks.
+
+We can retrieve the current disk GUID using ``gptsum``::
+
+    $ gptsum get-guid image.raw
+    132e3631-1ec9-4411-ab25-9b95b54b0903
+
+Verification should fail::
+
+    $ gptsum verify image.raw || echo "Verification failed!"
+    Disk GUID doesn't match expected checksum, got 132e3631-1ec9-4411-ab25-9b95b54b0903, expected 6190f5bb-1967-14ec-9fbd-a7d213a45461
+    Verification failed!
+
+Embed the disk checksum as the label GUID::
+
+    $ gptsum embed image.raw
+
+Verification should now succeed::
+
+    $ gptsum verify image.raw && echo "Verification succeeded!"
+    Verification succeeded!
+
+Indeed, the GUID was changed::
+
+    $ gptsum get-guid image.raw
+    6190f5bb-1967-14ec-9fbd-a7d213a45461
+
+
 How It Works
 ************
 Generally, when checksums are used to validate the integrity of a file, this

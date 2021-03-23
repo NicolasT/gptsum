@@ -335,13 +335,11 @@ class GPTImage(ContextManager["GPTImage"]):
         exc_type: Optional[Type[BaseException]],
         exc_value: Optional[BaseException],
         traceback: Optional[TracebackType],
-    ) -> Optional[bool]:
+    ) -> None:
         """Close the disk image when exiting a context."""
         if self._path is not None and self._fd is not None:
             os.close(self._fd)
             self._fd = None
-
-        return None
 
     def _read_gpt_header(self, offset: int) -> GPTHeader:
         if self._fd is None:

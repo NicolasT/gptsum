@@ -43,6 +43,7 @@ def flake8(session: Session) -> None:
         "flake8-isort",
         "flake8-pytest",
         "flake8-pytest-style",
+        "flake8-return",
         "flake8-rst-docstrings",
         "pep8-naming",
     )

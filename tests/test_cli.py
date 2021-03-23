@@ -24,7 +24,7 @@ def test_version(capsys: pytest.CaptureFixture[str]) -> None:
 
 
 @pytest.mark.parametrize(
-    "disk_file, expected_guid",
+    ("disk_file", "expected_guid"),
     [
         (conftest.TESTDATA_DISK, conftest.TESTDATA_DISK_GUID),
         (conftest.TESTDATA_EMBEDDED_DISK, conftest.TESTDATA_EMBEDDED_DISK_GUID),
@@ -43,7 +43,7 @@ def test_get_guid(
 
 
 @pytest.mark.parametrize(
-    "disk_file, expected_guid",
+    ("disk_file", "expected_guid"),
     [
         (conftest.TESTDATA_DISK, conftest.TESTDATA_EMBEDDED_DISK_GUID),
         (conftest.TESTDATA_EMBEDDED_DISK, conftest.TESTDATA_EMBEDDED_DISK_GUID),

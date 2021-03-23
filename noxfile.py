@@ -39,6 +39,7 @@ def flake8(session: Session) -> None:
         "flake8-black",
         "flake8-bugbear",
         "flake8-docstrings",
+        "flake8-pytest-style",
         "flake8-rst-docstrings",
         "pep8-naming",
     )

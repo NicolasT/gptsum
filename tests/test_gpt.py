@@ -100,7 +100,7 @@ TEST_DISK_BACKUP_GPT_HEADER = (
 
 
 @pytest.mark.parametrize(
-    "raw_header, current_lba, backup_lba, entries_starting_lba",
+    ("raw_header", "current_lba", "backup_lba", "entries_starting_lba"),
     [
         (TEST_DISK_GPT_HEADER, 1, TEST_DISK_SIZE // 512 - 1, 2),
         (
@@ -171,7 +171,7 @@ def _replace_header_crc32(raw_header: bytes, header_crc32: int) -> bytes:
 
 
 @pytest.mark.parametrize(
-    "expected_error, raw_header",
+    ("expected_error", "raw_header"),
     [
         (
             gpt.InvalidSignatureError,
@@ -233,7 +233,7 @@ def test_gptheader_pack_override_crc32() -> None:
         gpt.GPTHeader.unpack(packed)
 
 
-@pytest.fixture
+@pytest.fixture()
 def small_file(tmp_path: Path) -> Iterator[Path]:
     """Yield the path of an empty, 1kB temporary file."""
     with tempfile.NamedTemporaryFile(dir=tmp_path) as tmp:
@@ -243,25 +243,23 @@ def small_file(tmp_path: Path) -> Iterator[Path]:
 
 def test_gptimage_constructor(small_file: Path) -> None:
     """Test the :class:`gpt.GPTImage` constructor."""
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Either fd or path must be given"):
         gpt.GPTImage()
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Both fd and path can't be given"):
         gpt.GPTImage(fd=0, path=small_file)
 
 
 def test_gptimage_too_small(small_file: Path) -> None:
     """Test :class:`gpt.GPTImage` with a (too) small file."""
-    with pytest.raises(gpt.InvalidImageError):
-        with open(small_file, "rb") as fd:
+    with open(small_file, "rb") as fd:
+        with pytest.raises(gpt.InvalidImageError):  # noqa: PT012
             with gpt.GPTImage(fd=fd.fileno()):
-                raise AssertionError(
-                    "This code should not be reached"
-                )  # pragma: no cover
+                pytest.fail("This code should not be reached")  # pragma: no cover
 
-    with pytest.raises(gpt.InvalidImageError):
+    with pytest.raises(gpt.InvalidImageError):  # noqa: PT012
         with gpt.GPTImage(path=small_file):
-            raise AssertionError("This code should not be reached")  # pragma: no cover
+            pytest.fail("This code should not be reached")  # pragma: no cover
 
 
 def test_gptimage_validate() -> None:
@@ -295,7 +293,7 @@ def test_gptimage_validate_invalid_image(disk_image: Path) -> None:
     with open(disk_image, "rb+") as fd:
         gpt.pwrite_all(fd.fileno(), new_primary.pack(), gpt.MBR_SIZE)
 
-    with pytest.raises(gpt.InvalidImageError):
+    with pytest.raises(gpt.InvalidImageError):  # noqa: PT012
         with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
             image.validate()
 
@@ -381,7 +379,9 @@ def test_gptimage_write_gpt_headers_incompatible_headers(disk_image: Path) -> No
             primary.entries_crc32,
         )
 
-        with pytest.raises(ValueError):
+        with pytest.raises(
+            ValueError, match="Given headers are not backups of each other"
+        ):
             image.write_gpt_headers(new_primary, backup)
 
 
@@ -391,14 +391,18 @@ def test_gptimage_write_gpt_headers_incorrect_current_lba(disk_image: Path) -> N
         primary = image.read_primary_gpt_header()
         backup = image.read_backup_gpt_header()
 
-        with pytest.raises(ValueError):
+        with pytest.raises(
+            ValueError, match="Primary header has invalid 'current_lba', expected 1"
+        ):
             image.write_gpt_headers(backup, primary)
 
         with open(disk_image, "rb+") as fd:
             size = os.fstat(fd.fileno()).st_size
             fd.truncate(size + gpt.LBA_SIZE)
 
-        with pytest.raises(ValueError):
+        with pytest.raises(
+            ValueError, match=r"Backup header has invalid 'current_lba', expected \d+"
+        ):
             image.write_gpt_headers(primary, backup)
 
 

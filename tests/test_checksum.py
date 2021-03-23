@@ -35,7 +35,8 @@ def test_calculate() -> None:
         assert digest1 == conftest.TESTDATA_EMBEDDED_DISK_GUID.bytes
 
     with gpt.GPTImage(
-            path=conftest.TESTDATA_EMBEDDED_DISK, open_mode=os.O_RDONLY) as image:
+        path=conftest.TESTDATA_EMBEDDED_DISK, open_mode=os.O_RDONLY
+    ) as image:
         assert checksum.calculate(image) == conftest.TESTDATA_EMBEDDED_DISK_GUID.bytes
 
 
@@ -52,13 +53,16 @@ def test_calculate_inplace(disk_image: Path) -> None:
     with open(disk_image, "rb+") as fd:
         gpt.pwrite_all(fd.fileno(), b"\0" * 4, gpt.MBR_SIZE + 8 + 4 + 4)
         gpt.pwrite_all(
-            fd.fileno(), b"\0" * 16, gpt.MBR_SIZE + 8 + 4 + 4 + 4 + 4 + 8 + 8 + 8 + 8)
+            fd.fileno(), b"\0" * 16, gpt.MBR_SIZE + 8 + 4 + 4 + 4 + 4 + 8 + 8 + 8 + 8
+        )
 
         size = os.fstat(fd.fileno()).st_size
         gpt.pwrite_all(fd.fileno(), b"\0" * 4, size - gpt.LBA_SIZE + 8 + 4 + 4)
         gpt.pwrite_all(
-            fd.fileno(), b"\0" * 16,
-            size - gpt.LBA_SIZE + 8 + 4 + 4 + 4 + 4 + 8 + 8 + 8 + 8)
+            fd.fileno(),
+            b"\0" * 16,
+            size - gpt.LBA_SIZE + 8 + 4 + 4 + 4 + 4 + 8 + 8 + 8 + 8,
+        )
 
     with open(disk_image, "rb") as fd:
         new_hash = blake2b(fd)

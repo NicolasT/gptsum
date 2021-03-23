@@ -256,7 +256,8 @@ def test_gptimage_too_small(small_file: Path) -> None:
         with open(small_file, "rb") as fd:
             with gpt.GPTImage(fd=fd.fileno()):
                 raise AssertionError(
-                    "This code should not be reached")  # pragma: no cover
+                    "This code should not be reached"
+                )  # pragma: no cover
 
     with pytest.raises(gpt.InvalidImageError):
         with gpt.GPTImage(path=small_file):

@@ -20,7 +20,8 @@ def hash_file(
     if hasattr(os, "preadv"):
         preadv = cast(
             Callable[[int, List[bytearray], int], int],
-            getattr(os, "preadv"))  # noqa: B009
+            getattr(os, "preadv"),  # noqa: B009
+        )
 
         buff = bytearray(buffsize)
         bufflist = [buff]

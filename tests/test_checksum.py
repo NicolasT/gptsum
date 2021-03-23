@@ -50,18 +50,17 @@ def test_calculate_inplace(disk_image: Path) -> None:
 
     # Overwrite CRCs and GUIDs with zeros, in-place
     with open(disk_image, "rb+") as fd:
-        gpt.pwrite_all(fd.fileno(), b"\0" * 4, gpt.MBR_SIZE + 8 + 4 + 4)
-        gpt.pwrite_all(
-            fd.fileno(), b"\0" * 16, gpt.MBR_SIZE + 8 + 4 + 4 + 4 + 4 + 8 + 8 + 8 + 8
-        )
+        header_crc32_offset = 8 + 4 + 4
+        guid_offset = header_crc32_offset + 4 + 4 + 8 + 8 + 8 + 8
+
+        gpt.pwrite_all(fd.fileno(), b"\0" * 4, gpt.MBR_SIZE + header_crc32_offset)
+        gpt.pwrite_all(fd.fileno(), b"\0" * 16, gpt.MBR_SIZE + guid_offset)
 
         size = os.fstat(fd.fileno()).st_size
-        gpt.pwrite_all(fd.fileno(), b"\0" * 4, size - gpt.LBA_SIZE + 8 + 4 + 4)
         gpt.pwrite_all(
-            fd.fileno(),
-            b"\0" * 16,
-            size - gpt.LBA_SIZE + 8 + 4 + 4 + 4 + 4 + 8 + 8 + 8 + 8,
+            fd.fileno(), b"\0" * 4, size - gpt.LBA_SIZE + header_crc32_offset
         )
+        gpt.pwrite_all(fd.fileno(), b"\0" * 16, size - gpt.LBA_SIZE + guid_offset)
 
     with open(disk_image, "rb") as fd:
         new_hash = blake2b(fd)

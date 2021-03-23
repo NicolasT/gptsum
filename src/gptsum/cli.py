@@ -12,9 +12,9 @@ import gptsum.gpt
 
 def build_parser() -> argparse.ArgumentParser:
     """Build the CLI argument parser."""
-    description = (
-        gptsum.__doc__.strip().splitlines()[0].split(":", 1)[1].strip().capitalize()
-    )
+    docstring_firstline = gptsum.__doc__.strip().splitlines()[0]
+    docstring_suffix = docstring_firstline.split(":", 1)[1]
+    description = docstring_suffix.strip().capitalize()
     parser = argparse.ArgumentParser(description=description)
 
     parser.add_argument("--version", action="version", version=gptsum.__version__)

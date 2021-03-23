@@ -65,7 +65,8 @@ Implementation Details
 It uses the `Blake2b`_ checksum algorithm to construct a 16 byte digest
 of the disk image.
 
-Various subcommands are exposed by the CLI, refer to the documentation for more
-details.
+Various subcommands are exposed by the CLI, refer to the `documentation`_
+for more details.
 
 .. _Blake2b: https://en.wikipedia.org/wiki/BLAKE_(hash_function)#BLAKE2
+.. _documentation: https://nicolast.github.io/gptsum/

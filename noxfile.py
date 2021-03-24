@@ -67,6 +67,7 @@ def mypy(session: Session) -> None:
     session.install(
         "mypy",
         "pytest",
+        "pytest-benchmark",
         "pytest-mock",
     )
     session.run("mypy", *args)
@@ -82,6 +83,7 @@ def tests(session: Session) -> None:
         "coverage[toml]",
         "pygments",
         "pytest",
+        "pytest-benchmark",
         "pytest-mock",
     )
     try:
@@ -116,6 +118,7 @@ def typeguard(session: Session) -> None:
     session.install(
         "pygments",
         "pytest",
+        "pytest-benchmark",
         "pytest-mock",
         "typeguard",
     )

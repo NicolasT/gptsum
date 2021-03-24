@@ -68,5 +68,6 @@ jobs:
           sudo usermod -a -G mock $(whoami)
 
       - name: Initialize mock chroot
+        run: |
           mock -r epel-7-x86_64 --init
           ls dist/

@@ -67,5 +67,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y mock
           sudo usermod -a -G mock $(whoami)
-          sg mock "/usr/bin/mock -r epel-7-x86_64 --init"
-          ls .
+          sg mock -c "/usr/bin/mock -r epel-7-x86_64 --init"
+          mkdir packages
+          sg mock -c "/usr/bin/mock -r epel-7-x86_64 --spec=$(pwd)/gptsum.spec --sources=$(pwd)/gptsum-0.0.6.tar.gz --resultdir=$(pwd)/packages --buildsrpm"
+          sg mock -c "/usr/bin/mock -r epel-7-x86_64 rebuild $(pwd)/packages/gptsum-0.0.6-1.el7.src.rpm --resultdir=$(pwd)/packages"
+          ls packages

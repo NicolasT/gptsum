@@ -65,10 +65,10 @@ jobs:
         run: |
           set -x
           sudo apt-get update
-          sudo apt-get install -y mock
+          sudo apt-get install -y expect mock
           sudo usermod -a -G mock $(whoami)
           sg mock -c "/usr/bin/mock -r epel-7-x86_64 --init"
           mkdir packages
-          sg mock -c "/usr/bin/mock -r epel-7-x86_64 --spec=$(pwd)/gptsum.spec --sources=$(pwd)/gptsum-0.0.6.tar.gz --resultdir=$(pwd)/packages --buildsrpm"
-          sg mock -c "/usr/bin/mock -r epel-7-x86_64 rebuild $(pwd)/packages/gptsum-0.0.6-1.el7.src.rpm --resultdir=$(pwd)/packages"
+          sg mock -c "unbuffer /usr/bin/mock -r epel-7-x86_64 --spec=$(pwd)/gptsum.spec --sources=$(pwd)/gptsum-0.0.6.tar.gz --resultdir=$(pwd)/packages --buildsrpm"
+          sg mock -c "unbuffer /usr/bin/mock -r epel-7-x86_64 rebuild $(pwd)/packages/gptsum-0.0.6-1.el7.src.rpm --resultdir=$(pwd)/packages --no-cleanup-after"
           ls packages

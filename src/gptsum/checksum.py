@@ -17,6 +17,10 @@ def hash_file(
     buffsize = 128 * 1024
     done = 0
 
+    os.posix_fadvise(
+        fd, offset, size, os.POSIX_FADV_SEQUENTIAL | os.POSIX_FADV_WILLNEED
+    )
+
     if hasattr(os, "preadv"):
         preadv = cast(
             Callable[[int, List[bytearray], int], int],

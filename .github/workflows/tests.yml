@@ -140,6 +140,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y mock
           sudo usermod -a -G mock $(whoami)
-          newgrp
+
+      - name: Initialize mock chroot
           mock -r epel-7-x86_64 --init
           ls dist/

@@ -21,8 +21,8 @@ isomd5sum. Note this *only* works for read-only, immutable images!
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-%{pypi_name}}
 
-Requires:       (python3dist(dataclasses) >= 0.6 with python3dist(dataclasses) < 0.9)
-Requires:       (python3dist(importlib-metadata) >= 3.7.3 with python3dist(importlib-metadata) < 4)
+Requires:       python3dist(dataclasses)
+Requires:       python3dist(importlib-metadata)
 Requires:       python3dist(setuptools)
 %description -n python3-%{pypi_name}
  A tool to make disk images using GPT_ partitions self-verifiable, like

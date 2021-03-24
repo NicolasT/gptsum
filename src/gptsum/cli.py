@@ -158,4 +158,8 @@ def main(args: Optional[List[str]] = None) -> None:
     parser = build_parser()
     ns = parser.parse_args(args)
 
-    ns.func(ns)
+    func = getattr(ns, "func", None)
+    if func:
+        func(ns)
+    else:
+        parser.print_usage()

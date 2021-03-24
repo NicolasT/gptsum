@@ -67,6 +67,7 @@ def mypy(session: Session) -> None:
     session.install(
         "mypy",
         "pytest",
+        "pytest-mock",
     )
     session.run("mypy", *args)
     if not session.posargs:
@@ -81,6 +82,7 @@ def tests(session: Session) -> None:
         "coverage[toml]",
         "pygments",
         "pytest",
+        "pytest-mock",
     )
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
@@ -114,6 +116,7 @@ def typeguard(session: Session) -> None:
     session.install(
         "pygments",
         "pytest",
+        "pytest-mock",
         "typeguard",
     )
     session.run("pytest", f"--typeguard-packages={PACKAGE}", *session.posargs)

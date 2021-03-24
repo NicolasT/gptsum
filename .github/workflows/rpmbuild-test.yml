@@ -1,0 +1,17 @@
+---
+name: rpmbuild test
+
+on:
+  push:
+    branches:
+      - rpmbuild-test
+
+jobs:
+  rpmbuild:
+    name: rpmbuild
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install mock
+        run: |
+          apt install -y mock
+          mock --help

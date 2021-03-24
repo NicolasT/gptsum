@@ -63,8 +63,9 @@ jobs:
 
       - name: Setup mock
         run: |
+          set -x
           sudo apt-get update
           sudo apt-get install -y mock
           sudo usermod -a -G mock $(whoami)
-          sg mock "mock -r epel-7-x86_64 --init"
-          ls dist/
+          sg mock "/usr/bin/mock -r epel-7-x86_64 --init"
+          ls .

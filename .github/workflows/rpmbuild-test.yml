@@ -13,5 +13,5 @@ jobs:
     steps:
       - name: Install mock
         run: |
-          apt install -y mock
+          sudo apt-get install -y mock
           mock --help

@@ -12,6 +12,14 @@ from gptsum import checksum, cli
 from tests import conftest
 
 
+def test_no_arguments(capsys: pytest.CaptureFixture[str]) -> None:
+    """Test the CLI without any options."""
+    cli.main([])
+
+    captured = capsys.readouterr()
+    assert captured.out.startswith("usage: ")
+
+
 def test_version(capsys: pytest.CaptureFixture[str]) -> None:
     """Test the CLI :option:`--verbose` option."""
     with pytest.raises(SystemExit):

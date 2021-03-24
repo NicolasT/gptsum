@@ -72,16 +72,17 @@ jobs:
           name: docs
           path: "docs/_build"
 
-      - name: Build package
+      - name: Build packages
+        if: matrix.session == 'tests'
         run: |
           poetry build --ansi
 
-      - name: Build RPMs
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y mock
-          sudo usermod -a -G mock $(whoami)
-          mock -r epel-7-x86_64 --init
+      - name: Upload packages
+        if: matrix.session == 'tests' && matrix.python-version == "3.9"
+        uses: "actions/upload-artifact@v2.2.2"
+        with:
+          name: packages
+          path: "dist/"
 
   coverage:
     runs-on: ubuntu-latest
@@ -121,3 +122,23 @@ jobs:
           nox --force-color --session=coverage -- xml
       - name: Upload coverage report
         uses: codecov/codecov-action@v1.3.1
+
+  rpmbuild:
+    runs-on: ubuntu-18.04
+    needs: tests
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2.3.4
+
+      - name: Download packages
+        uses: actions/download-artifact@v2.0.8
+        with:
+          name: packages
+
+      - name: Setup mock
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mock
+          sudo usermod -a -G mock $(whoami)
+          mock -r epel-7-x86_64 --init
+          ls dist/

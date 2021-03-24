@@ -5,6 +5,8 @@ import os
 from pathlib import Path
 from typing import BinaryIO
 
+import pytest_benchmark.fixture  # type: ignore[import]
+
 from gptsum import checksum, gpt
 from tests import conftest
 
@@ -66,6 +68,14 @@ def test_calculate_inplace(disk_image: Path) -> None:
         new_hash = blake2b(fd)
 
         assert new_hash == digest
+
+
+def test_calculate_benchmark(
+    benchmark: pytest_benchmark.fixture.BenchmarkFixture,
+) -> None:
+    """Benchmark :func:`checksum.calculate`."""
+    with gpt.GPTImage(path=conftest.TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
+        benchmark(checksum.calculate, image)
 
 
 def test_digest_to_guid() -> None:

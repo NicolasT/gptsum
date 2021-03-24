@@ -33,6 +33,12 @@ classifiers = [
     "Typing :: Typed",
 ]
 
+include = [
+    { path = "tests/", format = "sdist" },
+    { path = "docs/", format = "sdist" },
+    { path = "poetry.lock", format = "sdist" },
+]
+
 [tool.poetry.urls]
 Homepage = "https://github.com/NicolasT/gptsum"
 Documentation = "https://nicolast.github.io/gptsum/"

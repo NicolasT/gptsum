@@ -78,7 +78,7 @@ jobs:
           poetry build --ansi
 
       - name: Upload packages
-        if: matrix.session == 'tests' && matrix.python-version == "3.9"
+        if: matrix.session == 'tests' && matrix.python-version == '3.9'
         uses: "actions/upload-artifact@v2.2.2"
         with:
           name: packages

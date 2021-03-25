@@ -13,5 +13,6 @@ release = version
 html_theme = "furo"
 
 extensions = [
+    "sphinx.ext.autodoc",
     "sphinxarg.ext",
 ]

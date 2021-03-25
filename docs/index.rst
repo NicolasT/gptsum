@@ -11,4 +11,5 @@ Command Line Interface
    :hidden:
    :maxdepth: 1
 
+   api
    contributing

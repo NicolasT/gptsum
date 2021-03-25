@@ -91,7 +91,7 @@ def build_parser() -> argparse.ArgumentParser:
             "without writing it to the file."
         ),
     )
-    calculate_guid_parser.set_defaults(func=calculate_guid)
+    calculate_guid_parser.set_defaults(func=calculate_expected_guid)
     calculate_guid_parser.add_argument(
         "image",
         type=argparse.FileType("rb"),
@@ -104,53 +104,37 @@ def build_parser() -> argparse.ArgumentParser:
 
 def get_guid(ns: argparse.Namespace) -> None:
     """Execute the 'get-guid' subcommand."""
-    with gptsum.gpt.GPTImage(fd=ns.image.fileno()) as image:
-        image.validate()
-        primary = image.read_primary_gpt_header()
-        print("{}".format(primary.disk_guid))
+    guid = gptsum.get_guid(fd=ns.image.fileno())
+    print("{}".format(guid))
 
 
 def set_guid(ns: argparse.Namespace) -> None:
     """Execute the 'set-guid' subcommand."""
-    with gptsum.gpt.GPTImage(fd=ns.image.fileno()) as image:
-        image.validate()
-        image.update_guid(ns.guid)
+    gptsum.set_guid(ns.guid, fd=ns.image.fileno())
 
 
-def calculate_guid(ns: argparse.Namespace) -> None:
+def calculate_expected_guid(ns: argparse.Namespace) -> None:
     """Execute the 'calculate-expected-guid' subcommand."""
-    with gptsum.gpt.GPTImage(fd=ns.image.fileno()) as image:
-        image.validate()
-        digest = gptsum.checksum.calculate(image)
-        checksum_guid = gptsum.checksum.digest_to_guid(digest)
-        print("{}".format(checksum_guid))
+    guid = gptsum.calculate_expected_guid(fd=ns.image.fileno())
+    print("{}".format(guid))
 
 
 def embed(ns: argparse.Namespace) -> None:
     """Execute the 'embed' subcommand."""
-    with gptsum.gpt.GPTImage(fd=ns.image.fileno()) as image:
-        image.validate()
-        digest = gptsum.checksum.calculate(image)
-        checksum_guid = gptsum.checksum.digest_to_guid(digest)
-        if checksum_guid != image.read_primary_gpt_header().disk_guid:
-            image.update_guid(checksum_guid)
+    gptsum.embed(fd=ns.image.fileno())
 
 
 def verify(ns: argparse.Namespace) -> None:
     """Execute the 'verify' subcommand."""
-    with gptsum.gpt.GPTImage(fd=ns.image.fileno()) as image:
-        image.validate()
-        primary = image.read_primary_gpt_header()
-        digest = gptsum.checksum.calculate(image)
-        checksum_guid = gptsum.checksum.digest_to_guid(digest)
-
-        if primary.disk_guid != checksum_guid:
-            sys.stderr.write(
-                "Disk GUID doesn't match expected checksum, "
-                "got {}, expected {}\n".format(primary.disk_guid, checksum_guid)
-            )
-            sys.stderr.flush()
-            sys.exit(1)
+    try:
+        gptsum.verify(fd=ns.image.fileno())
+    except gptsum.VerificationFailure as exn:
+        sys.stderr.write(
+            "Disk GUID doesn't match expected checksum, "
+            "got {}, expected {}\n".format(exn.actual, exn.expected)
+        )
+        sys.stderr.flush()
+        sys.exit(1)
 
 
 def main(args: Optional[List[str]] = None) -> None:

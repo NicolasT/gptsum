@@ -82,6 +82,8 @@ flake8-return = "^1.1.2"
 flake8-expression-complexity = "^0.0.9"
 pytest-mock = "^3.5.1"
 pytest-benchmark = "^3.2.3"
+packaging = "^20.9"
+py = "^1.10.0"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]

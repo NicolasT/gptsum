@@ -23,6 +23,7 @@ jobs:
           - { python-version: 3.8, session: "tests" }
           - { python-version: 3.7, session: "tests" }
           - { python-version: 3.6, session: "tests" }
+          - { python-version: 3.6, session: "tests_centos8" }
           - { python-version: 3.9, session: "typeguard" }
           - { python-version: 3.9, session: "xdoctest" }
           - { python-version: 3.9, session: "docs" }

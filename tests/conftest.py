@@ -6,7 +6,9 @@ import uuid
 from pathlib import Path
 from typing import Iterator
 
+import py.path
 import pytest
+from packaging.version import Version
 
 TESTDATA_DISK = Path(__file__).parent / "testdata" / "disk"
 TESTDATA_DISK_GUID = uuid.UUID("66E0318D-A103-9549-8583-80E8ABCD4CD8")
@@ -23,3 +25,11 @@ def disk_image(tmp_path: Path) -> Iterator[Path]:
             shutil.copyfileobj(disk, tmp)
 
         yield Path(tmp.name)
+
+
+if Version(pytest.__version__) < Version("3.9.0"):
+
+    @pytest.fixture()
+    def tmp_path(tmpdir: py.path.local) -> Path:
+        """Return a temporary directory path object."""
+        return Path(tmpdir)

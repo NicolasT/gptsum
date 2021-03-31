@@ -3,7 +3,10 @@
 import runpy
 import sys
 
-from pytest_mock import MockerFixture
+try:
+    from pytest_mock import MockerFixture
+except ImportError:  # https://github.com/pytest-dev/pytest-mock/issues/204
+    from pytest_mock import MockFixture as MockerFixture
 
 
 def test_main(mocker: MockerFixture) -> None:

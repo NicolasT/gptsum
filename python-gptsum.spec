@@ -61,4 +61,3 @@ BuildRequires:  %{py3_dist pytest-mock}
 %changelog
 * Wed Mar 31 2021 Nicolas Trangez <ikke@nicolast.be> 0.0.9
 - New package.
-

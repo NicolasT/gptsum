@@ -73,11 +73,6 @@ jobs:
           name: docs
           path: "docs/_build"
 
-      - name: rpmbuild
-        uses: ./.github/actions/rpmbuild/
-        with:
-          version: "0.0.0"
-
   coverage:
     runs-on: ubuntu-latest
     needs: tests
@@ -116,3 +111,15 @@ jobs:
           nox --force-color --session=coverage -- xml
       - name: Upload coverage report
         uses: codecov/codecov-action@v1.3.1
+
+  rpmbuild:
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2.3.4
+
+      - name: rpmbuild
+        uses: ./.github/actions/rpmbuild/
+        with:
+          version: "0.0.0"

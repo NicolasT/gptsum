@@ -1,0 +1,12 @@
+---
+name: "rpmbuild"
+description: "Build (S)RPM packages"
+inputs:
+  version:
+    description: "Version of the package"
+    required: true
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - "${{ inputs.version }}"

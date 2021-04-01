@@ -16,16 +16,16 @@ A tool to make disk images using GPT partitions self-verifiable, like isomd5sum.
 
 %description %_description
 
-%package -n python3-%{srcname}
+%package -n python%{python3_pkgversion}-%{srcname}
 Summary:        %{summary}
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
 
 # Dependencies
-%if 0%{python3_version_nodots} < 38
+%if 0%{python3_version_nodots} < 37
 BuildRequires:  %{py3_dist dataclasses}
 %endif
-%if 0%{python3_version_nodots} < 39
+%if 0%{python3_version_nodots} < 38
 BuildRequires:  %{py3_dist importlib-metadata}
 %endif
 
@@ -37,7 +37,7 @@ BuildRequires:  %{py3_dist pytest}
 BuildRequires:  %{py3_dist pytest-benchmark}
 BuildRequires:  %{py3_dist pytest-mock}
 
-%description -n python3-%{srcname} %_description
+%description -n python%{python3_pkgversion}-%{srcname} %_description
 
 %prep
 %autosetup -n %{srcname}-%{version}
@@ -51,7 +51,7 @@ BuildRequires:  %{py3_dist pytest-mock}
 %check
 %pytest
 
-%files -n python3-%{srcname}
+%files -n python%{python3_pkgversion}-%{srcname}
 %license LICENSE
 %doc README.rst
 %{_bindir}/gptsum

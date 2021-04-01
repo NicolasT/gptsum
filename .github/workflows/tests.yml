@@ -73,6 +73,11 @@ jobs:
           name: docs
           path: "docs/_build"
 
+      - name: rpmbuild
+        uses: ./.github/actions/rpmbuild/
+        with:
+          version: "0.0.0"
+
   coverage:
     runs-on: ubuntu-latest
     needs: tests

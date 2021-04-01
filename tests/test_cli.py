@@ -4,6 +4,7 @@ import hashlib
 import os
 import uuid
 from pathlib import Path
+from typing import AnyStr, Generic
 
 import pytest
 
@@ -11,8 +12,18 @@ import gptsum
 from gptsum import checksum, cli
 from tests import conftest
 
+if hasattr(pytest, "CaptureFixture"):
+    CaptureFixture = pytest.CaptureFixture
+else:
 
-def test_no_arguments(capsys: pytest.CaptureFixture[str]) -> None:
+    class CaptureFixture(Generic[AnyStr]):  # type: ignore[no-redef]
+        """Properly typed stub for `pytest.CaptureFixture`.
+
+        See https://github.com/pytest-dev/pytest/commit/acc9310c17eac6764beb36e9970ca84883369a2f
+        """  # noqa: E501
+
+
+def test_no_arguments(capsys: CaptureFixture[str]) -> None:
     """Test the CLI without any options."""
     cli.main([])
 
@@ -20,7 +31,7 @@ def test_no_arguments(capsys: pytest.CaptureFixture[str]) -> None:
     assert captured.out.startswith("usage: ")
 
 
-def test_version(capsys: pytest.CaptureFixture[str]) -> None:
+def test_version(capsys: CaptureFixture[str]) -> None:
     """Test the CLI :option:`--verbose` option."""
     with pytest.raises(SystemExit):
         cli.main(["--version"])
@@ -37,7 +48,7 @@ def test_version(capsys: pytest.CaptureFixture[str]) -> None:
     ],
 )
 def test_get_guid(
-    capsys: pytest.CaptureFixture[str],
+    capsys: CaptureFixture[str],
     disk_file: Path,
     expected_guid: uuid.UUID,
 ) -> None:
@@ -56,7 +67,7 @@ def test_get_guid(
     ],
 )
 def test_calculate_expected_guid(
-    capsys: pytest.CaptureFixture[str], disk_file: Path, expected_guid: uuid.UUID
+    capsys: CaptureFixture[str], disk_file: Path, expected_guid: uuid.UUID
 ) -> None:
     """Test the CLI :option:`calculate-expected-guid` subcommand."""
     cli.main(["calculate-expected-guid", str(disk_file)])
@@ -65,7 +76,7 @@ def test_calculate_expected_guid(
     assert captured.out == "{}\n".format(expected_guid)
 
 
-def test_set_guid(capsys: pytest.CaptureFixture[str], disk_image: Path) -> None:
+def test_set_guid(capsys: CaptureFixture[str], disk_image: Path) -> None:
     """Test the CLI :option:`set-guid` subcommand."""
     new_guid = uuid.UUID("bf85e1a8-748e-46f8-909f-4a70067efbe2")
 
@@ -77,7 +88,7 @@ def test_set_guid(capsys: pytest.CaptureFixture[str], disk_image: Path) -> None:
     assert captured.out == "{}\n".format(new_guid)
 
 
-def test_embed(capsys: pytest.CaptureFixture[str], disk_image: Path) -> None:
+def test_embed(capsys: CaptureFixture[str], disk_image: Path) -> None:
     """Test the CLI :option:`embed` subcommand."""
     cli.main(["embed", str(disk_image)])
 

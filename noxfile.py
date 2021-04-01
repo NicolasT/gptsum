@@ -6,9 +6,11 @@ Nox sessions for the `gptsum`_ project.
 
 import shutil
 import sys
+import tempfile
 from pathlib import Path
 
-from nox_poetry import Session, session
+import nox
+from nox_poetry import SDIST, Session, session
 
 PACKAGE = "gptsum"
 
@@ -26,6 +28,28 @@ SOURCES = [
     "noxfile.py",
     "docs/conf.py",
 ]
+
+# Versions of various packages as found in CentOS 8 + EPEL
+# Retrieved by running the Nox session, running `pip freeze` in its virtualenv,
+# then looking up package versions using `dnf info ...`.
+CENTOS8_CONSTRAINTS = b"""
+attrs==17.4.0
+coverage==4.5.1
+dataclasses==0.8
+importlib-metadata==0.23
+packaging==16.8
+pip==9.0.3
+pluggy==0.6.0
+py==1.5.3
+py-cpuinfo==5.0.0
+pytest==3.4.2
+pytest-benchmark==3.1.1
+pytest-mock==1.10.4
+setuptools==39.2.0
+six==1.11.0
+typing-extensions==3.7.4.2
+zipp==0.5.1
+"""
 
 
 @session(python=PYTHON_VERSIONS[-1])
@@ -66,6 +90,8 @@ def mypy(session: Session) -> None:
     session.install(".")
     session.install(
         "mypy",
+        "packaging",
+        "py",
         "pytest",
         "pytest-benchmark",
         "pytest-mock",
@@ -81,11 +107,43 @@ def tests(session: Session) -> None:
     session.install(".")
     session.install(
         "coverage[toml]",
+        "packaging",
+        "py",
         "pygments",
         "pytest",
         "pytest-benchmark",
         "pytest-mock",
     )
+    try:
+        session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
+    finally:
+        if session.interactive:
+            session.notify("coverage")
+
+
+@nox.session(python=["3.6"])
+def tests_centos8(session: nox.Session) -> None:
+    """Run the tests using (pinned) dependency versions as shipped with CentOS 8."""
+    with tempfile.NamedTemporaryFile() as fd:
+        fd.write(CENTOS8_CONSTRAINTS)
+        fd.flush()
+
+        poetry_session = Session(session)
+        package = poetry_session.poetry.build_package(distribution_format=SDIST)
+        # Version of 'coverage' must be consistent with other sessions
+        poetry_session.install(
+            "coverage[toml]",
+        )
+        session.install(f"--constraint={fd.name}", package)
+        session.install(
+            f"--constraint={fd.name}",
+            "packaging",
+            "py",
+            "pytest",
+            "pytest-benchmark",
+            "pytest-mock",
+        )
+
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
@@ -116,6 +174,8 @@ def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".")
     session.install(
+        "packaging",
+        "py",
         "pygments",
         "pytest",
         "pytest-benchmark",

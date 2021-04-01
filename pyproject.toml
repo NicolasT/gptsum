@@ -51,7 +51,7 @@ gptsum = "gptsum.cli:main"
 
 [tool.poetry.dependencies]
 python = "^3.6.1"
-importlib-metadata = {version = "^3.7.3", python = "< 3.8"}
+importlib-metadata = {version = ">=0.23", python = "< 3.8"}
 dataclasses = {version = ">=0.6,<0.9", python = "< 3.7"}
 
 [tool.poetry.dev-dependencies]
@@ -82,6 +82,8 @@ flake8-return = "^1.1.2"
 flake8-expression-complexity = "^0.0.9"
 pytest-mock = "^3.5.1"
 pytest-benchmark = "^3.2.3"
+packaging = "^20.9"
+py = "^1.10.0"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]

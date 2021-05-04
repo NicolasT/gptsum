@@ -70,7 +70,7 @@ Sphinx = "^3.5.4"
 furo = "^2021.4.11b34"
 sphinx-argparse = "^0.2.5"
 coverage = {version = "^5.5", extras = ["toml"]}
-pygments = "^2.8.1"
+pygments = "^2.9.0"
 pytest = "^6.2.3"
 typeguard = "^2.12.0"
 xdoctest = {version = "^0.15.4", extras = ["colors"]}

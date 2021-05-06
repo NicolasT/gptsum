@@ -349,7 +349,7 @@ flake8-plugin-utils = ">=1.3.1,<2.0.0"
 
 [[package]]
 name = "flake8-return"
-version = "1.1.2"
+version = "1.1.3"
 description = "Flake8 plugin that checks return values"
 category = "dev"
 optional = false
@@ -1005,7 +1005,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "19f9820ed234b63093395c8ddf54e7dcae07163b80ecfa6575ae642719862aab"
+content-hash = "3b15a7640bccaa7feb960806a32b597d73cd305157192cab444e04c130419bf9"
 
 [metadata.files]
 alabaster = [
@@ -1177,8 +1177,8 @@ flake8-pytest-style = [
     {file = "flake8_pytest_style-1.4.1-py3-none-any.whl", hash = "sha256:bc4c10e5fcc2a20937bb6ce523579e9f91adfcb5403dce3adda5ac7c9bce364f"},
 ]
 flake8-return = [
-    {file = "flake8-return-1.1.2.tar.gz", hash = "sha256:d646d3b010a9736ddc23c24f98ad3282999f575da45d6eb9cefe4adddb44062d"},
-    {file = "flake8_return-1.1.2-py3-none-any.whl", hash = "sha256:183d0ad2f8553cb2c63c0cf288eb799d967577a74639599525adcd3860f6bb12"},
+    {file = "flake8-return-1.1.3.tar.gz", hash = "sha256:13a31edeb0c6157dd4f77166cdaa6141703d2b8b24def5558ae659852a003cb4"},
+    {file = "flake8_return-1.1.3-py3-none-any.whl", hash = "sha256:4a266191f7ed69aa26b835ec90c5a5522fa8f79f5cf6363a877ac499f8eb418b"},
 ]
 flake8-rst-docstrings = [
     {file = "flake8-rst-docstrings-0.2.3.tar.gz", hash = "sha256:3045794e1c8467fba33aaea5c246b8369efc9c44ef8b0b20199bb6df7a4bd47b"},

@@ -64,12 +64,22 @@ def mypy(session: Session) -> None:
     """Type-check using mypy."""
     args = session.posargs or [src for src in SOURCES if src != "noxfile.py"]
     session.install(".")
-    session.install(
+
+    deps = [
         "mypy",
         "pytest",
         "pytest-benchmark",
         "pytest-mock",
-    )
+    ]
+    if session.python == "3.6":
+        deps.extend(
+            [
+                "types-dataclasses",
+            ]
+        )
+
+    session.install(*deps)
+
     session.run("mypy", *args)
     if not session.posargs:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")

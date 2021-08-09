@@ -956,7 +956,7 @@ test = ["pytest", "typing-extensions", "mypy"]
 
 [[package]]
 name = "types-dataclasses"
-version = "0.1.5"
+version = "0.1.7"
 description = "Typing stubs for dataclasses"
 category = "dev"
 optional = false
@@ -1018,7 +1018,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "261a0f9ae23d8eec98ea5287e6ca412e3ecd051c4e5ff2c0a56f8b028afd543e"
+content-hash = "7ed7183bf7ab420a92ad0d32177b28d3d153a6923a4aa86cd3a4f6261967ea16"
 
 [metadata.files]
 alabaster = [
@@ -1564,8 +1564,8 @@ typeguard = [
     {file = "typeguard-2.12.1.tar.gz", hash = "sha256:c2af8b9bdd7657f4bd27b45336e7930171aead796711bc4cfc99b4731bb9d051"},
 ]
 types-dataclasses = [
-    {file = "types-dataclasses-0.1.5.tar.gz", hash = "sha256:7b5f4099fb21c209f2df3a83c2b64308c29955769d610a457244dc0eebe1cafc"},
-    {file = "types_dataclasses-0.1.5-py2.py3-none-any.whl", hash = "sha256:c19491cfb981bff9cafd9c113c291a7a54adccc6298ded8ca3de0d7abe211984"},
+    {file = "types-dataclasses-0.1.7.tar.gz", hash = "sha256:248075d093d8f7c1541ce515594df7ae40233d1340afde11ce7125368c5209b8"},
+    {file = "types_dataclasses-0.1.7-py3-none-any.whl", hash = "sha256:fc372bb68b878ac7a68fd04230d923d4a6303a137ecb0b9700b90630bdfcbfc9"},
 ]
 typing-extensions = [
     {file = "typing_extensions-3.7.4.3-py2-none-any.whl", hash = "sha256:dafc7639cde7f1b6e1acc0f457842a83e722ccca8eef5270af2d74792619a89f"},

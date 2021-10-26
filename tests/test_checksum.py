@@ -1,11 +1,14 @@
 """Tests for the :mod:`gptsum.checksum` module."""
 
 import hashlib
+import math
 import os
 from pathlib import Path
 from typing import BinaryIO
 
+import pytest
 import pytest_benchmark.fixture  # type: ignore[import]
+from pytest_mock import MockerFixture
 
 from gptsum import checksum, gpt
 from tests import conftest
@@ -24,6 +27,73 @@ def blake2b(fd: BinaryIO) -> bytes:
     checksum.hash_file(hasher.update, fd.fileno(), size, 0)
 
     return hasher.digest()
+
+
+@pytest.mark.parametrize(
+    ("use_preadv"),
+    [
+        (False),
+        pytest.param(
+            True,
+            marks=pytest.mark.skipif(
+                not hasattr(os, "preadv"), reason="os.preadv not supported"
+            ),
+        ),
+    ],
+)
+def test_hash_file(
+    use_preadv: bool, monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture
+) -> None:
+    """Test `checksum.hash_file`, optionally with `os.preadv` support disabled."""
+    if not use_preadv and hasattr(os, "preadv"):
+        monkeypatch.delattr(os, "preadv")
+
+    if use_preadv:
+        assert hasattr(os, "preadv")
+        mocked = mocker.patch(
+            "os.preadv", side_effect=getattr(os, "preadv")  # noqa: B009
+        )
+    else:
+        assert not hasattr(os, "preadv")
+        mocked = mocker.patch("os.pread", side_effect=os.pread)
+
+    expected_reads = 0
+
+    with open(conftest.TESTDATA_DISK, "rb") as fd:
+        # Full read
+        hasher = hashlib.sha1()  # noqa: S303
+        size = os.fstat(fd.fileno()).st_size
+        result = checksum.hash_file(hasher.update, fd.fileno(), size, offset=0)
+
+        assert result == size
+        # sha1sum tests/testdata/disk
+        assert hasher.hexdigest() == "fdb8443238315360e1c15940e07d5249127fb909"
+
+        expected_reads += math.floor(
+            (result + checksum._BUFFSIZE - 1) / checksum._BUFFSIZE
+        )
+
+        # Test 'partial' read: we can read `buffsize` from the file, but are
+        # only processing part of said data.
+        hasher = hashlib.sha1()  # noqa: S303
+        size = 2 * checksum._BUFFSIZE + int(checksum._BUFFSIZE / 2 - 1)
+
+        assert size % checksum._BUFFSIZE != 0
+        assert os.fstat(fd.fileno()).st_size > size
+
+        result = checksum.hash_file(hasher.update, fd.fileno(), size, offset=0)
+
+        assert result == size
+        # $ dd if=tests/testdata/disk bs=1 \
+        #     count=$(( 2 * 128 * 1024 + 64 * 1024 - 1 )) | sha1sum
+        assert hasher.hexdigest() == "a40ca827c1023a67b5d430b61abd37d05cb681a2"
+
+        expected_reads += math.floor(
+            (result + checksum._BUFFSIZE - 1) / checksum._BUFFSIZE
+        )
+
+    mocked.assert_called()
+    assert mocked.call_count == expected_reads
 
 
 def test_calculate() -> None:
@@ -70,10 +140,27 @@ def test_calculate_inplace(disk_image: Path) -> None:
         assert new_hash == digest
 
 
+@pytest.mark.parametrize(
+    ("use_preadv"),
+    [
+        (False),
+        pytest.param(
+            True,
+            marks=pytest.mark.skipif(
+                not hasattr(os, "preadv"), reason="os.preadv not supported"
+            ),
+        ),
+    ],
+)
 def test_calculate_benchmark(
+    use_preadv: bool,
+    monkeypatch: pytest.MonkeyPatch,
     benchmark: pytest_benchmark.fixture.BenchmarkFixture,
 ) -> None:
     """Benchmark :func:`checksum.calculate`."""
+    if not use_preadv and hasattr(os, "preadv"):
+        monkeypatch.delattr(os, "preadv")
+
     with gpt.GPTImage(path=conftest.TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
         benchmark(checksum.calculate, image)
 

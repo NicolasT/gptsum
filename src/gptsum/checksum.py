@@ -8,13 +8,14 @@ from typing import Callable, List, Union, cast
 from gptsum import gpt
 
 ZERO_GUID = uuid.UUID(bytes=b"\0" * 16)
+_BUFFSIZE = 128 * 1024
 
 
 def hash_file(
     fn: Callable[[Union[bytes, memoryview]], None], fd: int, size: int, offset: int
 ) -> int:
     """Repeatedly call a function on a slice of a file."""
-    buffsize = 128 * 1024
+    buffsize = _BUFFSIZE
     done = 0
 
     os.posix_fadvise(

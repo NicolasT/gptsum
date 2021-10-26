@@ -4,6 +4,7 @@ Nox sessions for the `gptsum`_ project.
 .. _gptsum: https://github.com/NicolasT/gptsum
 """
 
+import os
 import shutil
 import sys
 from pathlib import Path
@@ -98,8 +99,16 @@ def tests(session: Session) -> None:
         "pytest-benchmark",
         "pytest-mock",
     )
+
+    env = {
+        "COVERAGE_FILE": os.environ.get(
+            "COVERAGE_FILE", ".coverage.{}.py{}".format(session.name, session.python)
+        ),
+    }
+
     try:
-        session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
+        session.run("coverage", "run", "-m", "pytest", *session.posargs, env=env)
+        session.run("coverage", "report", env=env)
     finally:
         if session.interactive:
             session.notify("coverage")

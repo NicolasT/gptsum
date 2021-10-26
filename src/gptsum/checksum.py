@@ -22,7 +22,7 @@ def hash_file(
         fd, offset, size, os.POSIX_FADV_SEQUENTIAL | os.POSIX_FADV_WILLNEED
     )
 
-    if hasattr(os, "preadv"):
+    if hasattr(os, "preadv"):  # pragma: py-lt-37
         preadv = cast(
             Callable[[int, List[bytearray], int], int],
             getattr(os, "preadv"),  # noqa: B009

@@ -13,9 +13,9 @@ import uuid
 from pathlib import Path
 from typing import Callable, Optional, cast
 
-if sys.version_info >= (3, 8):
+if sys.version_info >= (3, 8):  # pragma: py-lt-38
     from importlib.metadata import Distribution, distribution
-else:
+else:  # pragma: py-gte-38
     from importlib_metadata import Distribution, distribution
 
 import gptsum

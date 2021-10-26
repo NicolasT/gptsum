@@ -45,10 +45,10 @@ def test_hash_file(
     use_preadv: bool, monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture
 ) -> None:
     """Test `checksum.hash_file`, optionally with `os.preadv` support disabled."""
-    if not use_preadv and hasattr(os, "preadv"):
+    if not use_preadv and hasattr(os, "preadv"):  # pragma: py-lt-37
         monkeypatch.delattr(os, "preadv")
 
-    if use_preadv:
+    if use_preadv:  # pragma: py-lt-37
         assert hasattr(os, "preadv")
         mocked = mocker.patch(
             "os.preadv", side_effect=getattr(os, "preadv")  # noqa: B009
@@ -158,7 +158,7 @@ def test_calculate_benchmark(
     benchmark: pytest_benchmark.fixture.BenchmarkFixture,
 ) -> None:
     """Benchmark :func:`checksum.calculate`."""
-    if not use_preadv and hasattr(os, "preadv"):
+    if not use_preadv and hasattr(os, "preadv"):  # pragma: py-lt-37
         monkeypatch.delattr(os, "preadv")
 
     with gpt.GPTImage(path=conftest.TESTDATA_DISK, open_mode=os.O_RDONLY) as image:

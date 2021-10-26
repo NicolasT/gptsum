@@ -70,7 +70,7 @@ safety = "^1.10.3"
 Sphinx = "^4.2.0"
 furo = "^2021.10.9"
 sphinx-argparse = "^0.3.1"
-coverage = {version = "^6.0", extras = ["toml"]}
+coverage = {version = "^5.5", extras = ["toml"]}
 pygments = "^2.10.0"
 pytest = "^6.2.5"
 typeguard = "^2.13.0"
@@ -84,6 +84,7 @@ flake8-expression-complexity = "^0.0.9"
 pytest-mock = "^3.6.1"
 pytest-benchmark = "^3.4.1"
 types-dataclasses = {version = "^0.6.0", python = "< 3.7"}
+coverage-conditional-plugin = "^0.4.0"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
@@ -91,10 +92,16 @@ source = ["src", "*/site-packages"]
 [tool.coverage.run]
 branch = true
 source = ["gptsum", "tests"]
+plugins = ["coverage_conditional_plugin"]
 
 [tool.coverage.report]
 show_missing = true
 fail_under = 100
+
+[tool.coverage.coverage_conditional_plugin.rules]
+py-lt-37 = "sys_version_info < (3, 7)"
+py-gte-38 = "sys_version_info >= (3, 8)"
+py-lt-38 = "sys_version_info < (3, 8)"
 
 [tool.mypy]
 strict = true

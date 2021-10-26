@@ -92,6 +92,7 @@ def tests(session: Session) -> None:
     session.install(".")
     session.install(
         "coverage[toml]",
+        "coverage-conditional-plugin",
         "pygments",
         "pytest",
         "pytest-benchmark",
@@ -114,6 +115,7 @@ def coverage(session: Session) -> None:
 
     session.install(
         "coverage[toml]",
+        "coverage-conditional-plugin",
     )
 
     if not has_args and any(Path().glob(".coverage.*")):

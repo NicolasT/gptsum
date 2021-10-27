@@ -18,9 +18,7 @@ def hash_file(
     buffsize = _BUFFSIZE
     done = 0
 
-    os.posix_fadvise(
-        fd, offset, size, os.POSIX_FADV_SEQUENTIAL | os.POSIX_FADV_WILLNEED
-    )
+    os.posix_fadvise(fd, offset, size, os.POSIX_FADV_SEQUENTIAL)
 
     if hasattr(os, "preadv"):  # pragma: py-lt-37
         preadv = cast(

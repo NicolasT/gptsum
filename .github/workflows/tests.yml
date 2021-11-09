@@ -118,6 +118,7 @@ jobs:
 
   tests-success:
     runs-on: ubuntu-latest
+    if: ${{ always() }}
     needs:
       - tests
       - coverage

@@ -970,7 +970,7 @@ python-versions = "*"
 
 [[package]]
 name = "typeguard"
-version = "2.13.0"
+version = "2.13.2"
 description = "Run-time type checker for Python"
 category = "dev"
 optional = false
@@ -1044,7 +1044,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "ec4981b468e7c37f51a1827dbecdd3286df94143939956cf2327734fd7f4a7dd"
+content-hash = "9531d7ca81e3474830b0059d59f4884ac6e6d1ea97bf6d493c35bcead23f19a6"
 
 [metadata.files]
 alabaster = [
@@ -1619,8 +1619,8 @@ typed-ast = [
     {file = "typed_ast-1.4.3.tar.gz", hash = "sha256:fb1bbeac803adea29cedd70781399c99138358c26d05fcbd23c13016b7f5ec65"},
 ]
 typeguard = [
-    {file = "typeguard-2.13.0-py3-none-any.whl", hash = "sha256:0bc44d1ff865b522eda969627868b0e001c8329296ce50aededbea03febc79ee"},
-    {file = "typeguard-2.13.0.tar.gz", hash = "sha256:04e38f92eb59410c9375d3be23df65e0a7643f2e8bcbd421423d808d2f9e99df"},
+    {file = "typeguard-2.13.2-py3-none-any.whl", hash = "sha256:4f7da3d80dda5e42d6973f11f33da3542b8bf86edc12ba926b2dbad62adf3fcf"},
+    {file = "typeguard-2.13.2.tar.gz", hash = "sha256:7e50071590ab997509aa0977609eb5cf9d73d84c1f416cb4fab78b77a9d15326"},
 ]
 types-dataclasses = [
     {file = "types-dataclasses-0.6.1.tar.gz", hash = "sha256:6568532fed11f854e4db2eb48063385b323b93ecadd09f10a215d56246c306d7"},

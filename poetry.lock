@@ -165,14 +165,14 @@ toml = ["toml"]
 
 [[package]]
 name = "coverage-conditional-plugin"
-version = "0.4.0"
+version = "0.5.0"
 description = "Conditional coverage based on any rules you define!"
 category = "dev"
 optional = false
 python-versions = ">=3.6,<4.0"
 
 [package.dependencies]
-coverage = ">=5.0,<6.0"
+coverage = ">=5,<7"
 packaging = ">=20.4"
 
 [[package]]
@@ -1053,7 +1053,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "79187c593ca6371eef5bb463ab4ae7988dbd30864fb0078ff6bb24369bb73436"
+content-hash = "ab81fdf73f689db2858e27f57036edb4f16143fb0828990d7c87ea1b234a1994"
 
 [metadata.files]
 alabaster = [
@@ -1162,8 +1162,8 @@ coverage = [
     {file = "coverage-5.5.tar.gz", hash = "sha256:ebe78fe9a0e874362175b02371bdfbee64d8edc42a044253ddf4ee7d3c15212c"},
 ]
 coverage-conditional-plugin = [
-    {file = "coverage-conditional-plugin-0.4.0.tar.gz", hash = "sha256:3ca50bb03b32f8ba8cf63b18d830f334cb75f401579040dd5c61df1c4687fef0"},
-    {file = "coverage_conditional_plugin-0.4.0-py3-none-any.whl", hash = "sha256:3bf586f7b793a9e4e2950f7af32711012929b39d1a4b53a4829489e763fda2dc"},
+    {file = "coverage-conditional-plugin-0.5.0.tar.gz", hash = "sha256:053af7b38b07131748c6c9548c77895fd8e6b24ac81cb657f337415b64bdd3c1"},
+    {file = "coverage_conditional_plugin-0.5.0-py3-none-any.whl", hash = "sha256:513d65ebafdd16f20455d5b0ac0b72807a12ce16b7937a0d09a1c3e810eea5c2"},
 ]
 darglint = [
     {file = "darglint-1.8.1-py3-none-any.whl", hash = "sha256:5ae11c259c17b0701618a20c3da343a3eb98b3bc4b5a83d31cdd94f5ebdced8d"},

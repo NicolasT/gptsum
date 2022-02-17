@@ -32,7 +32,7 @@ cryptography==36.0.1
     # via secretstorage
 distlib==0.3.4
     # via virtualenv
-filelock==3.4.1
+filelock==3.5.1
     # via
     #   -r constraints.in
     #   virtualenv

@@ -51,7 +51,7 @@ Issues = "https://github.com/NicolasT/gptsum/issues"
 gptsum = "gptsum.cli:main"
 
 [tool.poetry.dependencies]
-python = "^3.6.1"
+python = "^3.6.2"
 importlib-metadata = {version = ">=3.7.3,<5.0.0", python = "< 3.8"}
 dataclasses = {version = ">=0.6,<0.9", python = "< 3.7"}
 

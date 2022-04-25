@@ -51,7 +51,7 @@ Issues = "https://github.com/NicolasT/gptsum/issues"
 gptsum = "gptsum.cli:main"
 
 [tool.poetry.dependencies]
-python = "^3.6.1"
+python = "^3.6.2"
 importlib-metadata = {version = ">=3.7.3,<5.0.0", python = "< 3.8"}
 dataclasses = {version = ">=0.6,<0.9", python = "< 3.7"}
 
@@ -64,8 +64,8 @@ flake8-docstrings = "^1.6.0"
 flake8-rst-docstrings = "^0.2.5"
 pep8-naming = "^0.12.1"
 darglint = "^1.8.0"
-black = "^20.8b1"
-flake8-black = "^0.2.4"
+black = "22.3.0"
+flake8-black = "^0.2.5"
 safety = "^1.10.3"
 Sphinx = "^4.5.0"
 furo = "^2022.4.7"

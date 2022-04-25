@@ -188,7 +188,7 @@ def _replace_header_crc32(raw_header: bytes, header_crc32: int) -> bytes:
         ),
         (
             gpt.HeaderChecksumMismatchError,
-            _replace_header_crc32(TEST_DISK_GPT_HEADER, 2 ** 32 - 1),
+            _replace_header_crc32(TEST_DISK_GPT_HEADER, 2**32 - 1),
         ),
     ],
 )

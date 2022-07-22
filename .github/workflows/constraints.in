@@ -1,6 +1,6 @@
 # pip 22.0.0 dropped support for Python 3.6
 # See https://github.com/pypa/pip/blob/ec8edbf5df977bb88e1c777dd44e26664d81e216/NEWS.rst#deprecations-and-removals-1
-pip>=21.3.1,<22
+pip>=21.3.1,<23
 poetry>=1.1.12
 nox>=2022.1.7
 # nox-poetry 0.9 dropped support for Python 3.6

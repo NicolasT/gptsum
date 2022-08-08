@@ -50,7 +50,7 @@ lockfile==0.12.2
     # via cachecontrol
 msgpack==1.0.3
     # via cachecontrol
-nox==2022.1.7
+nox==2022.8.7
     # via
     #   -r constraints.in
     #   nox-poetry

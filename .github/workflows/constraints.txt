@@ -71,7 +71,7 @@ platformdirs==2.4.0
     # via
     #   -r constraints.in
     #   virtualenv
-poetry==1.1.14
+poetry==1.1.15
     # via -r constraints.in
 poetry-core==1.0.7
     # via poetry

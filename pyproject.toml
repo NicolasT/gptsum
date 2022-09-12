@@ -59,7 +59,7 @@ dataclasses = {version = ">=0.6,<0.9", python = "< 3.7"}
 mypy = "^0.971"
 flake8 = "^3.9.2"
 flake8-bandit = "^2.1.2"
-flake8-bugbear = "^22.8.23"
+flake8-bugbear = "^22.9.11"
 flake8-docstrings = "^1.6.0"
 flake8-rst-docstrings = "^0.2.5"
 pep8-naming = "^0.13.1"

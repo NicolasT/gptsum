@@ -10,7 +10,7 @@ nox-poetry<1.1
 # Indirect dependencies which require constraints
 # platformdirs 2.4.1 dropped support for Python 3.6
 # See https://github.com/platformdirs/platformdirs/releases/tag/2.4.1
-platformdirs<2.5.5
+platformdirs<2.4.1
 # filelock 3.4.2 dropped support for Python 3.6
 # See https://github.com/tox-dev/py-filelock/releases/tag/3.4.2
 filelock<3.4.2

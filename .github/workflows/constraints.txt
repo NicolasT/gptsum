@@ -50,7 +50,7 @@ lockfile==0.12.2
     # via cachecontrol
 msgpack==1.0.3
     # via cachecontrol
-nox==2022.1.7
+nox==2022.11.21
     # via
     #   -r constraints.in
     #   nox-poetry
@@ -77,8 +77,6 @@ poetry-core==1.0.7
     # via poetry
 ptyprocess==0.7.0
     # via pexpect
-py==1.11.0
-    # via nox
 pycparser==2.21
     # via cffi
 pylev==1.4.0

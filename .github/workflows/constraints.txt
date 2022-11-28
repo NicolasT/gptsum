@@ -54,7 +54,7 @@ nox==2022.11.21
     # via
     #   -r constraints.in
     #   nox-poetry
-nox-poetry==0.8.6
+nox-poetry==1.0.2
     # via -r constraints.in
 packaging==20.9
     # via

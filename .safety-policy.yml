@@ -1,0 +1,5 @@
+---
+security:
+  ignore-vulnerabilities:
+    51457:
+      reason: SVN isn't used by this project

@@ -50,11 +50,11 @@ lockfile==0.12.2
     # via cachecontrol
 msgpack==1.0.3
     # via cachecontrol
-nox==2022.11.21
+nox==2022.1.7
     # via
     #   -r constraints.in
     #   nox-poetry
-nox-poetry==1.0.2
+nox-poetry==0.8.6
     # via -r constraints.in
 packaging==20.9
     # via
@@ -67,7 +67,7 @@ pexpect==4.8.0
     # via poetry
 pkginfo==1.8.2
     # via poetry
-platformdirs==2.5.4
+platformdirs==2.4.0
     # via
     #   -r constraints.in
     #   virtualenv
@@ -77,6 +77,8 @@ poetry-core==1.0.7
     # via poetry
 ptyprocess==0.7.0
     # via pexpect
+py==1.11.0
+    # via nox
 pycparser==2.21
     # via cffi
 pylev==1.4.0

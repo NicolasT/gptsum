@@ -1384,14 +1384,14 @@ test = ["cython", "html5lib", "pytest", "pytest-cov", "typed-ast"]
 
 [[package]]
 name = "sphinx-argparse"
-version = "0.3.2"
+version = "0.4.0"
 description = "A sphinx extension that automatically documents argparse commands and options"
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "sphinx-argparse-0.3.2.tar.gz", hash = "sha256:e54ad6c8f895ac6bb9d0dd9fa07e47e137a2a42ae18a714515262e86b4cc4bab"},
-    {file = "sphinx_argparse-0.3.2-py3-none-any.whl", hash = "sha256:499afb62d19966651e1e5d601ac912ca2bdfb43f5dad491305d84bef4414f4f4"},
+    {file = "sphinx_argparse-0.4.0-py3-none-any.whl", hash = "sha256:73bee01f7276fae2bf621ccfe4d167af7306e7288e3482005405d9f826f9b037"},
+    {file = "sphinx_argparse-0.4.0.tar.gz", hash = "sha256:e0f34184eb56f12face774fbc87b880abdb9017a0998d1ec559b267e9697e449"},
 ]
 
 [package.dependencies]
@@ -1679,4 +1679,4 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=4.6)", "pytest-black (
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7.15"
-content-hash = "d66599c3aed8ff292a236dc960430360fce7189c536ffbc89206a823a5048998"
+content-hash = "500a35f568620857abc755d9efbd0981f7c6f122fc1249392a2e17faad8d4f93"

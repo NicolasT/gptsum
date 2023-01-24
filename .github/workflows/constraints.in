@@ -1,16 +1,4 @@
-# pip 22.0.0 dropped support for Python 3.6
-# See https://github.com/pypa/pip/blob/ec8edbf5df977bb88e1c777dd44e26664d81e216/NEWS.rst#deprecations-and-removals-1
-pip>=21.3.1,<22
-poetry>=1.1.12
+pip>=21.3.1
+poetry>=1.3.2
 nox>=2022.1.7
-# nox-poetry 0.9 dropped support for Python 3.6
-# See https://github.com/cjolowicz/nox-poetry/releases/tag/v0.9.0
-nox-poetry<0.9
-
-# Indirect dependencies which require constraints
-# platformdirs 2.4.1 dropped support for Python 3.6
-# See https://github.com/platformdirs/platformdirs/releases/tag/2.4.1
-platformdirs<2.4.1
-# filelock 3.4.2 dropped support for Python 3.6
-# See https://github.com/tox-dev/py-filelock/releases/tag/3.4.2
-filelock<3.4.2
+nox-poetry>=1.0.2

@@ -29,33 +29,9 @@ def blake2b(fd: BinaryIO) -> bytes:
     return hasher.digest()
 
 
-@pytest.mark.parametrize(
-    ("use_preadv"),
-    [
-        (False),
-        pytest.param(
-            True,
-            marks=pytest.mark.skipif(
-                not hasattr(os, "preadv"), reason="os.preadv not supported"
-            ),
-        ),
-    ],
-)
-def test_hash_file(
-    use_preadv: bool, monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture
-) -> None:
-    """Test `checksum.hash_file`, optionally with `os.preadv` support disabled."""
-    if not use_preadv and hasattr(os, "preadv"):  # pragma: py-lt-37
-        monkeypatch.delattr(os, "preadv")
-
-    if use_preadv:  # pragma: py-lt-37
-        assert hasattr(os, "preadv")
-        mocked = mocker.patch(
-            "os.preadv", side_effect=getattr(os, "preadv")  # noqa: B009
-        )
-    else:
-        assert not hasattr(os, "preadv")
-        mocked = mocker.patch("os.pread", side_effect=os.pread)
+def test_hash_file(monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture) -> None:
+    """Test `checksum.hash_file`."""
+    mocked = mocker.patch("os.preadv", side_effect=os.preadv)
 
     expected_reads = 0
 
@@ -140,27 +116,11 @@ def test_calculate_inplace(disk_image: Path) -> None:
         assert new_hash == digest
 
 
-@pytest.mark.parametrize(
-    ("use_preadv"),
-    [
-        (False),
-        pytest.param(
-            True,
-            marks=pytest.mark.skipif(
-                not hasattr(os, "preadv"), reason="os.preadv not supported"
-            ),
-        ),
-    ],
-)
 def test_calculate_benchmark(
-    use_preadv: bool,
     monkeypatch: pytest.MonkeyPatch,
     benchmark: pytest_benchmark.fixture.BenchmarkFixture,
 ) -> None:
     """Benchmark :func:`checksum.calculate`."""
-    if not use_preadv and hasattr(os, "preadv"):  # pragma: py-lt-37
-        monkeypatch.delattr(os, "preadv")
-
     with gpt.GPTImage(path=conftest.TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
         benchmark(checksum.calculate, image)
 

@@ -20,44 +20,25 @@ def hash_file(
 
     os.posix_fadvise(fd, offset, size, os.POSIX_FADV_SEQUENTIAL)
 
-    if hasattr(os, "preadv"):  # pragma: py-lt-37
-        preadv = cast(
-            Callable[[int, List[bytearray], int], int],
-            getattr(os, "preadv"),  # noqa: B009
-        )
+    preadv = cast(Callable[[int, List[bytearray], int], int], os.preadv)
 
-        buff = bytearray(buffsize)
-        bufflist = [buff]
-        view = memoryview(buff)
+    buff = bytearray(buffsize)
+    bufflist = [buff]
+    view = memoryview(buff)
 
-        while size > 0:
-            n = preadv(fd, bufflist, offset)
+    while size > 0:
+        n = preadv(fd, bufflist, offset)
 
-            n = min(n, size)
+        n = min(n, size)
 
-            if n < buffsize:
-                fn(view[:n])
-            else:
-                fn(view)
+        if n < buffsize:
+            fn(view[:n])
+        else:
+            fn(view)
 
-            done += n
-            size -= n
-            offset += n
-    else:  # Python <= 3.6
-        while size > 0:
-            data = os.pread(fd, buffsize, offset)
-            datasize = len(data)
-
-            n = min(datasize, size)
-
-            if n < datasize:
-                fn(data[:n])
-            else:
-                fn(data)
-
-            done += n
-            size -= n
-            offset += n
+        done += n
+        size -= n
+        offset += n
 
     return done
 

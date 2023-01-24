@@ -128,7 +128,7 @@ Verifying an image file is roughly the same procedure:
 
 Implementation Details
 **********************
-`gptsum` is implemented in Python, and compatible with Python 3.6 and later.
+`gptsum` is implemented in Python, and compatible with Python 3.7 and later.
 It uses the `Blake2b`_ checksum algorithm to construct a 16 byte digest
 of the disk image.
 

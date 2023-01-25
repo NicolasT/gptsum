@@ -16,19 +16,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { python-version: "3.10", session: "flake8" }
-          - { python-version: "3.10", session: "safety" }
+          - { python-version: "3.11", session: "flake8" }
+          - { python-version: "3.11", session: "safety" }
+          - { python-version: "3.11", session: "mypy" }
           - { python-version: "3.10", session: "mypy" }
           - { python-version: "3.9", session: "mypy" }
           - { python-version: "3.8", session: "mypy" }
           - { python-version: "3.7", session: "mypy" }
+          - { python-version: "3.11", session: "tests" }
           - { python-version: "3.10", session: "tests" }
           - { python-version: "3.9", session: "tests" }
           - { python-version: "3.8", session: "tests" }
           - { python-version: "3.7", session: "tests" }
-          - { python-version: "3.10", session: "typeguard" }
-          - { python-version: "3.10", session: "xdoctest" }
-          - { python-version: "3.10", session: "docs" }
+          - { python-version: "3.11", session: "typeguard" }
+          - { python-version: "3.11", session: "xdoctest" }
+          - { python-version: "3.11", session: "docs" }
 
     env:
       NOXSESSION: "${{ matrix.session }}"

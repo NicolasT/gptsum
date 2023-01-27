@@ -442,19 +442,19 @@ pydocstyle = ">=2.1"
 
 [[package]]
 name = "flake8-expression-complexity"
-version = "0.0.9"
+version = "0.0.11"
 description = "A flake8 extension that checks expressions complexity"
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "flake8_expression_complexity-0.0.9.tar.gz", hash = "sha256:1ae325880a5dbfef60a35eaa8bb5351d5c5102774a41d4ed7059bc093a95955b"},
+    {file = "flake8_expression_complexity-0.0.11-py3-none-any.whl", hash = "sha256:b56bac37f7dd5d3d102a7111c89f6579c2cbd897b868147794c9ed12aadc627c"},
+    {file = "flake8_expression_complexity-0.0.11.tar.gz", hash = "sha256:4dd8909fecbc20f53814cdcef9d0b04f61532764278d9b6e8026686812e96631"},
 ]
 
 [package.dependencies]
 astpretty = "*"
 flake8 = "*"
-setuptools = "*"
 
 [[package]]
 name = "flake8-isort"
@@ -1666,4 +1666,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7.15"
-content-hash = "672aa7e6045b901f3d65275998b415ab1a4a99d057fda70ab90533108e4fa69c"
+content-hash = "7ebeb7495e7c8f68dbef196cde8451b66bb0e50cd936dd59cebc78a59f1074cd"

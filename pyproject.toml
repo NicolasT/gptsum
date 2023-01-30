@@ -57,7 +57,7 @@ importlib-metadata = {version = ">=3.7.3,<5.0.0", python = "< 3.8"}
 [tool.poetry.dev-dependencies]
 mypy = "^0.991"
 flake8 = "^3.9.2"
-flake8-bandit = "^2.1.2"
+flake8-bandit = "^3.0.0"
 flake8-bugbear = "^23.1.20"
 flake8-docstrings = "^1.7.0"
 flake8-rst-docstrings = "^0.3.0"

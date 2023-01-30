@@ -37,7 +37,7 @@ def test_hash_file(monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture) -> No
 
     with open(conftest.TESTDATA_DISK, "rb") as fd:
         # Full read
-        hasher = hashlib.sha1()  # noqa: S303
+        hasher = hashlib.sha1()  # noqa: S303, S324
         size = os.fstat(fd.fileno()).st_size
         result = checksum.hash_file(hasher.update, fd.fileno(), size, offset=0)
 
@@ -51,7 +51,7 @@ def test_hash_file(monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture) -> No
 
         # Test 'partial' read: we can read `buffsize` from the file, but are
         # only processing part of said data.
-        hasher = hashlib.sha1()  # noqa: S303
+        hasher = hashlib.sha1()  # noqa: S303, S324
         size = 2 * checksum._BUFFSIZE + int(checksum._BUFFSIZE / 2 - 1)
 
         assert size % checksum._BUFFSIZE != 0

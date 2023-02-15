@@ -58,7 +58,7 @@ importlib-metadata = {version = ">=3.7.3,<5.0.0", python = "< 3.8"}
 mypy = "^1.0"
 flake8 = "^3.9.2"
 flake8-bandit = "^3.0.0"
-flake8-bugbear = "^23.1.20"
+flake8-bugbear = "^23.2.13"
 flake8-docstrings = "^1.7.0"
 flake8-rst-docstrings = "^0.3.0"
 pep8-naming = "^0.13.2"

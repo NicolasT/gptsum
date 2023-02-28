@@ -8,6 +8,8 @@ argcomplete==1.12.3
     # via nox
 attrs==22.2.0
     # via jsonschema
+build==0.10.0
+    # via poetry
 cachecontrol==0.12.10
     # via poetry
 certifi==2021.10.8
@@ -28,7 +30,7 @@ cryptography==36.0.1
     # via secretstorage
 distlib==0.3.4
     # via virtualenv
-dulwich==0.20.50
+dulwich==0.21.3
     # via poetry
 filelock==3.9.0
     # via
@@ -40,6 +42,8 @@ idna==3.3
     # via requests
 importlib-metadata==4.13.0
     # via keyring
+installer==0.6.0
+    # via poetry
 jaraco-classes==3.2.3
     # via keyring
 jeepney==0.7.1
@@ -66,26 +70,27 @@ nox-poetry==1.0.2
     # via -r constraints.in
 packaging==20.9
     # via
+    #   build
     #   nox
     #   nox-poetry
     #   poetry
 pexpect==4.8.0
     # via poetry
-pkginfo==1.8.2
+pkginfo==1.9.6
     # via poetry
 platformdirs==2.6.2
     # via
     #   poetry
     #   virtualenv
-poetry==1.3.2
+poetry==1.4.0
     # via
     #   -r constraints.in
     #   poetry-plugin-export
-poetry-core==1.4.0
+poetry-core==1.5.1
     # via
     #   poetry
     #   poetry-plugin-export
-poetry-plugin-export==1.2.0
+poetry-plugin-export==1.3.0
     # via poetry
 ptyprocess==0.7.0
     # via pexpect
@@ -95,6 +100,10 @@ pycparser==2.21
     # via cffi
 pyparsing==3.0.6
     # via packaging
+pyproject-hooks==1.0.0
+    # via
+    #   build
+    #   poetry
 pyrsistent==0.19.3
     # via jsonschema
 rapidfuzz==2.13.7

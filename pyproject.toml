@@ -72,7 +72,7 @@ sphinx-argparse = "^0.4.0"
 coverage = {version = "^7.2", extras = ["toml"]}
 pygments = "^2.14.0"
 pytest = "^7.2.2"
-typeguard = "^2.13.3"
+typeguard = "^3.0.0"
 xdoctest = {version = "^1.1.1", extras = ["colors"]}
 flake8-pytest-style = "^1.7.2"
 flake8-pytest = "^1.4"

@@ -42,7 +42,7 @@ idna==3.3
     # via requests
 importlib-metadata==4.13.0
     # via keyring
-installer==0.6.0
+installer==0.7.0
     # via poetry
 jaraco-classes==3.2.3
     # via keyring
@@ -82,11 +82,11 @@ platformdirs==2.6.2
     # via
     #   poetry
     #   virtualenv
-poetry==1.4.0
+poetry==1.4.1
     # via
     #   -r constraints.in
     #   poetry-plugin-export
-poetry-core==1.5.1
+poetry-core==1.5.2
     # via
     #   poetry
     #   poetry-plugin-export

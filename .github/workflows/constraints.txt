@@ -8,8 +8,6 @@ argcomplete==3.0.8
     # via nox
 attrs==23.1.0
     # via jsonschema
-backports-cached-property==1.0.2
-    # via poetry
 build==0.10.0
     # via poetry
 cachecontrol==0.12.11
@@ -43,20 +41,7 @@ html5lib==1.1
 idna==3.4
     # via requests
 importlib-metadata==6.6.0
-    # via
-    #   argcomplete
-    #   attrs
-    #   build
-    #   jsonschema
-    #   keyring
-    #   nox
-    #   poetry
-    #   poetry-core
-    #   virtualenv
-importlib-resources==5.12.0
-    # via
-    #   jsonschema
-    #   keyring
+    # via keyring
 installer==0.7.0
     # via poetry
 jaraco-classes==3.2.3
@@ -93,21 +78,19 @@ pexpect==4.8.0
     # via poetry
 pkginfo==1.9.6
     # via poetry
-pkgutil-resolve-name==1.3.10
-    # via jsonschema
 platformdirs==3.5.1
     # via
     #   poetry
     #   virtualenv
-poetry==1.5.0
+poetry==1.5.1
     # via
     #   -r constraints.in
     #   poetry-plugin-export
-poetry-core==1.6.0
+poetry-core==1.6.1
     # via
     #   poetry
     #   poetry-plugin-export
-poetry-plugin-export==1.3.1
+poetry-plugin-export==1.4.0
     # via poetry
 ptyprocess==0.7.0
     # via pexpect
@@ -134,24 +117,12 @@ shellingham==1.5.0.post1
     # via poetry
 six==1.16.0
     # via html5lib
-tomli==2.0.1
-    # via
-    #   build
-    #   poetry
-    #   pyproject-hooks
 tomlkit==0.11.8
     # via
     #   nox-poetry
     #   poetry
 trove-classifiers==2023.5.24
     # via poetry
-typing-extensions==4.6.2
-    # via
-    #   dulwich
-    #   importlib-metadata
-    #   jsonschema
-    #   nox
-    #   platformdirs
 urllib3==1.26.16
     # via
     #   dulwich
@@ -164,9 +135,7 @@ virtualenv==20.23.0
 webencodings==0.5.1
     # via html5lib
 zipp==3.15.0
-    # via
-    #   importlib-metadata
-    #   importlib-resources
+    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip

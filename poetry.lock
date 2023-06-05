@@ -347,18 +347,18 @@ toml = ["tomli"]
 
 [[package]]
 name = "coverage-conditional-plugin"
-version = "0.8.0"
+version = "0.9.0"
 description = "Conditional coverage based on any rules you define!"
 category = "dev"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "coverage-conditional-plugin-0.8.0.tar.gz", hash = "sha256:e6564944a32ccc962f8c0000ac618efa5f5ff232cb9bcc677ce98546dfa61e6d"},
-    {file = "coverage_conditional_plugin-0.8.0-py3-none-any.whl", hash = "sha256:421079fbf9676c48397dd14254746e5e2656280b87ef83835701dd233053b9cd"},
+    {file = "coverage_conditional_plugin-0.9.0-py3-none-any.whl", hash = "sha256:1b37bc469019d2ab5b01f5eee453abe1846b3431e64e209720c2a9ec4afb8130"},
+    {file = "coverage_conditional_plugin-0.9.0.tar.gz", hash = "sha256:6893dab0542695dbd5ea714281dae0dfec8d0e36480ba32d839e9fa7344f8215"},
 ]
 
 [package.dependencies]
-coverage = ">=5,<8"
+coverage = ">=7,<8"
 importlib_metadata = {version = "*", markers = "python_version < \"3.10\""}
 packaging = ">=20.4"
 
@@ -1822,4 +1822,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7.15"
-content-hash = "057b676c81c47e85928701c9572256afffafa279658e6356b55f9d5568850857"
+content-hash = "f3423e1bc81473ad494e08ac775259e889d4dcf185e7a4091a3e97c307c8438b"

@@ -66,7 +66,7 @@ nox==2023.4.22
     # via
     #   -r constraints.in
     #   nox-poetry
-nox-poetry==1.0.2
+nox-poetry==1.0.3
     # via -r constraints.in
 packaging==23.1
     # via

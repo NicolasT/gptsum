@@ -1,10 +1,11 @@
 """Global definitions for pytest tests."""
 
+import io
 import shutil
 import tempfile
 import uuid
 from pathlib import Path
-from typing import Iterator
+from typing import TYPE_CHECKING, Callable, Iterator, cast
 
 import pytest
 
@@ -20,6 +21,16 @@ def disk_image(tmp_path: Path) -> Iterator[Path]:
     """Yield the path to a copy of `TESTDATA_DISK`."""
     with tempfile.NamedTemporaryFile(dir=tmp_path) as tmp:
         with open(TESTDATA_DISK, "rb") as disk:
-            shutil.copyfileobj(disk, tmp)
+            if TYPE_CHECKING:  # pragma: no cover
+                copyfileobj = cast(
+                    Callable[
+                        [io.BufferedReader, tempfile._TemporaryFileWrapper[bytes]], None
+                    ],
+                    shutil.copyfileobj,
+                )
+            else:
+                copyfileobj = shutil.copyfileobj
+
+            copyfileobj(disk, tmp)
 
         yield Path(tmp.name)

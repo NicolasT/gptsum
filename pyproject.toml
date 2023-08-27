@@ -55,7 +55,7 @@ python = "^3.7.15"
 importlib-metadata = {version = ">=3.7.3,<5.0.0", python = "< 3.8"}
 
 [tool.poetry.dev-dependencies]
-mypy = "^1.1"
+mypy = "^1.4"
 flake8 = "^3.9.2"
 flake8-bandit = "^3.0.0"
 flake8-bugbear = "^23.3.12"

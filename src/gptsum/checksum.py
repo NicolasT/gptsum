@@ -17,7 +17,9 @@ def _posix_fadvise_sequential(fd: int, offset: int, size: int) -> None:
     posix_fadvise = getattr(os, "posix_fadvise", None)
     posix_fadv_sequential = getattr(os, "POSIX_FADV_SEQUENTIAL", None)
 
-    if posix_fadvise is not None and posix_fadv_sequential is not None:
+    if (
+        posix_fadvise is not None and posix_fadv_sequential is not None
+    ):  # pragma: platform-darwin
         posix_fadvise(fd, offset, size, posix_fadv_sequential)
 
 

@@ -31,7 +31,7 @@ def test__posix_fadvise_sequential_not_supported(
 )
 def test__posix_fadvise_sequential(
     mocker: MockerFixture,
-) -> None:
+) -> None:  # pragma: platform-darwin
     """Test `_posix_fadvise_sequential`."""
     mocked = mocker.patch("os.posix_fadvise")
 

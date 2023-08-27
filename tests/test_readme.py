@@ -9,7 +9,7 @@ import pytest
 
 
 @pytest.mark.skipif(shutil.which("sfdisk") is None, reason="sfdisk not found")
-def test_quickstart(tmp_path: Path) -> None:
+def test_quickstart(tmp_path: Path) -> None:  # pragma: platform-darwin
     """Run the 'Quickstart' section from 'README.rst'."""
 
     def check_call(cmd: bytes) -> None:

@@ -101,6 +101,7 @@ fail_under = 100
 py-lt-37 = "sys_version_info < (3, 7)"
 py-gte-38 = "sys_version_info >= (3, 8)"
 py-lt-38 = "sys_version_info < (3, 8)"
+platform-darwin = "sys_platform == 'darwin'"
 
 [tool.mypy]
 strict = true

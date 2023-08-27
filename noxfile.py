@@ -96,7 +96,8 @@ def tests(session: Session) -> None:
 
     env = {
         "COVERAGE_FILE": os.environ.get(
-            "COVERAGE_FILE", ".coverage.{}.py{}".format(session.name, session.python)
+            "COVERAGE_FILE",
+            ".coverage.{}.py{}.{}".format(session.name, session.python, sys.platform),
         ),
     }
 

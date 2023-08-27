@@ -11,6 +11,16 @@ ZERO_GUID = uuid.UUID(bytes=b"\0" * 16)
 _BUFFSIZE = 128 * 1024
 
 
+def _posix_fadvise_sequential(fd: int, offset: int, size: int) -> None:
+    """Call `posix_fadvise` with the `POSIX_FADV_SEQUENTIAL` flag on given range."""
+    # Make mypy happy
+    posix_fadvise = getattr(os, "posix_fadvise", None)
+    posix_fadv_sequential = getattr(os, "POSIX_FADV_SEQUENTIAL", None)
+
+    if posix_fadvise is not None and posix_fadv_sequential is not None:
+        posix_fadvise(fd, offset, size, posix_fadv_sequential)
+
+
 def hash_file(
     fn: Callable[[Union[bytes, memoryview]], None], fd: int, size: int, offset: int
 ) -> int:
@@ -18,7 +28,7 @@ def hash_file(
     buffsize = _BUFFSIZE
     done = 0
 
-    os.posix_fadvise(fd, offset, size, os.POSIX_FADV_SEQUENTIAL)
+    _posix_fadvise_sequential(fd, offset, size)
 
     preadv = cast(Callable[[int, List[bytearray], int], int], os.preadv)
 

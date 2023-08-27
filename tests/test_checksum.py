@@ -14,6 +14,40 @@ from gptsum import checksum, gpt
 from tests import conftest
 
 
+def test__posix_fadvise_sequential_not_supported(
+    monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture
+) -> None:
+    """Test `_posix_fadvise_sequential` when `posix_fadvise` is not supported."""
+    monkeypatch.delattr(os, "posix_fadvise", raising=False)
+
+    with open(conftest.TESTDATA_DISK, "rb") as fd:
+        checksum._posix_fadvise_sequential(
+            fd.fileno(), 0, os.fstat(fd.fileno()).st_size
+        )
+
+
+@pytest.mark.skipif(
+    not hasattr(os, "posix_fadvise"), reason="No support for posix_fadvise"
+)
+def test__posix_fadvise_sequential(
+    mocker: MockerFixture,
+) -> None:
+    """Test `_posix_fadvise_sequential`."""
+    mocked = mocker.patch("os.posix_fadvise")
+
+    with open(conftest.TESTDATA_DISK, "rb") as fd:
+        checksum._posix_fadvise_sequential(
+            fd.fileno(), 0, os.fstat(fd.fileno()).st_size
+        )
+
+        # Make mypy happy
+        assert hasattr(os, "POSIX_FADV_SEQUENTIAL")
+
+        assert mocked.called_with(
+            fd.fileno(), 0, os.fstat(fd.fileno()).st_size, os.POSIX_FADV_SEQUENTIAL
+        )
+
+
 def blake2b(fd: BinaryIO) -> bytes:
     """Calculate the Blake2b digest of a file.
 

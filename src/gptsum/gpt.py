@@ -318,7 +318,8 @@ class GPTImage(ContextManager["GPTImage"]):
         if self._fd is None:
             assert self._path is not None  # noqa: S101
             self._fd = os.open(
-                self._path, os.O_CLOEXEC | os.O_LARGEFILE | self._open_mode
+                self._path,
+                os.O_CLOEXEC | getattr(os, "O_LARGEFILE", 0) | self._open_mode,
             )
 
         if os.fstat(self._fd).st_size < MBR_SIZE + GPT_HEADER_SIZE + GPT_HEADER_SIZE:

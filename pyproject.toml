@@ -91,6 +91,7 @@ source = ["src", "*/site-packages"]
 branch = true
 source = ["gptsum", "tests"]
 plugins = ["coverage_conditional_plugin"]
+relative_files = true
 
 [tool.coverage.report]
 show_missing = true

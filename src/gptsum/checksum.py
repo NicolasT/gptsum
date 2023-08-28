@@ -3,7 +3,7 @@
 import hashlib
 import os
 import uuid
-from typing import Callable, List, Union, cast
+from typing import Callable, Union
 
 from gptsum import gpt
 
@@ -19,7 +19,7 @@ def _posix_fadvise_sequential(fd: int, offset: int, size: int) -> None:
 
     if (
         posix_fadvise is not None and posix_fadv_sequential is not None
-    ):  # pragma: platform-darwin
+    ):  # pragma: platform-darwin, platform-win32
         posix_fadvise(fd, offset, size, posix_fadv_sequential)
 
 
@@ -32,25 +32,40 @@ def hash_file(
 
     _posix_fadvise_sequential(fd, offset, size)
 
-    preadv = cast(Callable[[int, List[bytearray], int], int], os.preadv)
+    if hasattr(os, "preadv"):  # pragma: platform-win32
+        buff = bytearray(buffsize)
+        bufflist = [buff]
+        view = memoryview(buff)
 
-    buff = bytearray(buffsize)
-    bufflist = [buff]
-    view = memoryview(buff)
+        while size > 0:
+            n = os.preadv(fd, bufflist, offset)
 
-    while size > 0:
-        n = preadv(fd, bufflist, offset)
+            n = min(n, size)
 
-        n = min(n, size)
+            if n < buffsize:
+                fn(view[:n])
+            else:
+                fn(view)
 
-        if n < buffsize:
-            fn(view[:n])
-        else:
-            fn(view)
+            done += n
+            size -= n
+            offset += n
+    else:
+        curr = os.lseek(fd, 0, os.SEEK_CUR)
+        os.lseek(fd, offset, os.SEEK_SET)
 
-        done += n
-        size -= n
-        offset += n
+        try:
+            while size > 0:
+                data = os.read(fd, min(size, buffsize))
+
+                fn(data)
+
+                n = len(data)
+                done += n
+                size -= n
+                offset += n
+        finally:
+            os.lseek(fd, curr, os.SEEK_SET)
 
     return done
 

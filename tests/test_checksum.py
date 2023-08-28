@@ -9,6 +9,7 @@ from typing import BinaryIO
 import pytest
 import pytest_benchmark.fixture  # type: ignore[import]
 from pytest_mock import MockerFixture
+from pytest_mock.plugin import MockType
 
 from gptsum import checksum, gpt
 from tests import conftest
@@ -31,7 +32,7 @@ def test__posix_fadvise_sequential_not_supported(
 )
 def test__posix_fadvise_sequential(
     mocker: MockerFixture,
-) -> None:  # pragma: platform-darwin
+) -> None:  # pragma: platform-darwin, platform-win32
     """Test `_posix_fadvise_sequential`."""
     mocked = mocker.patch("os.posix_fadvise")
 
@@ -63,10 +64,8 @@ def blake2b(fd: BinaryIO) -> bytes:
     return hasher.digest()
 
 
-def test_hash_file(monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture) -> None:
+def _test_hash_file(mocked: MockType) -> None:
     """Test `checksum.hash_file`."""
-    mocked = mocker.patch("os.preadv", side_effect=os.preadv)
-
     expected_reads = 0
 
     with open(conftest.TESTDATA_DISK, "rb") as fd:
@@ -104,6 +103,23 @@ def test_hash_file(monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture) -> No
 
     mocked.assert_called()
     assert mocked.call_count == expected_reads
+
+
+@pytest.mark.skipif(not hasattr(os, "preadv"), reason="No preadv support on platform")
+def test_hash_file_preadv(mocker: MockerFixture) -> None:  # pragma: platform-win32
+    """Test `checksum.hash_file` using `preadv`."""
+    # Make mypy happy
+    assert hasattr(os, "preadv")
+
+    preadv = mocker.patch("os.preadv", side_effect=os.preadv)
+    _test_hash_file(preadv)
+
+
+def test_hash_file_read(monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture) -> None:
+    """Test `checksum.hash_file` using `read`."""
+    monkeypatch.delattr(os, "preadv", raising=False)
+    read = mocker.patch("os.read", side_effect=os.read)
+    _test_hash_file(read)
 
 
 def test_calculate() -> None:

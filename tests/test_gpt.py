@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Iterator, Type
 
 import pytest
+from pytest_mock import MockerFixture
 
 from gptsum import gpt
 from tests import conftest
@@ -235,8 +236,9 @@ def test_gptheader_pack_override_crc32() -> None:
 @pytest.fixture()
 def small_file(tmp_path: Path) -> Iterator[Path]:
     """Yield the path of an empty, 1kB temporary file."""
-    with tempfile.NamedTemporaryFile(dir=tmp_path) as tmp:
+    with tempfile.NamedTemporaryFile(dir=tmp_path, delete=False) as tmp:
         tmp.truncate(1024)
+        tmp.close()
         yield Path(tmp.name)
 
 
@@ -297,7 +299,7 @@ def test_gptimage_validate_invalid_image(disk_image: Path) -> None:
             image.validate()
 
 
-def test_gptimage_read_primary_gpt_header() -> None:
+def _test_gptimage_read_primary_gpt_header() -> None:
     """Test :meth:`gpt.GPTImage.read_primary_gpt_header`."""
     with gpt.GPTImage(path=conftest.TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
         header = image.read_primary_gpt_header()
@@ -306,6 +308,38 @@ def test_gptimage_read_primary_gpt_header() -> None:
         assert header.last_usable_lba == 4062
         assert header.current_lba == 1
         assert header.backup_lba == 4095
+
+
+def test_gptimage_read_primary_gpt_header() -> None:
+    """Test :meth:`gpt.GPTImage.read_primary_gpt_header`."""
+    _test_gptimage_read_primary_gpt_header()
+
+
+@pytest.mark.skipif(not hasattr(os, "pread"), reason="No pread support on platform")
+def test_gptimage_read_primary_gpt_header_pread(
+    mocker: MockerFixture,
+) -> None:  # pragma: platform-win32
+    """Test :meth:`gpt.GPTImage.read_primary_gpt_header` using `pread`."""
+    # Make mypy happy
+    assert hasattr(os, "pread")
+
+    pread = mocker.patch("os.pread", side_effect=os.pread)
+
+    _test_gptimage_read_primary_gpt_header()
+
+    pread.assert_called()
+
+
+def test_gptimage_read_primary_gpt_header_read(
+    monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture
+) -> None:
+    """Test :meth:`gpt.GPTImage.read_primary_gpt_header` using `read`."""
+    monkeypatch.delattr(os, "pread", raising=False)
+    read = mocker.patch("os.read", side_effect=os.read)
+
+    _test_gptimage_read_primary_gpt_header()
+
+    read.assert_called()
 
 
 def test_gptimage_read_backup_gpt_header() -> None:
@@ -319,7 +353,7 @@ def test_gptimage_read_backup_gpt_header() -> None:
         assert header.backup_lba == 1
 
 
-def test_gptimage_write_gpt_headers(disk_image: Path) -> None:
+def _test_gptimage_write_gpt_headers(disk_image: Path) -> None:
     """Test :meth:`gpt.GPTImage.write_gpt_headers`."""
     with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
         primary = image.read_primary_gpt_header()
@@ -356,6 +390,38 @@ def test_gptimage_write_gpt_headers(disk_image: Path) -> None:
     with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
         image.validate()
         assert image.read_primary_gpt_header().disk_guid == new_guid
+
+
+def test_gptimage_write_gpt_headers(disk_image: Path) -> None:
+    """Test :meth:`gpt.GPTImage.write_gpt_headers`."""
+    _test_gptimage_write_gpt_headers(disk_image)
+
+
+@pytest.mark.skipif(not hasattr(os, "pwrite"), reason="No pwrite support on platform")
+def test_gptimage_write_gpt_headers_pwrite(
+    mocker: MockerFixture, disk_image: Path
+) -> None:  # pragma: platform-win32
+    """Test :meth:`gpt.GPTImage.write_gpt_headers` using `pwrite`."""
+    # Make mypy happy
+    assert hasattr(os, "pwrite")
+
+    pwrite = mocker.patch("os.pwrite", side_effect=os.pwrite)
+
+    _test_gptimage_write_gpt_headers(disk_image)
+
+    pwrite.assert_called()
+
+
+def test_gptimage_write_gpt_headers_write(
+    monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture, disk_image: Path
+) -> None:
+    """Test :meth:`gpt.GPTImage.write_gpt_headers` using `write`."""
+    monkeypatch.delattr(os, "pwrite", raising=False)
+    write = mocker.patch("os.write", side_effect=os.write)
+
+    _test_gptimage_write_gpt_headers(disk_image)
+
+    write.assert_called()
 
 
 def test_gptimage_write_gpt_headers_incompatible_headers(disk_image: Path) -> None:

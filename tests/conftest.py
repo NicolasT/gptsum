@@ -19,7 +19,7 @@ TESTDATA_EMBEDDED_DISK_GUID = uuid.UUID("D4750646-01FD-2608-959F-159017007377")
 @pytest.fixture()
 def disk_image(tmp_path: Path) -> Iterator[Path]:
     """Yield the path to a copy of `TESTDATA_DISK`."""
-    with tempfile.NamedTemporaryFile(dir=tmp_path) as tmp:
+    with tempfile.NamedTemporaryFile(dir=tmp_path, delete=False) as tmp:
         with open(TESTDATA_DISK, "rb") as disk:
             if TYPE_CHECKING:  # pragma: no cover
                 copyfileobj = cast(
@@ -33,4 +33,5 @@ def disk_image(tmp_path: Path) -> Iterator[Path]:
 
             copyfileobj(disk, tmp)
 
+        tmp.close()
         yield Path(tmp.name)

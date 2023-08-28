@@ -248,8 +248,23 @@ class GPTHeader(object):
 def pread_all(fd: int, size: int, offset: int) -> bytes:
     """Use :func:`os.pread` to read data, handling partial reads."""
     pieces = []
+
+    pread = getattr(os, "pread", None)
+    if pread is None:  # pragma: platform-win32
+
+        def _pread(fd: int, size: int, offset: int) -> bytes:
+            curr = os.lseek(fd, 0, os.SEEK_CUR)
+            os.lseek(fd, offset, os.SEEK_SET)
+
+            try:
+                return os.read(fd, size)
+            finally:
+                os.lseek(fd, curr, os.SEEK_SET)
+
+        pread = _pread
+
     while size > 0:
-        read = os.pread(fd, size, offset)
+        read = pread(fd, size, offset)
         pieces.append(read)
         len_read = len(read)
         size -= len_read
@@ -259,8 +274,22 @@ def pread_all(fd: int, size: int, offset: int) -> bytes:
 
 def pwrite_all(fd: int, data: bytes, offset: int) -> None:
     """Use :func:`os.pwrite` to write data, handling partial writes."""
+    pwrite = getattr(os, "pwrite", None)
+    if pwrite is None:  # pragma: platform-win32
+
+        def _pwrite(fd: int, data: bytes, offset: int) -> int:
+            curr = os.lseek(fd, 0, os.SEEK_CUR)
+            os.lseek(fd, offset, os.SEEK_SET)
+
+            try:
+                return os.write(fd, data)
+            finally:
+                os.lseek(fd, curr, os.SEEK_SET)
+
+        pwrite = _pwrite
+
     while len(data) != 0:
-        written = os.pwrite(fd, data, offset)
+        written = pwrite(fd, data, offset)
         data = data[written:]
         offset += written
 
@@ -319,7 +348,9 @@ class GPTImage(ContextManager["GPTImage"]):
             assert self._path is not None  # noqa: S101
             self._fd = os.open(
                 self._path,
-                os.O_CLOEXEC | getattr(os, "O_LARGEFILE", 0) | self._open_mode,
+                getattr(os, "O_CLOEXEC", 0)
+                | getattr(os, "O_LARGEFILE", 0)
+                | self._open_mode,
             )
 
         if os.fstat(self._fd).st_size < MBR_SIZE + GPT_HEADER_SIZE + GPT_HEADER_SIZE:

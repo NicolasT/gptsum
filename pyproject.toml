@@ -22,6 +22,7 @@ classifiers = [
     "Intended Audience :: System Administrators",
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: POSIX",
+    "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.7",

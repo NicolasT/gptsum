@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "gptsum"
-version = "0.2.0"
+version = "0.3.0"
 description = "A tool to make disk images using GPT partitions self-verifiable"
 authors = [
     "Nicolas Trangez <ikke@nicolast.be>",

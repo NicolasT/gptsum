@@ -236,8 +236,9 @@ def test_gptheader_pack_override_crc32() -> None:
 @pytest.fixture()
 def small_file(tmp_path: Path) -> Iterator[Path]:
     """Yield the path of an empty, 1kB temporary file."""
-    with tempfile.NamedTemporaryFile(dir=tmp_path) as tmp:
+    with tempfile.NamedTemporaryFile(dir=tmp_path, delete=False) as tmp:
         tmp.truncate(1024)
+        tmp.close()
         yield Path(tmp.name)
 
 

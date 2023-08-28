@@ -350,7 +350,7 @@ def test_gptimage_read_backup_gpt_header() -> None:
         assert header.backup_lba == 1
 
 
-def test_gptimage_write_gpt_headers(disk_image: Path) -> None:
+def _test_gptimage_write_gpt_headers(disk_image: Path) -> None:
     """Test :meth:`gpt.GPTImage.write_gpt_headers`."""
     with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
         primary = image.read_primary_gpt_header()
@@ -387,6 +387,38 @@ def test_gptimage_write_gpt_headers(disk_image: Path) -> None:
     with gpt.GPTImage(path=disk_image, open_mode=os.O_RDONLY) as image:
         image.validate()
         assert image.read_primary_gpt_header().disk_guid == new_guid
+
+
+def test_gptimage_write_gpt_headers(disk_image: Path) -> None:
+    """Test :meth:`gpt.GPTImage.write_gpt_headers`."""
+    _test_gptimage_write_gpt_headers(disk_image)
+
+
+@pytest.mark.skipif(not hasattr(os, "pwrite"), reason="No pwrite support on platform")
+def test_gptimage_write_gpt_headers_pwrite(
+    mocker: MockerFixture, disk_image: Path
+) -> None:
+    """Test :meth:`gpt.GPTImage.write_gpt_headers` using `pwrite`."""
+    # Make mypy happy
+    assert hasattr(os, "pwrite")
+
+    pwrite = mocker.patch("os.pwrite", side_effect=os.pwrite)
+
+    _test_gptimage_write_gpt_headers(disk_image)
+
+    pwrite.assert_called()
+
+
+def test_gptimage_write_gpt_headers_write(
+    monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture, disk_image: Path
+) -> None:
+    """Test :meth:`gpt.GPTImage.write_gpt_headers` using `write`."""
+    monkeypatch.delattr(os, "pwrite", raising=False)
+    write = mocker.patch("os.write", side_effect=os.write)
+
+    _test_gptimage_write_gpt_headers(disk_image)
+
+    write.assert_called()
 
 
 def test_gptimage_write_gpt_headers_incompatible_headers(disk_image: Path) -> None:

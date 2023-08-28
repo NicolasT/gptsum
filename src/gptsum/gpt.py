@@ -274,8 +274,22 @@ def pread_all(fd: int, size: int, offset: int) -> bytes:
 
 def pwrite_all(fd: int, data: bytes, offset: int) -> None:
     """Use :func:`os.pwrite` to write data, handling partial writes."""
+    pwrite = getattr(os, "pwrite", None)
+    if pwrite is None:
+
+        def _pwrite(fd: int, data: bytes, offset: int) -> int:
+            curr = os.lseek(fd, 0, os.SEEK_CUR)
+            os.lseek(fd, offset, os.SEEK_SET)
+
+            try:
+                return os.write(fd, data)
+            finally:
+                os.lseek(fd, curr, os.SEEK_SET)
+
+        pwrite = _pwrite
+
     while len(data) != 0:
-        written = os.pwrite(fd, data, offset)
+        written = pwrite(fd, data, offset)
         data = data[written:]
         offset += written
 

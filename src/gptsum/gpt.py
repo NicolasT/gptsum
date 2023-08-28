@@ -248,8 +248,23 @@ class GPTHeader(object):
 def pread_all(fd: int, size: int, offset: int) -> bytes:
     """Use :func:`os.pread` to read data, handling partial reads."""
     pieces = []
+
+    pread = getattr(os, "pread", None)
+    if pread is None:
+
+        def _pread(fd: int, size: int, offset: int) -> bytes:
+            curr = os.lseek(fd, 0, os.SEEK_CUR)
+            os.lseek(fd, offset, os.SEEK_SET)
+
+            try:
+                return os.read(fd, size)
+            finally:
+                os.lseek(fd, curr, os.SEEK_SET)
+
+        pread = _pread
+
     while size > 0:
-        read = os.pread(fd, size, offset)
+        read = pread(fd, size, offset)
         pieces.append(read)
         len_read = len(read)
         size -= len_read

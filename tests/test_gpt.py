@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Iterator, Type
 
 import pytest
+from pytest_mock import MockerFixture
 
 from gptsum import gpt
 from tests import conftest
@@ -297,7 +298,7 @@ def test_gptimage_validate_invalid_image(disk_image: Path) -> None:
             image.validate()
 
 
-def test_gptimage_read_primary_gpt_header() -> None:
+def _test_gptimage_read_primary_gpt_header() -> None:
     """Test :meth:`gpt.GPTImage.read_primary_gpt_header`."""
     with gpt.GPTImage(path=conftest.TESTDATA_DISK, open_mode=os.O_RDONLY) as image:
         header = image.read_primary_gpt_header()
@@ -306,6 +307,36 @@ def test_gptimage_read_primary_gpt_header() -> None:
         assert header.last_usable_lba == 4062
         assert header.current_lba == 1
         assert header.backup_lba == 4095
+
+
+def test_gptimage_read_primary_gpt_header() -> None:
+    """Test :meth:`gpt.GPTImage.read_primary_gpt_header`."""
+    _test_gptimage_read_primary_gpt_header()
+
+
+@pytest.mark.skipif(not hasattr(os, "pread"), reason="No pread support on platform")
+def test_gptimage_read_primary_gpt_header_pread(mocker: MockerFixture) -> None:
+    """Test :meth:`gpt.GPTImage.read_primary_gpt_header` using `pread`."""
+    # Make mypy happy
+    assert hasattr(os, "pread")
+
+    pread = mocker.patch("os.pread", side_effect=os.pread)
+
+    _test_gptimage_read_primary_gpt_header()
+
+    pread.assert_called()
+
+
+def test_gptimage_read_primary_gpt_header_read(
+    monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture
+) -> None:
+    """Test :meth:`gpt.GPTImage.read_primary_gpt_header` using `read`."""
+    monkeypatch.delattr(os, "pread", raising=False)
+    read = mocker.patch("os.read", side_effect=os.read)
+
+    _test_gptimage_read_primary_gpt_header()
+
+    read.assert_called()
 
 
 def test_gptimage_read_backup_gpt_header() -> None:

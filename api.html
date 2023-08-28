@@ -1,14 +1,14 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Contributor Guide" href="contributing.html" /><link rel="prev" title="gptsum" href="index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.09.29"/>
-        <title>Python API - gptsum 0.2.0 documentation</title>
+    <!-- Generated with Sphinx 5.3.0 and Furo 2023.03.27 -->
+        <title>Python API - gptsum 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">gptsum 0.2.0 documentation</div></a>
+      <a href="index.html"><div class="brand">gptsum 0.3.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -134,7 +134,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -146,10 +146,10 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">gptsum 0.2.0 documentation</span>
+  <span class="sidebar-brand-text">gptsum 0.3.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
-  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
@@ -185,20 +185,20 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
           <section id="module-gptsum">
-<span id="python-api"></span><h1>Python API<a class="headerlink" href="#module-gptsum" title="Permalink to this headline">#</a></h1>
+<span id="python-api"></span><h1>Python API<a class="headerlink" href="#module-gptsum" title="Permalink to this heading">#</a></h1>
 <p>gptsum: a tool to make disk images using GPT partitions self-verifiable.</p>
 <p>Like <a class="reference external" href="https://github.com/rhinstaller/isomd5sum">isomd5sum</a>.</p>
 <p>This module exposes the functionality provided by the tool through a Python API.</p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="gptsum.VerificationFailure">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">VerificationFailure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gptsum.VerificationFailure" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">VerificationFailure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expected</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UUID</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actual</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UUID</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gptsum.VerificationFailure" title="Permalink to this definition">#</a></dt>
 <dd><p>Exception raised when <a class="reference internal" href="#gptsum.verify" title="gptsum.verify"><code class="xref py py-func docutils literal notranslate"><span class="pre">verify()</span></code></a> fails.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.0.9.</span></p>
@@ -207,17 +207,17 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gptsum.calculate_expected_guid">
-<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">calculate_expected_guid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">uuid.UUID</span></span></span><a class="headerlink" href="#gptsum.calculate_expected_guid" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">calculate_expected_guid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">UUID</span></span></span><a class="headerlink" href="#gptsum.calculate_expected_guid" title="Permalink to this definition">#</a></dt>
 <dd><p>Calculate the expected checksum GUID of a disk image.</p>
 <p>One of <code class="docutils literal notranslate"><span class="pre">fd</span></code> or <code class="docutils literal notranslate"><span class="pre">path</span></code> must be given.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fd</strong> – Readable file-descriptor to an image file</p></li>
 <li><p><strong>path</strong> – Path of a readable image file</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Expected checksum GUID of the disk image</p>
 </dd>
 </dl>
@@ -228,12 +228,12 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gptsum.embed">
-<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gptsum.embed" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gptsum.embed" title="Permalink to this definition">#</a></dt>
 <dd><p>Embed the calculated checksum GUID in an image file.</p>
 <p>In essence a combination of <a class="reference internal" href="#gptsum.calculate_expected_guid" title="gptsum.calculate_expected_guid"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_expected_guid()</span></code></a> and <a class="reference internal" href="#gptsum.set_guid" title="gptsum.set_guid"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_guid()</span></code></a>.</p>
 <p>One of <code class="docutils literal notranslate"><span class="pre">fd</span></code> or <code class="docutils literal notranslate"><span class="pre">path</span></code> must be given.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fd</strong> – Readable and writable file-descriptor to an image file</p></li>
 <li><p><strong>path</strong> – Path to a readable and writable image file</p></li>
@@ -247,17 +247,17 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gptsum.get_guid">
-<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">get_guid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">uuid.UUID</span></span></span><a class="headerlink" href="#gptsum.get_guid" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">get_guid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">UUID</span></span></span><a class="headerlink" href="#gptsum.get_guid" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the GUID of a disk image.</p>
 <p>One of <code class="docutils literal notranslate"><span class="pre">fd</span></code> or <code class="docutils literal notranslate"><span class="pre">path</span></code> must be given.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fd</strong> – Readable file-descriptor to an image file</p></li>
 <li><p><strong>path</strong> – Path of a readable image file</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>GUID of the disk image</p>
 </dd>
 </dl>
@@ -268,11 +268,11 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gptsum.set_guid">
-<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">set_guid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uuid.UUID</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gptsum.set_guid" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">set_guid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">guid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UUID</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gptsum.set_guid" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the GUID of a disk image.</p>
 <p>One of <code class="docutils literal notranslate"><span class="pre">fd</span></code> or <code class="docutils literal notranslate"><span class="pre">path</span></code> must be given.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>guid</strong> – GUID to write to the disk image</p></li>
 <li><p><strong>fd</strong> – Readable and writable file-descriptor to an image file</p></li>
@@ -287,18 +287,18 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gptsum.verify">
-<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gptsum.verify" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#gptsum.verify" title="Permalink to this definition">#</a></dt>
 <dd><p>Verify a GPT disk image GUID against the calculated checksum.</p>
 <p>In essence a combination of <a class="reference internal" href="#gptsum.calculate_expected_guid" title="gptsum.calculate_expected_guid"><code class="xref py py-func docutils literal notranslate"><span class="pre">calculate_expected_guid()</span></code></a> and <a class="reference internal" href="#gptsum.get_guid" title="gptsum.get_guid"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_guid()</span></code></a>.</p>
 <p>One of <code class="docutils literal notranslate"><span class="pre">fd</span></code> or <code class="docutils literal notranslate"><span class="pre">path</span></code> must be given.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fd</strong> – Readable file-descriptor to an image file</p></li>
 <li><p><strong>path</strong> – Path to a readable image file</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#gptsum.VerificationFailure" title="gptsum.VerificationFailure"><strong>VerificationFailure</strong></a> – Current GUID and checksum mismatch</p>
 </dd>
 </dl>
@@ -336,7 +336,7 @@
 
 <dl class="py data">
 <dt class="sig sig-object py" id="gptsum.__version__">
-<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">__version__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0.2.0'</span></em><a class="headerlink" href="#gptsum.__version__" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gptsum.</span></span><span class="sig-name descname"><span class="pre">__version__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0.3.0'</span></em><a class="headerlink" href="#gptsum.__version__" title="Permalink to this definition">#</a></dt>
 <dd><p>Package version identifier.</p>
 <div class="versionadded">
 <p><span class="versionmodified added">New in version 0.0.1.</span></p>
@@ -382,16 +382,42 @@
             
           </div>
           <div class="right-details">
-            <div class="icons">
-              
-            </div>
+            
           </div>
         </div>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Python API</a><ul>
+<li><a class="reference internal" href="#gptsum.VerificationFailure"><code class="docutils literal notranslate"><span class="pre">VerificationFailure</span></code></a></li>
+<li><a class="reference internal" href="#gptsum.calculate_expected_guid"><code class="docutils literal notranslate"><span class="pre">calculate_expected_guid()</span></code></a></li>
+<li><a class="reference internal" href="#gptsum.embed"><code class="docutils literal notranslate"><span class="pre">embed()</span></code></a></li>
+<li><a class="reference internal" href="#gptsum.get_guid"><code class="docutils literal notranslate"><span class="pre">get_guid()</span></code></a></li>
+<li><a class="reference internal" href="#gptsum.set_guid"><code class="docutils literal notranslate"><span class="pre">set_guid()</span></code></a></li>
+<li><a class="reference internal" href="#gptsum.verify"><code class="docutils literal notranslate"><span class="pre">verify()</span></code></a></li>
+<li><a class="reference internal" href="#gptsum.__author__"><code class="docutils literal notranslate"><span class="pre">__author__</span></code></a></li>
+<li><a class="reference internal" href="#gptsum.__contact__"><code class="docutils literal notranslate"><span class="pre">__contact__</span></code></a></li>
+<li><a class="reference internal" href="#gptsum.__license__"><code class="docutils literal notranslate"><span class="pre">__license__</span></code></a></li>
+<li><a class="reference internal" href="#gptsum.__version__"><code class="docutils literal notranslate"><span class="pre">__version__</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
@@ -399,7 +425,9 @@
 </div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
     </body>
 </html>

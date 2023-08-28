@@ -32,7 +32,7 @@ def test__posix_fadvise_sequential_not_supported(
 )
 def test__posix_fadvise_sequential(
     mocker: MockerFixture,
-) -> None:  # pragma: platform-darwin
+) -> None:  # pragma: platform-darwin, platform-win32
     """Test `_posix_fadvise_sequential`."""
     mocked = mocker.patch("os.posix_fadvise")
 
@@ -106,7 +106,7 @@ def _test_hash_file(mocked: MockType) -> None:
 
 
 @pytest.mark.skipif(not hasattr(os, "preadv"), reason="No preadv support on platform")
-def test_hash_file_preadv(mocker: MockerFixture) -> None:
+def test_hash_file_preadv(mocker: MockerFixture) -> None:  # pragma: platform-win32
     """Test `checksum.hash_file` using `preadv`."""
     # Make mypy happy
     assert hasattr(os, "preadv")

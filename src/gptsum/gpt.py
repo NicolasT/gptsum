@@ -250,7 +250,7 @@ def pread_all(fd: int, size: int, offset: int) -> bytes:
     pieces = []
 
     pread = getattr(os, "pread", None)
-    if pread is None:
+    if pread is None:  # pragma: platform-win32
 
         def _pread(fd: int, size: int, offset: int) -> bytes:
             curr = os.lseek(fd, 0, os.SEEK_CUR)
@@ -275,7 +275,7 @@ def pread_all(fd: int, size: int, offset: int) -> bytes:
 def pwrite_all(fd: int, data: bytes, offset: int) -> None:
     """Use :func:`os.pwrite` to write data, handling partial writes."""
     pwrite = getattr(os, "pwrite", None)
-    if pwrite is None:
+    if pwrite is None:  # pragma: platform-win32
 
         def _pwrite(fd: int, data: bytes, offset: int) -> int:
             curr = os.lseek(fd, 0, os.SEEK_CUR)

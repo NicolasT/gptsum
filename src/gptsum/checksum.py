@@ -19,7 +19,7 @@ def _posix_fadvise_sequential(fd: int, offset: int, size: int) -> None:
 
     if (
         posix_fadvise is not None and posix_fadv_sequential is not None
-    ):  # pragma: platform-darwin
+    ):  # pragma: platform-darwin, platform-win32
         posix_fadvise(fd, offset, size, posix_fadv_sequential)
 
 
@@ -32,7 +32,7 @@ def hash_file(
 
     _posix_fadvise_sequential(fd, offset, size)
 
-    if hasattr(os, "preadv"):
+    if hasattr(os, "preadv"):  # pragma: platform-win32
         buff = bytearray(buffsize)
         bufflist = [buff]
         view = memoryview(buff)

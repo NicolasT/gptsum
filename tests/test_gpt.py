@@ -316,7 +316,9 @@ def test_gptimage_read_primary_gpt_header() -> None:
 
 
 @pytest.mark.skipif(not hasattr(os, "pread"), reason="No pread support on platform")
-def test_gptimage_read_primary_gpt_header_pread(mocker: MockerFixture) -> None:
+def test_gptimage_read_primary_gpt_header_pread(
+    mocker: MockerFixture,
+) -> None:  # pragma: platform-win32
     """Test :meth:`gpt.GPTImage.read_primary_gpt_header` using `pread`."""
     # Make mypy happy
     assert hasattr(os, "pread")
@@ -398,7 +400,7 @@ def test_gptimage_write_gpt_headers(disk_image: Path) -> None:
 @pytest.mark.skipif(not hasattr(os, "pwrite"), reason="No pwrite support on platform")
 def test_gptimage_write_gpt_headers_pwrite(
     mocker: MockerFixture, disk_image: Path
-) -> None:
+) -> None:  # pragma: platform-win32
     """Test :meth:`gpt.GPTImage.write_gpt_headers` using `pwrite`."""
     # Make mypy happy
     assert hasattr(os, "pwrite")

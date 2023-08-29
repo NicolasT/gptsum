@@ -8,15 +8,10 @@ This module exposes the functionality provided by the tool through a Python API.
 
 import dataclasses
 import os
-import sys
 import uuid
+from importlib.metadata import Distribution, distribution
 from pathlib import Path
 from typing import Callable, Optional, cast
-
-if sys.version_info >= (3, 8):  # pragma: py-lt-38
-    from importlib.metadata import Distribution, distribution
-else:  # pragma: py-gte-38
-    from importlib_metadata import Distribution, distribution
 
 import gptsum
 import gptsum.checksum

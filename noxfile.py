@@ -36,7 +36,6 @@ def flake8(session: Session) -> None:
     session.install(
         "darglint",
         "flake8",
-        "flake8-bandit",
         "flake8-black",
         "flake8-bugbear",
         "flake8-builtins",

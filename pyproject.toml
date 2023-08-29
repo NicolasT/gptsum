@@ -29,7 +29,6 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
@@ -56,8 +55,7 @@ Issues = "https://github.com/NicolasT/gptsum/issues"
 gptsum = "gptsum.cli:main"
 
 [tool.poetry.dependencies]
-python = "^3.7.15"
-importlib-metadata = {version = ">=3.7.3,<5.0.0", python = "< 3.8"}
+python = "^3.8.17"
 
 [tool.poetry.dev-dependencies]
 mypy = "^1.4"
@@ -103,9 +101,6 @@ show_missing = true
 fail_under = 100
 
 [tool.coverage.coverage_conditional_plugin.rules]
-py-lt-37 = "sys_version_info < (3, 7)"
-py-gte-38 = "sys_version_info >= (3, 8)"
-py-lt-38 = "sys_version_info < (3, 8)"
 platform-darwin = "sys_platform == 'darwin'"
 platform-win32 = "sys_platform == 'win32'"
 

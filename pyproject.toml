@@ -71,7 +71,7 @@ safety = "^2.3.5"
 Sphinx = "^5.3.0"
 furo = "^2023.3.27"
 sphinx-argparse = "^0.4.0"
-coverage = {version = "^7.2", extras = ["toml"]}
+coverage = {version = "^7.3", extras = ["toml"]}
 pygments = "^2.16.1"
 pytest = "^7.4.0"
 typeguard = "^4.0.0"

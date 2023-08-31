@@ -16,8 +16,9 @@ from tests import conftest
 @pytest.mark.parametrize(("attr"), ["author", "contact", "license", "version"])
 def test_attribute(attr: str) -> None:
     """Test expected metadata attributes on the package."""
-    real_attr = "__{}__".format(attr)
+    real_attr = f"__{attr}__"
     assert hasattr(gptsum, real_attr)
+    # pylint: disable-next=unidiomatic-typecheck
     assert type(getattr(gptsum, real_attr)) is str
 
 

@@ -105,7 +105,7 @@ def build_parser() -> argparse.ArgumentParser:
 def get_guid(ns: argparse.Namespace) -> None:
     """Execute the 'get-guid' subcommand."""
     guid = gptsum.get_guid(fd=ns.image.fileno())
-    print("{}".format(guid))
+    print(f"{guid}")
 
 
 def set_guid(ns: argparse.Namespace) -> None:
@@ -116,7 +116,7 @@ def set_guid(ns: argparse.Namespace) -> None:
 def calculate_expected_guid(ns: argparse.Namespace) -> None:
     """Execute the 'calculate-expected-guid' subcommand."""
     guid = gptsum.calculate_expected_guid(fd=ns.image.fileno())
-    print("{}".format(guid))
+    print(f"{guid}")
 
 
 def embed(ns: argparse.Namespace) -> None:
@@ -131,7 +131,7 @@ def verify(ns: argparse.Namespace) -> None:
     except gptsum.VerificationFailure as exn:
         sys.stderr.write(
             "Disk GUID doesn't match expected checksum, "
-            "got {}, expected {}\n".format(exn.actual, exn.expected)
+            f"got {exn.actual}, expected {exn.expected}\n"
         )
         sys.stderr.flush()
         sys.exit(1)
@@ -143,7 +143,7 @@ def main(args: Optional[List[str]] = None) -> None:
     ns = parser.parse_args(args)
 
     func = getattr(ns, "func", None)
-    if func:
+    if func is not None:
         func(ns)
     else:
         parser.print_usage()

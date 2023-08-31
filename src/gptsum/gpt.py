@@ -23,7 +23,7 @@ _GPT_ACTUAL_HEADER_STRUCT_FORMAT = "<8s4sII4sQQQQ16sQIII"
 _GPT_ACTUAL_HEADER_STRUCT = struct.Struct(_GPT_ACTUAL_HEADER_STRUCT_FORMAT)
 assert _GPT_ACTUAL_HEADER_STRUCT.size == _EXPECTED_ACTUAL_HEADER_SIZE  # noqa: S101
 _GPT_HEADER_STRUCT = struct.Struct(
-    "{}{}s".format(_GPT_ACTUAL_HEADER_STRUCT_FORMAT, _EXPECTED_PADDING_SIZE)
+    f"{_GPT_ACTUAL_HEADER_STRUCT_FORMAT}{_EXPECTED_PADDING_SIZE}s"
 )
 assert _GPT_HEADER_STRUCT.size == GPT_HEADER_SIZE  # noqa: S101
 
@@ -62,7 +62,7 @@ class InvalidImageError(ValueError, GPTError):
 
 
 @dataclasses.dataclass(frozen=True)
-class GPTHeader(object):
+class GPTHeader:  # pylint: disable=too-many-instance-attributes
     """Representation of a GPT header."""
 
     current_lba: int
@@ -76,7 +76,9 @@ class GPTHeader(object):
     entries_crc32: int
 
     @classmethod
-    def unpack(cls, raw_header: bytes) -> "GPTHeader":
+    def unpack(  # pylint: disable=too-many-locals
+        cls, raw_header: bytes
+    ) -> "GPTHeader":
         """Unpack a GPT header from its raw encoding.
 
         The given raw header must include all padding, i.e., its length must be
@@ -96,7 +98,7 @@ class GPTHeader(object):
         """
         if len(raw_header) != GPT_HEADER_SIZE:
             raise InvalidHeaderSizeError(
-                "Not a valid GPT header, must be {} bytes".format(GPT_HEADER_SIZE)
+                f"Not a valid GPT header, must be {GPT_HEADER_SIZE} bytes"
             )
 
         (
@@ -119,9 +121,8 @@ class GPTHeader(object):
 
         if signature != _EXPECTED_SIGNATURE:
             raise InvalidSignatureError(
-                "Not a valid GPT header, signature must be {}".format(
-                    _EXPECTED_SIGNATURE.decode("ascii")
-                )
+                "Not a valid GPT header, signature must be "
+                f"{_EXPECTED_SIGNATURE.decode('ascii')}"
             )
 
         if revision != _EXPECTED_REVISION:
@@ -129,9 +130,8 @@ class GPTHeader(object):
 
         if header_size != _EXPECTED_ACTUAL_HEADER_SIZE:
             raise InvalidHeaderSizeError(
-                "GPT header is supposedly {} bytes long, expected {}".format(
-                    header_size, _EXPECTED_ACTUAL_HEADER_SIZE
-                )
+                f"GPT header is supposedly {header_size} bytes long, "
+                f"expected {_EXPECTED_ACTUAL_HEADER_SIZE}"
             )
 
         header = raw_header[:header_size]
@@ -151,9 +151,8 @@ class GPTHeader(object):
 
         if header_crc32 != calculated_header_crc32:
             raise HeaderChecksumMismatchError(
-                "GPT header CRC32 mismatch, got {}, expected {}".format(
-                    calculated_header_crc32, header_crc32
-                )
+                f"GPT header CRC32 mismatch, got {calculated_header_crc32}, "
+                f"expected {header_crc32}"
             )
 
         return cls(
@@ -424,9 +423,8 @@ class GPTImage(ContextManager["GPTImage"]):
         expected_backup_lba = size // 512 - 1
         if backup.current_lba != expected_backup_lba:
             raise ValueError(
-                "Backup header has invalid 'current_lba', expected {}".format(
-                    expected_backup_lba
-                )
+                "Backup header has invalid 'current_lba', "
+                f"expected {expected_backup_lba}"
             )
 
         gpt1 = primary.pack()

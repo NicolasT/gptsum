@@ -42,6 +42,7 @@ def flake8(session: Session) -> None:
         "flake8-docstrings",
         "flake8-expression-complexity",
         "flake8-isort",
+        "flake8-pylint",
         "flake8-pytest",
         "flake8-pytest-style",
         "flake8-return",

@@ -26,7 +26,7 @@ def test_version(capsys: pytest.CaptureFixture[str]) -> None:
         cli.main(["--version"])
 
     captured = capsys.readouterr()
-    assert captured.out == "{}\n".format(gptsum.__version__)
+    assert captured.out == f"{gptsum.__version__}\n"
 
 
 @pytest.mark.parametrize(
@@ -45,7 +45,7 @@ def test_get_guid(
     cli.main(["get-guid", str(disk_file)])
 
     captured = capsys.readouterr()
-    assert captured.out == "{}\n".format(expected_guid)
+    assert captured.out == f"{expected_guid}\n"
 
 
 @pytest.mark.parametrize(
@@ -62,7 +62,7 @@ def test_calculate_expected_guid(
     cli.main(["calculate-expected-guid", str(disk_file)])
 
     captured = capsys.readouterr()
-    assert captured.out == "{}\n".format(expected_guid)
+    assert captured.out == f"{expected_guid}\n"
 
 
 def test_set_guid(capsys: pytest.CaptureFixture[str], disk_image: Path) -> None:
@@ -74,7 +74,7 @@ def test_set_guid(capsys: pytest.CaptureFixture[str], disk_image: Path) -> None:
     cli.main(["get-guid", str(disk_image)])
 
     captured = capsys.readouterr()
-    assert captured.out == "{}\n".format(new_guid)
+    assert captured.out == f"{new_guid}\n"
 
 
 def test_embed(capsys: pytest.CaptureFixture[str], disk_image: Path) -> None:
@@ -84,7 +84,7 @@ def test_embed(capsys: pytest.CaptureFixture[str], disk_image: Path) -> None:
     cli.main(["get-guid", str(disk_image)])
 
     captured = capsys.readouterr()
-    assert captured.out == "{}\n".format(conftest.TESTDATA_EMBEDDED_DISK_GUID)
+    assert captured.out == f"{conftest.TESTDATA_EMBEDDED_DISK_GUID}\n"
 
     hash1 = hashlib.sha256()
     with open(conftest.TESTDATA_EMBEDDED_DISK, "rb") as fd:

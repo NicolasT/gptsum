@@ -14,9 +14,14 @@ from pytest_mock.plugin import MockType
 from gptsum import checksum, gpt
 from tests import conftest
 
+# Access to protected members is somewhat common in tests.
+# Granted, this should not be the case since we should only test publicly-exposed
+# functionality, but when aiming for good coverage, some tests need to dive deeper.
+# pylint: disable=protected-access
+
 
 def test__posix_fadvise_sequential_not_supported(
-    monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Test `_posix_fadvise_sequential` when `posix_fadvise` is not supported."""
     monkeypatch.delattr(os, "posix_fadvise", raising=False)
@@ -167,7 +172,6 @@ def test_calculate_inplace(disk_image: Path) -> None:
 
 
 def test_calculate_benchmark(
-    monkeypatch: pytest.MonkeyPatch,
     benchmark: pytest_benchmark.fixture.BenchmarkFixture,
 ) -> None:
     """Benchmark :func:`checksum.calculate`."""

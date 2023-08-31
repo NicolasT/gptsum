@@ -13,6 +13,9 @@ from pytest_mock import MockerFixture
 from gptsum import gpt
 from tests import conftest
 
+# Necessary to allow locally-defined fixtures to be used
+# pylint: disable=redefined-outer-name
+
 
 @pytest.mark.parametrize(
     "header",
@@ -323,6 +326,7 @@ def test_gptimage_read_primary_gpt_header_pread(
     # Make mypy happy
     assert hasattr(os, "pread")
 
+    # pylint: disable-next=no-member
     pread = mocker.patch("os.pread", side_effect=os.pread)
 
     _test_gptimage_read_primary_gpt_header()
@@ -405,6 +409,7 @@ def test_gptimage_write_gpt_headers_pwrite(
     # Make mypy happy
     assert hasattr(os, "pwrite")
 
+    # pylint: disable-next=no-member
     pwrite = mocker.patch("os.pwrite", side_effect=os.pwrite)
 
     _test_gptimage_write_gpt_headers(disk_image)
@@ -459,6 +464,7 @@ def test_gptimage_write_gpt_headers_incorrect_current_lba(disk_image: Path) -> N
         with pytest.raises(
             ValueError, match="Primary header has invalid 'current_lba', expected 1"
         ):
+            # pylint: disable-next=arguments-out-of-order
             image.write_gpt_headers(backup, primary)
 
         with open(disk_image, "rb+") as fd:

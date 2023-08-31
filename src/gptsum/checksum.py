@@ -20,11 +20,15 @@ def _posix_fadvise_sequential(fd: int, offset: int, size: int) -> None:
     if (
         posix_fadvise is not None and posix_fadv_sequential is not None
     ):  # pragma: platform-darwin, platform-win32
+        # pylint: disable-next=not-callable
         posix_fadvise(fd, offset, size, posix_fadv_sequential)
 
 
 def hash_file(
-    fn: Callable[[Union[bytes, memoryview]], None], fd: int, size: int, offset: int
+    callback: Callable[[Union[bytes, memoryview]], None],
+    fd: int,
+    size: int,
+    offset: int,
 ) -> int:
     """Repeatedly call a function on a slice of a file."""
     buffsize = _BUFFSIZE
@@ -38,18 +42,18 @@ def hash_file(
         view = memoryview(buff)
 
         while size > 0:
-            n = os.preadv(fd, bufflist, offset)
+            cnt = os.preadv(fd, bufflist, offset)
 
-            n = min(n, size)
+            cnt = min(cnt, size)
 
-            if n < buffsize:
-                fn(view[:n])
+            if cnt < buffsize:
+                callback(view[:cnt])
             else:
-                fn(view)
+                callback(view)
 
-            done += n
-            size -= n
-            offset += n
+            done += cnt
+            size -= cnt
+            offset += cnt
     else:
         curr = os.lseek(fd, 0, os.SEEK_CUR)
         os.lseek(fd, offset, os.SEEK_SET)
@@ -58,12 +62,12 @@ def hash_file(
             while size > 0:
                 data = os.read(fd, min(size, buffsize))
 
-                fn(data)
+                callback(data)
 
-                n = len(data)
-                done += n
-                size -= n
-                offset += n
+                cnt = len(data)
+                done += cnt
+                size -= cnt
+                offset += cnt
         finally:
             os.lseek(fd, curr, os.SEEK_SET)
 

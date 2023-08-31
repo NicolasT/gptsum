@@ -20,6 +20,12 @@ jobs:
           - { python-version: "3.11", session: "flake8", runs-on: "macos-12" }
           - { python-version: "3.11", session: "flake8", runs-on: "windows-2022" }
           - { python-version: "3.11", session: "safety" }
+          - { python-version: "3.11", session: "pylint" }
+          - { python-version: "3.11", session: "pylint", runs-on: "macos-12" }
+          - { python-version: "3.11", session: "pylint", runs-on: "windows-2022" }
+          - { python-version: "3.10", session: "pylint" }
+          - { python-version: "3.9", session: "pylint" }
+          - { python-version: "3.8", session: "pylint" }
           - { python-version: "3.11", session: "mypy" }
           - { python-version: "3.11", session: "mypy", runs-on: "macos-12" }
           - { python-version: "3.11", session: "mypy", runs-on: "windows-2022" }

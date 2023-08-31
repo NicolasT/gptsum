@@ -13,7 +13,6 @@ from importlib.metadata import Distribution, distribution
 from pathlib import Path
 from typing import Callable, Optional, cast
 
-import gptsum
 import gptsum.checksum
 import gptsum.gpt
 

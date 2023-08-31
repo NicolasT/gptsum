@@ -24,7 +24,9 @@ def disk_image(tmp_path: Path) -> Iterator[Path]:
             if TYPE_CHECKING:  # pragma: no cover
                 copyfileobj = cast(
                     Callable[
-                        [io.BufferedReader, tempfile._TemporaryFileWrapper[bytes]], None
+                        # pylint: disable=protected-access
+                        [io.BufferedReader, tempfile._TemporaryFileWrapper[bytes]],
+                        None,
                     ],
                     shutil.copyfileobj,
                 )

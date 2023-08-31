@@ -14,9 +14,14 @@ from pytest_mock.plugin import MockType
 from gptsum import checksum, gpt
 from tests import conftest
 
+# Access to protected members is somewhat common in tests.
+# Granted, this should not be the case since we should only test publicly-exposed
+# functionality, but when aiming for good coverage, some tests need to dive deeper.
+# pylint: disable=protected-access
+
 
 def test__posix_fadvise_sequential_not_supported(
-    monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """Test `_posix_fadvise_sequential` when `posix_fadvise` is not supported."""
     monkeypatch.delattr(os, "posix_fadvise", raising=False)
@@ -45,7 +50,11 @@ def test__posix_fadvise_sequential(
         assert hasattr(os, "POSIX_FADV_SEQUENTIAL")
 
         assert mocked.called_with(
-            fd.fileno(), 0, os.fstat(fd.fileno()).st_size, os.POSIX_FADV_SEQUENTIAL
+            fd.fileno(),
+            0,
+            os.fstat(fd.fileno()).st_size,
+            # pylint: disable-next=no-member
+            os.POSIX_FADV_SEQUENTIAL,
         )
 
 
@@ -111,6 +120,7 @@ def test_hash_file_preadv(mocker: MockerFixture) -> None:  # pragma: platform-wi
     # Make mypy happy
     assert hasattr(os, "preadv")
 
+    # pylint: disable-next=no-member
     preadv = mocker.patch("os.preadv", side_effect=os.preadv)
     _test_hash_file(preadv)
 
@@ -167,7 +177,6 @@ def test_calculate_inplace(disk_image: Path) -> None:
 
 
 def test_calculate_benchmark(
-    monkeypatch: pytest.MonkeyPatch,
     benchmark: pytest_benchmark.fixture.BenchmarkFixture,
 ) -> None:
     """Benchmark :func:`checksum.calculate`."""

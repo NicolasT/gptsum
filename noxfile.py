@@ -11,6 +11,9 @@ from pathlib import Path
 
 from nox_poetry import Session, session
 
+# pylint: disable=redefined-outer-name
+
+
 PACKAGE = "gptsum"
 
 PYTHON_VERSIONS = [
@@ -49,6 +52,39 @@ def flake8(session: Session) -> None:
         "pep8-naming",
     )
     session.run("flake8", *args)
+
+
+@session(python=PYTHON_VERSIONS)
+def pylint(session: Session) -> None:
+    """Lint using pylint."""
+    args = session.posargs or SOURCES
+
+    noxdeps = [
+        "nox-poetry",
+    ]
+    # Don't use `nox-poetry`'s `Session`, but its inner `nox` `Session`
+    # Rationale: `nox`, `nox-poetry` and others aren't managed by Poetry, hence
+    # their versions (and versions of dependencies) aren't tracked in `poetry.lock`.
+    # Moreover, these can conflict with versions kept in
+    # `.github/workflows/constraints.txt`. Hence, install the version of `nox-poetry`
+    # we'd use in CI, by only using the relevant constraints file.
+    assert hasattr(session.poetry, "session")  # Make MyPy happy
+    session.poetry.session.install(
+        "--constraint=.github/workflows/constraints.txt", *noxdeps
+    )
+
+    session.install(".")
+
+    deps = [
+        "pylint",
+        "pytest",
+        "pytest-mock",
+        "pytest-benchmark",
+    ]
+
+    session.install(*deps)
+
+    session.run("pylint", *args)
 
 
 @session(python=PYTHON_VERSIONS[-1])
@@ -95,7 +131,7 @@ def tests(session: Session) -> None:
     env = {
         "COVERAGE_FILE": os.environ.get(
             "COVERAGE_FILE",
-            ".coverage.{}.py{}.{}".format(session.name, session.python, sys.platform),
+            f".coverage.{session.name}.py{session.python}.{sys.platform}",
         ),
     }
 
@@ -111,7 +147,7 @@ def tests(session: Session) -> None:
 def coverage(session: Session) -> None:
     """Produce the coverage report."""
     # Do not use session.posargs unless this is the only session.
-    nsessions = len(session._runner.manifest)
+    nsessions = len(session._runner.manifest)  # pylint: disable=protected-access
     has_args = session.posargs and nsessions == 1
     args = session.posargs if has_args else ["report"]
 

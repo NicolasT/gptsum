@@ -1,6 +1,5 @@
 """Tests for :mod:`gptsum`."""
 
-import hashlib
 import os
 import uuid
 from pathlib import Path
@@ -9,15 +8,15 @@ from typing import Any, Callable, List
 import pytest
 
 import gptsum
-from gptsum import checksum
-from tests import conftest
+from tests import conftest, utils
 
 
 @pytest.mark.parametrize(("attr"), ["author", "contact", "license", "version"])
 def test_attribute(attr: str) -> None:
     """Test expected metadata attributes on the package."""
-    real_attr = "__{}__".format(attr)
+    real_attr = f"__{attr}__"
     assert hasattr(gptsum, real_attr)
+    # pylint: disable-next=unidiomatic-typecheck
     assert type(getattr(gptsum, real_attr)) is str
 
 
@@ -100,19 +99,10 @@ def test_embed(method: str, disk_image: Path) -> None:
     guid = gptsum.get_guid(path=disk_image)
     assert guid == conftest.TESTDATA_EMBEDDED_DISK_GUID
 
-    hash1 = hashlib.sha256()
-    with open(conftest.TESTDATA_EMBEDDED_DISK, "rb") as fd:
-        size = os.fstat(fd.fileno()).st_size
-        done = checksum.hash_file(hash1.update, fd.fileno(), size, 0)
-        assert done == size
-
-    hash2 = hashlib.sha256()
-    with open(disk_image, "rb") as fd:
-        size = os.fstat(fd.fileno()).st_size
-        done = checksum.hash_file(hash2.update, fd.fileno(), size, 0)
-        assert done == size
-
-    assert hash1.hexdigest() == hash2.hexdigest()
+    utils.assert_files_equal(
+        conftest.TESTDATA_EMBEDDED_DISK,
+        disk_image,
+    )
 
 
 def test_embed_noop(disk_image: Path) -> None:

@@ -10,8 +10,10 @@ attrs==23.1.0
     # via jsonschema
 build==0.10.0
     # via poetry
-cachecontrol==0.12.11
-    # via poetry
+cachecontrol==0.13.1
+    # via
+    #   cachecontrol
+    #   poetry
 certifi==2023.5.7
     # via requests
 cffi==1.15.1
@@ -34,10 +36,8 @@ dulwich==0.21.5
     # via poetry
 filelock==3.12.0
     # via
-    #   poetry
+    #   cachecontrol
     #   virtualenv
-html5lib==1.1
-    # via poetry
 idna==3.4
     # via requests
 importlib-metadata==6.6.0
@@ -58,12 +58,8 @@ jeepney==0.8.0
     #   secretstorage
 jsonschema==4.17.3
     # via poetry
-keyring==23.13.1
+keyring==24.2.0
     # via poetry
-lockfile==0.12.2
-    # via
-    #   cachecontrol
-    #   poetry
 more-itertools==9.1.0
     # via jaraco-classes
 msgpack==1.0.5
@@ -90,15 +86,15 @@ platformdirs==3.5.1
     # via
     #   poetry
     #   virtualenv
-poetry==1.5.1
+poetry==1.6.1
     # via
     #   -r constraints.in
     #   poetry-plugin-export
-poetry-core==1.6.1
+poetry-core==1.7.0
     # via
     #   poetry
     #   poetry-plugin-export
-poetry-plugin-export==1.4.0
+poetry-plugin-export==1.6.0
     # via poetry
 ptyprocess==0.7.0
     # via pexpect
@@ -123,8 +119,6 @@ secretstorage==3.3.3
     # via keyring
 shellingham==1.5.0.post1
     # via poetry
-six==1.16.0
-    # via html5lib
 tomli==2.0.1
     # via
     #   build
@@ -139,14 +133,11 @@ trove-classifiers==2023.5.24
 urllib3==1.26.16
     # via
     #   dulwich
-    #   poetry
     #   requests
 virtualenv==20.23.0
     # via
     #   nox
     #   poetry
-webencodings==0.5.1
-    # via html5lib
 zipp==3.15.0
     # via
     #   importlib-metadata

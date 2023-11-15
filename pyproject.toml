@@ -58,7 +58,7 @@ gptsum = "gptsum.cli:main"
 python = "^3.8.17"
 
 [tool.poetry.dev-dependencies]
-mypy = "^1.6"
+mypy = "^1.7"
 flake8 = "^6.1.0"
 flake8-bugbear = "^23.9.16"
 flake8-docstrings = "^1.7.0"

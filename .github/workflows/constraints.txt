@@ -81,7 +81,7 @@ platformdirs==3.5.1
     # via
     #   poetry
     #   virtualenv
-poetry==1.7.0
+poetry==1.7.1
     # via
     #   -r constraints.in
     #   poetry-plugin-export

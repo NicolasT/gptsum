@@ -1806,13 +1806,13 @@ zstd = ["zstandard (>=0.18.0)"]
 
 [[package]]
 name = "xdoctest"
-version = "1.1.2"
+version = "1.1.3"
 description = "A rewrite of the builtin doctest module"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "xdoctest-1.1.2-py3-none-any.whl", hash = "sha256:ebe133222534f09597cbe461f97cc5f95ad7b36e5d31f3437caffb9baaddbddb"},
-    {file = "xdoctest-1.1.2.tar.gz", hash = "sha256:267d3d4e362547fa917d3deabaf6888232bbf43c8d30298faeb957dbfa7e0ba3"},
+    {file = "xdoctest-1.1.3-py3-none-any.whl", hash = "sha256:9360535bd1a971ffc216d9613898cedceb81d0fd024587cc3c03c74d14c00a31"},
+    {file = "xdoctest-1.1.3.tar.gz", hash = "sha256:84e76a42a11a5926ff66d9d84c616bc101821099672550481ad96549cbdd02ae"},
 ]
 
 [package.dependencies]
@@ -1849,4 +1849,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.17"
-content-hash = "cd1216000fa8c803fe77d18bee25a2e0bb506d3407a001f7b952bd7fd1696053"
+content-hash = "8b85f91c9e58a799ba5caa17f992975e48b7350091b88e6ad3d216ac7b3de814"

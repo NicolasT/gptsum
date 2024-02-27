@@ -8,7 +8,7 @@ argcomplete==3.0.8
     # via nox
 build==1.0.3
     # via poetry
-cachecontrol==0.13.1
+cachecontrol==0.14.0
     # via
     #   cachecontrol
     #   poetry
@@ -81,11 +81,11 @@ platformdirs==3.5.1
     # via
     #   poetry
     #   virtualenv
-poetry==1.7.1
+poetry==1.8.1
     # via
     #   -r constraints.in
     #   poetry-plugin-export
-poetry-core==1.8.1
+poetry-core==1.9.0
     # via
     #   poetry
     #   poetry-plugin-export

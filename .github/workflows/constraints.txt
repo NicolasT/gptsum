@@ -61,7 +61,7 @@ more-itertools==9.1.0
     # via jaraco-classes
 msgpack==1.0.5
     # via cachecontrol
-nox==2023.4.22
+nox==2024.3.2
     # via
     #   -r constraints.in
     #   nox-poetry

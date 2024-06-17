@@ -16,7 +16,7 @@ TESTDATA_EMBEDDED_DISK = Path(__file__).parent / "testdata" / "embedded-disk"
 TESTDATA_EMBEDDED_DISK_GUID = uuid.UUID("D4750646-01FD-2608-959F-159017007377")
 
 
-@pytest.fixture()
+@pytest.fixture
 def disk_image(tmp_path: Path) -> Iterator[Path]:
     """Yield the path to a copy of `TESTDATA_DISK`."""
     with tempfile.NamedTemporaryFile(dir=tmp_path, delete=False) as tmp:

@@ -54,10 +54,10 @@ jobs:
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.7
 
       - name: Set up Python "${{ matrix.python-version }}"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: "${{ matrix.python-version }}"
 
@@ -99,10 +99,10 @@ jobs:
     needs: tests
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.7
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: "3.12"
 
@@ -132,7 +132,7 @@ jobs:
         run: |
           nox --force-color --session=coverage -- xml
       - name: Upload coverage report
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v4.4.1
 
   tests-success:
     runs-on: ubuntu-latest

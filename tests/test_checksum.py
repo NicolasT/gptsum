@@ -49,7 +49,7 @@ def test__posix_fadvise_sequential(
         # Make mypy happy
         assert hasattr(os, "POSIX_FADV_SEQUENTIAL")
 
-        assert mocked.called_with(
+        mocked.assert_called_with(
             fd.fileno(),
             0,
             os.fstat(fd.fileno()).st_size,

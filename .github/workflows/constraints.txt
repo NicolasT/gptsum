@@ -71,7 +71,7 @@ packaging==23.1
     #   nox
     #   nox-poetry
     #   poetry
-pexpect==4.8.0
+pexpect==4.9.0
     # via poetry
 pkginfo==1.11.1
     # via poetry

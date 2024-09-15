@@ -9,6 +9,8 @@ updates:
     directory: "/.github/workflows"
     schedule:
       interval: daily
+    allow:
+      - dependency-type: "all"
   - package-ecosystem: pip
     directory: "/"
     schedule:

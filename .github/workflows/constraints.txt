@@ -26,13 +26,13 @@ crashtest==0.4.1
     #   poetry
 cryptography==40.0.2
     # via secretstorage
-distlib==0.3.6
+distlib==0.3.8
     # via virtualenv
 dulwich==0.21.5
     # via poetry
 fastjsonschema==2.18.1
     # via poetry
-filelock==3.12.0
+filelock==3.16.0
     # via
     #   cachecontrol
     #   virtualenv
@@ -75,7 +75,7 @@ pexpect==4.9.0
     # via poetry
 pkginfo==1.11.1
     # via poetry
-platformdirs==3.5.1
+platformdirs==4.3.3
     # via
     #   poetry
     #   virtualenv
@@ -126,7 +126,7 @@ urllib3==2.2.3
     # via
     #   dulwich
     #   requests
-virtualenv==20.23.0
+virtualenv==20.26.4
     # via
     #   nox
     #   poetry

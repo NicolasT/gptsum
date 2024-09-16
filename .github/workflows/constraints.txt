@@ -65,7 +65,7 @@ nox==2024.4.15
     #   nox-poetry
 nox-poetry==1.0.3
     # via -r constraints.in
-packaging==23.1
+packaging==24.1
     # via
     #   build
     #   nox

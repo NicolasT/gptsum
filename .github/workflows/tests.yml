@@ -71,9 +71,9 @@ jobs:
           pip install --constraint=.github/workflows/constraints.txt poetry
           poetry --version
 
-      - name: Install Nox
+      - name: Install Nox, nox-poetry and poetry-plugin-export
         run: |
-          pip install --constraint=.github/workflows/constraints.txt nox nox-poetry
+          pip install --constraint=.github/workflows/constraints.txt nox nox-poetry poetry-plugin-export
           nox --version
 
       - name: Run Nox
@@ -115,9 +115,9 @@ jobs:
         run: |
           pip install --constraint=.github/workflows/constraints.txt poetry
           poetry --version
-      - name: Install Nox
+      - name: Install Nox, nox-poetry and poetry-plugin-export
         run: |
-          pip install --constraint=.github/workflows/constraints.txt nox nox-poetry
+          pip install --constraint=.github/workflows/constraints.txt nox nox-poetry poetry-plugin-export
           nox --version
       - name: Download coverage data
         uses: actions/download-artifact@v4.1.8

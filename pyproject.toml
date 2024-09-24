@@ -88,7 +88,7 @@ pytest-benchmark = "^4.0.0"
 coverage-conditional-plugin = "^0.9.0"
 pylint = "^3.2.7"
 # Work-around https://github.com/pypi/warehouse/issues/15749
-docutils = "!=0.21"
+docutils = "!=0.21.post1"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]

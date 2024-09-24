@@ -32,7 +32,7 @@ dulwich==0.21.5
     # via poetry
 fastjsonschema==2.18.1
     # via poetry
-filelock==3.16.0
+filelock==3.16.1
     # via
     #   cachecontrol
     #   virtualenv

@@ -6,7 +6,7 @@
 #
 argcomplete==3.5.0
     # via nox
-build==1.0.3
+build==1.2.2
     # via poetry
 cachecontrol==0.14.0
     # via poetry

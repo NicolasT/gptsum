@@ -43,7 +43,7 @@ importlib-metadata==8.5.0
     #   build
     #   keyring
     #   poetry
-importlib-resources==6.0.1
+importlib-resources==6.4.5
     # via keyring
 installer==0.7.0
     # via poetry

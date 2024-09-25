@@ -117,7 +117,7 @@ tomli==2.0.1
     #   build
     #   nox
     #   poetry
-tomlkit==0.11.8
+tomlkit==0.13.2
     # via
     #   nox-poetry
     #   poetry

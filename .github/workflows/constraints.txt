@@ -121,7 +121,7 @@ tomlkit==0.13.2
     # via
     #   nox-poetry
     #   poetry
-trove-classifiers==2024.10.16
+trove-classifiers==2024.10.21.16
     # via poetry
 urllib3==2.2.3
     # via

@@ -18,7 +18,7 @@ charset-normalizer==3.4.0
     # via requests
 cleo==2.1.0
     # via poetry
-colorlog==6.8.2
+colorlog==6.9.0
     # via nox
 crashtest==0.4.1
     # via

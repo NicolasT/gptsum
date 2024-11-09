@@ -7,10 +7,18 @@ import binascii
 import dataclasses
 import os
 import struct
+import sys
 import uuid
 from pathlib import Path
 from types import TracebackType
-from typing import ContextManager, Optional, Type
+from typing import Optional, Type
+
+if sys.version_info < (3, 9):  # pragma: py-gte-39
+    # Before Python 3.9, `contextlib.AbstractContextManager` isn't `Generic`.
+    from typing import ContextManager
+else:  # pragma: py-lt-39
+    from contextlib import AbstractContextManager as ContextManager
+
 
 LBA_SIZE = 512
 MBR_SIZE = LBA_SIZE

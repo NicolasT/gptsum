@@ -34,6 +34,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: System",
     "Topic :: System :: Software Distribution",
     "Typing :: Typed",
@@ -106,6 +107,8 @@ fail_under = 100
 [tool.coverage.coverage_conditional_plugin.rules]
 platform-darwin = "sys_platform == 'darwin'"
 platform-win32 = "sys_platform == 'win32'"
+py-lt-39 = "sys_version_info < (3, 9)"
+py-gte-39 = "sys_version_info >= (3, 9)"
 
 [tool.mypy]
 strict = true

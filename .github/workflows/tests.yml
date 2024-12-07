@@ -17,11 +17,11 @@ jobs:
       matrix:
         include:
           - { python-version: "3.13", session: "flake8" }
-          - { python-version: "3.13", session: "flake8", runs-on: "macos-12" }
+          - { python-version: "3.13", session: "flake8", runs-on: "macos-15" }
           - { python-version: "3.13", session: "flake8", runs-on: "windows-2022" }
           - { python-version: "3.13", session: "safety" }
           - { python-version: "3.13", session: "pylint" }
-          - { python-version: "3.13", session: "pylint", runs-on: "macos-12" }
+          - { python-version: "3.13", session: "pylint", runs-on: "macos-15" }
           - { python-version: "3.13", session: "pylint", runs-on: "windows-2022" }
           - { python-version: "3.12", session: "pylint" }
           - { python-version: "3.11", session: "pylint" }
@@ -29,7 +29,7 @@ jobs:
           - { python-version: "3.9", session: "pylint" }
           - { python-version: "3.8", session: "pylint" }
           - { python-version: "3.13", session: "mypy" }
-          - { python-version: "3.13", session: "mypy", runs-on: "macos-12" }
+          - { python-version: "3.13", session: "mypy", runs-on: "macos-15" }
           - { python-version: "3.13", session: "mypy", runs-on: "windows-2022" }
           - { python-version: "3.12", session: "mypy" }
           - { python-version: "3.11", session: "mypy" }
@@ -37,7 +37,7 @@ jobs:
           - { python-version: "3.9", session: "mypy" }
           - { python-version: "3.8", session: "mypy" }
           - { python-version: "3.13", session: "tests" }
-          - { python-version: "3.13", session: "tests", runs-on: "macos-12" }
+          - { python-version: "3.13", session: "tests", runs-on: "macos-15" }
           - { python-version: "3.13", session: "tests", runs-on: "windows-2022" }
           - { python-version: "3.12", session: "tests" }
           - { python-version: "3.11", session: "tests" }
@@ -45,10 +45,10 @@ jobs:
           - { python-version: "3.9", session: "tests" }
           - { python-version: "3.8", session: "tests" }
           - { python-version: "3.13", session: "typeguard" }
-          - { python-version: "3.13", session: "typeguard", runs-on: "macos-12" }
+          - { python-version: "3.13", session: "typeguard", runs-on: "macos-15" }
           - { python-version: "3.13", session: "typeguard", runs-on: "windows-2022" }
           - { python-version: "3.13", session: "xdoctest" }
-          - { python-version: "3.13", session: "xdoctest", runs-on: "macos-12" }
+          - { python-version: "3.13", session: "xdoctest", runs-on: "macos-15" }
           - { python-version: "3.13", session: "xdoctest", runs-on: "windows-2022" }
           - { python-version: "3.13", session: "docs" }
 

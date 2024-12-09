@@ -79,7 +79,7 @@ platformdirs==4.3.6
     # via
     #   poetry
     #   virtualenv
-poetry==1.8.4
+poetry==1.8.5
     # via
     #   -r constraints.in
     #   poetry-plugin-export

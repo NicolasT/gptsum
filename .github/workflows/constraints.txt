@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=constraints.txt --strip-extras constraints.in
 #
-argcomplete==3.5.1
+argcomplete==3.5.2
     # via nox
 build==1.2.2.post1
     # via poetry

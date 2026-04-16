@@ -16,35 +16,38 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { python-version: "3.13", session: "flake8" }
-          - { python-version: "3.13", session: "flake8", runs-on: "macos-15" }
-          - { python-version: "3.13", session: "flake8", runs-on: "windows-2022" }
-          - { python-version: "3.13", session: "safety" }
+          - { python-version: "3.14", session: "flake8" }
+          - { python-version: "3.14", session: "flake8", runs-on: "macos-15" }
+          - { python-version: "3.14", session: "flake8", runs-on: "windows-2022" }
+          - { python-version: "3.14", session: "safety" }
+          - { python-version: "3.14", session: "pylint" }
+          - { python-version: "3.14", session: "pylint", runs-on: "macos-15" }
+          - { python-version: "3.14", session: "pylint", runs-on: "windows-2022" }
           - { python-version: "3.13", session: "pylint" }
-          - { python-version: "3.13", session: "pylint", runs-on: "macos-15" }
-          - { python-version: "3.13", session: "pylint", runs-on: "windows-2022" }
           - { python-version: "3.12", session: "pylint" }
           - { python-version: "3.11", session: "pylint" }
           - { python-version: "3.10", session: "pylint" }
+          - { python-version: "3.14", session: "mypy" }
+          - { python-version: "3.14", session: "mypy", runs-on: "macos-15" }
+          - { python-version: "3.14", session: "mypy", runs-on: "windows-2022" }
           - { python-version: "3.13", session: "mypy" }
-          - { python-version: "3.13", session: "mypy", runs-on: "macos-15" }
-          - { python-version: "3.13", session: "mypy", runs-on: "windows-2022" }
           - { python-version: "3.12", session: "mypy" }
           - { python-version: "3.11", session: "mypy" }
           - { python-version: "3.10", session: "mypy" }
+          - { python-version: "3.14", session: "tests" }
+          - { python-version: "3.14", session: "tests", runs-on: "macos-15" }
+          - { python-version: "3.14", session: "tests", runs-on: "windows-2022" }
           - { python-version: "3.13", session: "tests" }
-          - { python-version: "3.13", session: "tests", runs-on: "macos-15" }
-          - { python-version: "3.13", session: "tests", runs-on: "windows-2022" }
           - { python-version: "3.12", session: "tests" }
           - { python-version: "3.11", session: "tests" }
           - { python-version: "3.10", session: "tests" }
-          - { python-version: "3.13", session: "typeguard" }
-          - { python-version: "3.13", session: "typeguard", runs-on: "macos-15" }
-          - { python-version: "3.13", session: "typeguard", runs-on: "windows-2022" }
-          - { python-version: "3.13", session: "xdoctest" }
-          - { python-version: "3.13", session: "xdoctest", runs-on: "macos-15" }
-          - { python-version: "3.13", session: "xdoctest", runs-on: "windows-2022" }
-          - { python-version: "3.13", session: "docs" }
+          - { python-version: "3.14", session: "typeguard" }
+          - { python-version: "3.14", session: "typeguard", runs-on: "macos-15" }
+          - { python-version: "3.14", session: "typeguard", runs-on: "windows-2022" }
+          - { python-version: "3.14", session: "xdoctest" }
+          - { python-version: "3.14", session: "xdoctest", runs-on: "macos-15" }
+          - { python-version: "3.14", session: "xdoctest", runs-on: "windows-2022" }
+          - { python-version: "3.14", session: "docs" }
 
     env:
       NOXSESSION: "${{ matrix.session }}"
@@ -99,10 +102,10 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v6.0.2
 
-      - name: Set up Python 3.13
+      - name: Set up Python 3.14
         uses: actions/setup-python@v6.2.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: Upgrade pip
         run: |

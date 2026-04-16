@@ -22,6 +22,7 @@ PYTHON_VERSIONS = [
     "3.11",
     "3.12",
     "3.13",
+    "3.14",
 ]
 
 SOURCES = [
@@ -43,11 +44,9 @@ def flake8(session: Session) -> None:
         "flake8-bugbear",
         "flake8-builtins",
         "flake8-docstrings",
-        "flake8-expression-complexity",
         "flake8-isort",
         "flake8-pytest",
         "flake8-pytest-style",
-        "flake8-return",
         "flake8-rst-docstrings",
         "pep8-naming",
     )

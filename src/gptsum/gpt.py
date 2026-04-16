@@ -4,21 +4,14 @@
 """
 
 import binascii
+import contextlib
 import dataclasses
 import os
 import struct
-import sys
 import uuid
 from pathlib import Path
 from types import TracebackType
 from typing import Optional, Type
-
-if sys.version_info < (3, 9):  # pragma: py-gte-39
-    # Before Python 3.9, `contextlib.AbstractContextManager` isn't `Generic`.
-    from typing import ContextManager
-else:  # pragma: py-lt-39
-    from contextlib import AbstractContextManager as ContextManager
-
 
 LBA_SIZE = 512
 MBR_SIZE = LBA_SIZE
@@ -301,7 +294,7 @@ def pwrite_all(fd: int, data: bytes, offset: int) -> None:
         offset += written
 
 
-class GPTImage(ContextManager["GPTImage"]):
+class GPTImage(contextlib.AbstractContextManager["GPTImage"]):
     """Wrapper around a GPT-partitioned disk image file."""
 
     def __init__(

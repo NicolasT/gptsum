@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import BinaryIO
 
 import pytest
-import pytest_benchmark.fixture  # type: ignore[import-untyped]
+import pytest_benchmark.fixture
 from pytest_mock import MockerFixture
 from pytest_mock.plugin import MockType
 

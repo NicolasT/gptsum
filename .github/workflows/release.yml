@@ -35,9 +35,9 @@ jobs:
           pip install --constraint=.github/workflows/constraints.txt poetry
           poetry --version
 
-      - name: Install Nox
+      - name: Install Nox, nox-poetry and poetry-plugin-export
         run: |
-          pip install --constraint=.github/workflows/constraints.txt nox nox-poetry
+          pip install --constraint=.github/workflows/constraints.txt nox nox-poetry poetry-plugin-export
           nox --version
 
       - name: Check if there is a parent commit

@@ -67,7 +67,7 @@ idna==3.11
     #   requests
 importlib-metadata==9.0.0
     # via keyring
-installer==0.7.0
+installer==1.0.0
     # via poetry
 jaraco-classes==3.4.0
     # via keyring
@@ -93,7 +93,7 @@ nox==2026.4.10
     #   nox-poetry
 nox-poetry==1.2.0
     # via -r constraints.in
-packaging==26.1
+packaging==26.2
     # via
     #   build
     #   dependency-groups
@@ -111,11 +111,11 @@ platformdirs==4.9.6
     #   poetry
     #   python-discovery
     #   virtualenv
-poetry==2.3.4
+poetry==2.4.1
     # via
     #   -r constraints.in
     #   poetry-plugin-export
-poetry-core==2.3.2
+poetry-core==2.4.0
     # via
     #   poetry
     #   poetry-plugin-export

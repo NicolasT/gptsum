@@ -60,7 +60,7 @@ httpx==0.28.1
     # via pbs-installer
 humanize==4.15.0
     # via nox
-idna==3.11
+idna==3.14
     # via
     #   anyio
     #   httpx

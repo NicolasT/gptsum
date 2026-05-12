@@ -18,7 +18,7 @@ build==1.4.3
     #   poetry
 cachecontrol==0.14.4
     # via poetry
-certifi==2026.2.25
+certifi==2026.4.22
     # via
     #   httpcore
     #   httpx

@@ -12,6 +12,8 @@ attrs==26.1.0
     # via nox
 backports-tarfile==1.2.0
     # via jaraco-context
+backports-zstd==1.5.0
+    # via pbs-installer
 build==1.4.3
     # via
     #   nox-poetry
@@ -101,7 +103,7 @@ packaging==26.1
     #   nox
     #   nox-poetry
     #   poetry
-pbs-installer==2026.4.7
+pbs-installer==2026.5.10
     # via poetry
 pkginfo==1.12.1.2
     # via poetry
@@ -172,8 +174,6 @@ virtualenv==21.2.4
     #   poetry
 zipp==3.23.1
     # via importlib-metadata
-zstandard==0.25.0
-    # via pbs-installer
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip

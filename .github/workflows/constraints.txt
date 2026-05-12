@@ -93,7 +93,7 @@ nox==2026.4.10
     #   nox-poetry
 nox-poetry==1.2.0
     # via -r constraints.in
-packaging==26.1
+packaging==26.2
     # via
     #   build
     #   dependency-groups
